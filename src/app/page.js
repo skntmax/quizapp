@@ -5,17 +5,13 @@ import QuizHeader from "@/modules/common_modules/QuizHeader";
 
 export default function Home() {
   return (
-    // <div style={{ width: "80%", margin:'auto', padding:'100px' }}>
-
-    //   <QuizHeader correct={1} incorrect={5} remaining={153} />
-    //   <PaginationUi />
-    //   {
-    //     questionArray.map((item, index) => <QuestionCard data={item} index={index} />)
-    //   }
-    //   <PaginationUi />
-    // </div>
-    <div class="container mx-auto px-4">
-      dfhdlzghlk
+    <div style={{ width: "80%", margin:'auto', padding:'100px' }}>
+      <QuizHeader correct={1} incorrect={5} remaining={153} />
+      <PaginationUi />
+      {
+        questionArray.map((item, index) => <QuestionCard data={item} index={index} />)
+      }
+      <PaginationUi />
     </div>
   );
 }
