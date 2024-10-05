@@ -20,19 +20,19 @@ module.exports = {
 					foreground: 'hsl(var(--popover-foreground))'
 				},
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					DEFAULT: 'hsl(var(--gray))',
+					foreground: 'hsl(var(--primary))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
 				danger: {
-					DEFAULT: '#dc3545',      // Danger red (Bootstrap red)
+					DEFAULT: '#fda4af',      // Danger red (Bootstrap red)
 					foreground: '#ffffff',    // White text color for contrast
 				  },
 				  success: {
-					DEFAULT: '#28a745',      // Success green
+					DEFAULT: '#6ee7b7',      // Success green
 					foreground: '#ffffff',    // Text color for success background
 				  },
 				muted: {
