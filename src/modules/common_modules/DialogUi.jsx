@@ -11,56 +11,84 @@ import {
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
 import { SelectUi } from "./SelectUi";
+import { getRequest } from "@/crud_operations/RequestHandler";
+
+const steps = [{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }];
 
 export function DialogUi() {
-    const [open, setOpen] = useState(true); // Open the dialog by default
-    const [activeStep, setActiveStep] = useState(0); // State to manage active step
+    const [data, setData] = useState({
+        dialog: true,
+        activeStep: 0,
+        language: undefined,
+        defficult_level: undefined
+    });
 
-    // Optionally, you can manage dialog state using useEffect if needed
     useEffect(() => {
-        // Example: Open dialog when component mounts
-        setOpen(true);
+        setData({ ...data, open: true });
     }, []);
 
     const handleNext = () => {
         if (activeStep < 2) { // Assuming there are 3 steps (0, 1, 2)
-            setActiveStep((prevStep) => prevStep + 1);
+            set({
+                ...data,
+                activeStep: data.prevStep + 1
+            });
         }
     };
 
-    const handleBack = () => {
-        if (activeStep > 0) {
-            setActiveStep((prevStep) => prevStep - 1);
+    const handleLanguage = async () => {
+        try {
+            let responce = await getRequest('')
+            if (responce.status) {
+                setData()
+            }
         }
+        catch (error) {
+
+        }
+        handleNext();
+    };
+
+    const handleDefficultLevel = async () => {
+        try {
+            let responce = await getRequest('')
+            if (responce.status) {
+                setData()
+            }
+        }
+        catch (error) {
+
+        }
+        handleNext()
     };
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={data.open} onOpenChange={setData}>
             <DialogContent className="sm:max-w-[425px]">
                 <Stepper
-                    steps={[{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }]}
-                    activeStep={activeStep}
+                    steps={steps}
+                    activeStep={data.activeStep}
                 />
 
                 {
-                    activeStep == 0 && (
+                    data.activeStep == 0 && (
                         <>
-                            <DialogHeader>
+                            {/* <DialogHeader>
                                 <DialogTitle>Select language preference</DialogTitle>
                                 <DialogDescription>
                                     Choose your preferences from the available options. Your selection will help us tailor your experience to better suit your needs. Make sure to review and save your changes before proceeding.
                                 </DialogDescription>
-                            </DialogHeader>
+                            </DialogHeader> */}
 
-                            <div className="grid gap-4 py-4">
+                            {/* <div className="grid gap-4 py-4">
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <SelectUi />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <SelectUi />
                                 </div>
-                            </div>
-                            <div className="flex flex-wrap gap-4 p-4">
+                            </div> */}
+                            <div className="flex flex-wrap justify-center gap-4 p-4">
                                 {/* Rainbow Color Buttons */}
                                 <button className="bg-red-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-red-400">
                                     Red
@@ -89,7 +117,7 @@ export function DialogUi() {
                 }
 
                 {
-                    activeStep == 1 && (
+                    data.activeStep == 1 && (
                         <>
                             <DialogHeader>
                                 <DialogTitle>Select catogo preference</DialogTitle>
@@ -135,37 +163,12 @@ export function DialogUi() {
                 }
 
                 {
-                    activeStep == 2 && (
+                    data.activeStep == 2 && (
                         <>
                             Ready...
                         </>
                     )
                 }
-
-                <DialogFooter>
-                    {/* <Button type="submit" onClick={() => setOpen(false)}>
-                        Save changes
-                    </Button> */}
-
-                    {/* Navigation Buttons */}
-                    <div className="flex justify-between flex-row-reverse  mt-4">
-                        <Button
-                            variant="outlined"
-                            onClick={handleBack}
-                            className='bg-red-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-red-400'
-                            disabled={activeStep === 0} // Disable back button on first step
-                        >
-                            Back
-                        </Button>
-                        <Button
-                            variant="contained"
-                            onClick={handleNext}
-                            className='bg-green-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-green-400'
-                        >
-                            {activeStep === 2 ? 'Finish' : 'Next'} {/* Change button text on last step */}
-                        </Button>
-                    </div>
-                </DialogFooter>
             </DialogContent>
         </Dialog>
     );

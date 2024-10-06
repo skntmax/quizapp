@@ -1,11 +1,12 @@
 import axios from "axios";
-import { getAuthTokenFromCookies } from "../Utils/authTokenUtils";
-import { globalVarible } from "../Utils/identitySettings";
+// import { getAuthTokenFromCookies } from "../Utils/authTokenUtils";
+// import { globalVarible } from "../Utils/identitySettings";
 
 // Global auth header
 const defaultAuthHeader = {
   headers: {
-    Authorization: getAuthTokenFromCookies(globalVarible.authToken) // Replace with your actual token
+    Authorization: `` // Replace with your actual token
+    // Authorization: getAuthTokenFromCookies(globalVarible.authToken) // Replace with your actual token
   }
 };
 
