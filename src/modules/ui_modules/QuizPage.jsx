@@ -35,15 +35,6 @@ export default function QuizPage() {
         }
     };
 
-    const handleNext = () => {
-        if (activeStep < 2) { // Assuming there are 3 steps (0, 1, 2)
-            set({
-                ...data,
-                activeStep: data.prevStep + 1
-            });
-        }
-    };
-
     const handleLanguage = async () => {
         try {
             let responce = await getRequest('')
@@ -56,6 +47,17 @@ export default function QuizPage() {
         }
         handleNext();
     };
+
+    const handleNext = () => {
+        if (activeStep < 2) { // Assuming there are 3 steps (0, 1, 2)
+            set({
+                ...data,
+                activeStep: data.prevStep + 1
+            });
+        }
+    };
+
+
 
     const handleDefficultLevel = async () => {
         try {
