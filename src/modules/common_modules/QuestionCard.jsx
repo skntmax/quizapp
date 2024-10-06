@@ -23,7 +23,7 @@ export function QuestionCard({ data, index }) {
 
   return (
     <>
-      <Card >
+      <Card>
         <CardHeader>
           <CardTitle className='text-lg  font-semibold'>
             ({index + 1}) {data.question}
