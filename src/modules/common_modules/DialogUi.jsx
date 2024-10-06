@@ -1,69 +1,19 @@
 'use client';
-import { Button } from "@/components/ui/button";
-import { Step, Stepper } from 'react-form-stepper';
 import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
-    DialogTitle,
+    DialogTitle
 } from "@/components/ui/dialog";
-import { useEffect, useState } from "react";
+import { Stepper } from 'react-form-stepper';
 import { SelectUi } from "./SelectUi";
-import { getRequest } from "@/crud_operations/RequestHandler";
 
 const steps = [{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }];
 
-export function DialogUi() {
-    const [data, setData] = useState({
-        dialog: true,
-        activeStep: 0,
-        language: undefined,
-        defficult_level: undefined
-    });
-
-    useEffect(() => {
-        setData({ ...data, open: true });
-    }, []);
-
-    const handleNext = () => {
-        if (activeStep < 2) { // Assuming there are 3 steps (0, 1, 2)
-            set({
-                ...data,
-                activeStep: data.prevStep + 1
-            });
-        }
-    };
-
-    const handleLanguage = async () => {
-        try {
-            let responce = await getRequest('')
-            if (responce.status) {
-                setData()
-            }
-        }
-        catch (error) {
-
-        }
-        handleNext();
-    };
-
-    const handleDefficultLevel = async () => {
-        try {
-            let responce = await getRequest('')
-            if (responce.status) {
-                setData()
-            }
-        }
-        catch (error) {
-
-        }
-        handleNext()
-    };
-
+export function DialogUi({ data, setData }) {
     return (
-        <Dialog open={data.open} onOpenChange={setData}>
+        <Dialog open={data.dialog} onOpenChange={setData}>
             <DialogContent className="sm:max-w-[425px]">
                 <Stepper
                     steps={steps}
@@ -88,6 +38,17 @@ export function DialogUi() {
                                     <SelectUi />
                                 </div>
                             </div> */}
+                            {
+                                data.language !== undefined &&
+                                (
+                                    <div className="flex flex-wrap justify-center gap-4 p-4">
+                                        {data.language.map((item) =>
+                                            <button className="bg-red-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-red-400">
+                                                {item.TITLE}
+                                            </button>
+                                        )}
+                                    </div>)
+                            }
                             <div className="flex flex-wrap justify-center gap-4 p-4">
                                 {/* Rainbow Color Buttons */}
                                 <button className="bg-red-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-red-400">
@@ -134,6 +95,7 @@ export function DialogUi() {
                                     <SelectUi />
                                 </div>
                             </div>
+
                             <div className="flex flex-wrap gap-4 p-4">
                                 {/* Rainbow Color Buttons */}
                                 <button className="bg-red-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-red-400">
