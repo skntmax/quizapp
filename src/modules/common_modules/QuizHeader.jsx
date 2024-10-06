@@ -1,3 +1,5 @@
+import { ThremeToggle } from "./ThremeToggle";
+
 const QuizHeader = ({ correct, incorrect, remaining }) => {
     return (
         <>
@@ -14,6 +16,9 @@ const QuizHeader = ({ correct, incorrect, remaining }) => {
                 <div class="flex-grow">
                     {/* Remaining */}
                     <div className="text-lg font-semibold">Remaining: {remaining}</div>
+                </div>
+                <div class="flex-shrink-0">
+                    <ThremeToggle />
                 </div>
             </div>
         </>
