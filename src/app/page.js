@@ -10,10 +10,10 @@ import TailwindButton from "@/modules/common_modules/TailwindButton";
 export default function Home() {
   return (
     <>
-      <TailwindButton />
+      {/* <TailwindButton /> */}
 
-      <QuizHeader correct={1} incorrect={5} remaining={153} />
       <DialogUi />
+      <QuizHeader correct={1} incorrect={5} remaining={153} />
       <div style={{ width: "80%", margin: 'auto', padding: '100px' }}>
         <PaginationUi />
         {
