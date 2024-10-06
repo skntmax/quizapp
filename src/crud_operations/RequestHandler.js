@@ -1,4 +1,5 @@
 import axios from "axios";
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 // import { getAuthTokenFromCookies } from "../Utils/authTokenUtils";
 // import { globalVarible } from "../Utils/identitySettings";
 
@@ -14,8 +15,8 @@ const defaultAuthHeader = {
 async function getRequest(url, customHeaders = null) {
   try {
     const headers = customHeaders ? customHeaders : defaultAuthHeader; // Use custom headers if provided, otherwise global
-    const response = await axios.get(url, headers);
-    return response; // Return the full response object
+    const response = await axios.get(`${baseUrl}${url}`, headers);
+    return response.data; // Return the full response object
   } catch (error) {
     return error.response ? error.response : { message: error.message }; // Return the full error response or message
   }
@@ -25,8 +26,8 @@ async function getRequest(url, customHeaders = null) {
 async function postRequest(url, model, customHeaders = null) {
   try {
     const headers = customHeaders ? customHeaders : defaultAuthHeader; // Use custom headers if provided, otherwise global
-    const response = await axios.post(url, model, headers);
-    return response; // Return the full response object
+    const response = await axios.post(`${baseUrl}${url}`, model, headers);
+    return response.data; // Return the full response object
   } catch (error) {
     return error.response ? error.response : { message: error.message }; // Return the full error response or message
   }
@@ -36,8 +37,8 @@ async function postRequest(url, model, customHeaders = null) {
 async function putRequest(url, model, customHeaders = null) {
   try {
     const headers = customHeaders ? customHeaders : defaultAuthHeader; // Use custom headers if provided, otherwise global
-    const response = await axios.put(url, model, headers);
-    return response; // Return the full response object
+    const response = await axios.put(`${baseUrl}${url}`, model, headers);
+    return response.data; // Return the full response object
   } catch (error) {
     return error.response ? error.response : { message: error.message }; // Return the full error response or message
   }
@@ -47,8 +48,8 @@ async function putRequest(url, model, customHeaders = null) {
 async function patchRequest(url, model, customHeaders = null) {
   try {
     const headers = customHeaders ? customHeaders : defaultAuthHeader; // Use custom headers if provided, otherwise global
-    const response = await axios.patch(url, model, headers);
-    return response; // Return the full response object
+    const response = await axios.patch(`${baseUrl}${url}`, model, headers);
+    return response.data; // Return the full response object
   } catch (error) {
     return error.response ? error.response : { message: error.message }; // Return the full error response or message
   }
@@ -58,11 +59,11 @@ async function patchRequest(url, model, customHeaders = null) {
 async function deleteRequest(url, model, customHeaders = null) {
   try {
     const headers = customHeaders ? customHeaders : defaultAuthHeader; // Use custom headers if provided, otherwise global
-    const response = await axios.delete(url, {
+    const response = await axios.delete(`${baseUrl}${url}`, {
       data: model, // Include model in the body for DELETE, if needed
       ...headers
     });
-    return response; // Return the full response object
+    return response.data; // Return the full response object
   } catch (error) {
     return error.response ? error.response : { message: error.message }; // Return the full error response or message
   }
