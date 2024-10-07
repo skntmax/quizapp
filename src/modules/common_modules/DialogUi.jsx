@@ -10,12 +10,15 @@ import { Stepper } from 'react-form-stepper';
 import { SelectUi } from "./SelectUi";
 import { ShimmerButton } from "react-shimmer-effects";
 import { ShimmerButtonThree, ShimmerButtonTen } from "./shimmer-effects/ShimmerButtonUi";
+import { Button } from "@/components/ui/button";
 
 
 export function DialogUi({ data, setData, handleCategories, handleDefficultLevel, steps }) {
     const { categories, difficulty_level } = data;
+
     return (
-        <Dialog open={data.dialog} onOpenChange={setData}>
+        <Dialog open={data.dialog} onOpenChange={(open) => open && setData(prev => ({ ...prev, dialog: open }))}>
+
             <DialogContent className="sm:max-w-[425px]">
                 <Stepper
                     steps={steps}
@@ -41,23 +44,24 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                 </div>
                             </div> */}
                             {
-                                categories === undefined &&
+                                categories.data === undefined &&
                                 (
                                     <div className="flex flex-wrap justify-center gap-4 p-4">
                                         <ShimmerButtonTen className='' />
                                     </div>)
                             }
                             {
-                                categories !== undefined && categories.length > 0 &&
+                                categories.data !== undefined && categories.data.length > 0 &&
                                 (
                                     <div className="flex flex-wrap justify-center gap-4 p-4">
-                                        {categories.map((item) =>
-                                            <button
-                                                className="bg-red-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-red-400"
+                                        {categories.data.map((item) =>
+                                            <Button
+                                                variant='destructive'
+                                                size='lg'
                                                 onClick={() => handleCategories(item._id)}
                                             >
                                                 {item.TITLE}
-                                            </button>
+                                            </Button>
                                         )}
                                     </div>)
                             }
@@ -86,12 +90,13 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                 (
                                     <div className="flex flex-wrap justify-center gap-4 p-4">
                                         {difficulty_level.map((item) =>
-                                            <button
-                                                className="bg-red-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-red-400"
+                                            <Button
+                                                variant='destructive'
+                                                size='lg'
                                                 onClick={() => handleDefficultLevel(item._id)}
                                             >
                                                 {item.DIFFICULTY_LEVEL}
-                                            </button>
+                                            </Button>
                                         )}
                                     </div>)
                             }
