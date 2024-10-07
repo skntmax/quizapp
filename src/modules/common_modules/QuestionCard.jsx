@@ -43,7 +43,7 @@ export function QuestionCard({ data, index }) {
               if (selectedIndex !== null) {
                 if (idx === selectedIndex) {
                   // If the selected index is the correct answer
-                  variant = (data.correctAnswer === idx) ? 'success' : 'danger';
+                  variant = (data.QUIZ_QUESTION.CORRECT_ANSWER === idx) ? 'success' : 'danger';
                 } else if (data.correctAnswer === idx) {
                   // If this is the correct answer and not selected
                   variant = 'success';
@@ -65,7 +65,7 @@ export function QuestionCard({ data, index }) {
           }
         </CardContent>
         <CardFooter className="flex justify-between">
-          <AccordionUi disabled={isDisabled} title='Show Explanation' description={data.description} />
+          <AccordionUi disabled={isDisabled} title='Show Explanation' description={data.QUIZ_QUESTION.DISC} />
         </CardFooter>
       </Card>
     </>

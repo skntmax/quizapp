@@ -12,6 +12,44 @@ import { ShimmerButton } from "react-shimmer-effects";
 import { ShimmerButtonThree, ShimmerButtonTen } from "./shimmer-effects/ShimmerButtonUi";
 import { Button } from "@/components/ui/button";
 
+const getRandomVariant = () => {
+    const variants = [
+        // "default",
+        "destructive",
+        // "outline",
+        "secondary",
+        // "ghost",
+        // "link",
+        "success",
+        "danger",
+        "info",
+        "warning",
+        // "light",
+        "dark",
+        // "primaryVariant",
+        "accent",
+        // "slate",
+        "teal",
+        "violet",
+        "pink",
+        "coral",
+        "indigo",
+        "olive",
+        "navy",
+        "gray",
+        "brown",
+        "mint",
+        "beige",
+        "lavender",
+        "apricot",
+        "charcoal",
+        // "silver",
+        // Add more variant names as needed
+      ];
+    const randomIndex = Math.floor(Math.random() * variants.length);
+    return variants[randomIndex];
+  };
+
 
 export function DialogUi({ data, setData, handleCategories, handleDefficultLevel, steps }) {
     const { categories, difficulty_level } = data;
@@ -56,7 +94,7 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                     <div className="flex flex-wrap justify-center gap-4 p-4">
                                         {categories.data.map((item) =>
                                             <Button
-                                                variant='destructive'
+                                                variant={getRandomVariant()}
                                                 size='lg'
                                                 onClick={() => handleCategories(item._id)}
                                             >
@@ -91,7 +129,7 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                     <div className="flex flex-wrap justify-center gap-4 p-4">
                                         {difficulty_level.map((item) =>
                                             <Button
-                                                variant='destructive'
+                                                variant={getRandomVariant()}
                                                 size='lg'
                                                 onClick={() => handleDefficultLevel(item._id)}
                                             >
@@ -108,3 +146,4 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
         </Dialog>
     );
 }
+    
