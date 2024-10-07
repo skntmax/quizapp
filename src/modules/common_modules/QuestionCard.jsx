@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { useState } from 'react';
 import { AccordionUi } from "./AccordionUi";
+import { ShimmerCardUi } from "./shimmer-effects/ShimmerCardUi";
 
 export function QuestionCard({ data, index }) {
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -26,7 +27,7 @@ export function QuestionCard({ data, index }) {
       <Card>
         <CardHeader>
           <CardTitle className='text-lg  font-semibold'>
-            ({index + 1}) {data.question}
+            ({index + 1}) {data.QUIZ_QUESTION.QUESTION}
           </CardTitle>
           <CardDescription className='shadow-lg hover:bg-primary/90 p-6'>
             <pre>
@@ -36,7 +37,7 @@ export function QuestionCard({ data, index }) {
         </CardHeader>
         <CardContent>
           {
-            data.options.map((item, idx) => {
+            data.QUIZ_QUESTION.OPTIONS.map((item, idx) => {
               let variant;
               // Check if the option has been selected
               if (selectedIndex !== null) {
