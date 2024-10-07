@@ -80,7 +80,7 @@ export default function QuizPage() {
                     ...prevState,
                     questions_list: {
                         ...prevState.questions_list,
-                        data: responce.result.data,
+                        data: responce.result.data.questionList,
                     }
                 }));
             }
