@@ -25,6 +25,7 @@ export function ShimmerButtonTen({ className }) {
             <ShimmerButton size="lg" className={className} />
             <ShimmerButton size="lg" className={className} />
             <ShimmerButton size="lg" className={className} />
+            <ShimmerButton size="lg" className={className} />
         </>
     );
 }
