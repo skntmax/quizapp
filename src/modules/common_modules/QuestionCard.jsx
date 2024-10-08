@@ -13,14 +13,27 @@ import { useState } from 'react';
 import { AccordionUi } from "./AccordionUi";
 import { ShimmerCardUi } from "./shimmer-effects/ShimmerCardUi";
 
-export function QuestionCard({ data, index }) {
+export function QuestionCard({ data, index, setData }) {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
 
   const handleOptionClick = (idx) => {
     setSelectedIndex(idx);
     setIsDisabled(true);
+  
+    setData(prevState => ({
+      ...prevState,
+      remaining: prevState.remaining - 1, // Decrement remaining by 1
+      correct: data.QUIZ_QUESTION.CORRECT_ANSWER === idx 
+        ? prevState.correct + 1 // Increment correct if the answer is right
+        : prevState.correct, // Otherwise, leave it unchanged
+      incorrect: data.QUIZ_QUESTION.CORRECT_ANSWER !== idx 
+        ? prevState.incorrect + 1 // Increment incorrect if the answer is wrong
+        : prevState.incorrect // Otherwise, leave it unchanged
+    }));
   };
+  
+  
 
   return (
     <>
