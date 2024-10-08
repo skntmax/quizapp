@@ -11,6 +11,7 @@ import {
 import { useState } from 'react';
 import { AccordionUi } from "./AccordionUi";
 import { ShimmerCardUi } from "./shimmer-effects/ShimmerCardUi";
+import MdEditorCmp from "../md-editor/page";
 
 export function QuestionCard({ data, index, setData, pn }) {
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -78,8 +79,10 @@ export function QuestionCard({ data, index, setData, pn }) {
             })
           }
         </CardContent>
+         
+
         <CardFooter className="flex justify-between">
-          <AccordionUi disabled={isDisabled} title='Show Explanation' description={data.QUIZ_QUESTION.DISC} />
+          <AccordionUi disabled={isDisabled} title='Show Explanation' description={<MdEditorCmp  disc={data.QUIZ_QUESTION.DISC}/>  } />
         </CardFooter>
       </Card>
     </>
