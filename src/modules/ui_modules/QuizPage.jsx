@@ -188,18 +188,17 @@ export default function QuizPage() {
                 <QuizHeader correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
             }
 
+            {
+                data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
+                <div>
+                    <ProgressUi correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
+                </div>
+            }
 
-
-            <div style={{ width: "80%", margin: 'auto', padding: '100px' }}>
+            <div style={{ width: "80%", margin: 'auto', paddingBottom: '100px' }}>
                 {
                     data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
                     <PaginationUi total={data.questions_list.total} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
-                }
-                {
-                    data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                    <div style={{ width: "50%", margin: 'auto', paddingBottom: '50px' }}>
-                        <ProgressUi correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
-                    </div>
                 }
                 {
                     data.questions_list.data === undefined && (
