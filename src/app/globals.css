@@ -20,9 +20,11 @@ body {
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --gray: #94a3b8;
-    --primary-foreground: 210 40% 98%;
+    --primary: 0 0% 100%;
+    /* Updated primary color for light mode */
+    --gray: 222.2 47.4% 11.2%;
+    --primary-foreground: 0 0% 0%;
+    /* Light foreground for light mode */
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
@@ -41,6 +43,7 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -48,8 +51,10 @@ body {
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 210 20% 90%;
+    /* Updated primary color for dark mode */
+    --primary-foreground: 210 40% 98%;
+    /* Bright foreground for dark mode */
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
@@ -73,11 +78,24 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
+
 .no-opacity {
-  opacity: 1 !important; /* Override the default disabled opacity */
-  pointer-events: none; /* Prevent pointer events */
+  opacity: 1 !important;
+  /* Override the default disabled opacity */
+  pointer-events: none;
+  /* Prevent pointer events */
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.success {
+  background-color: '#6ee7b7';
+  color: '#ffffff',
 }
