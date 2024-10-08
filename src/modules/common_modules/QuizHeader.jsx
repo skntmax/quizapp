@@ -17,6 +17,11 @@ const QuizHeader = ({ correct, incorrect, remaining }) => {
                     {/* Remaining */}
                     <div className="text-lg font-semibold">Remaining: {remaining}</div>
                 </div>
+                <div class="flex-grow">
+                    {/* Refer & Earn */}
+                    <div className="text-lg font-semibold">Refer & Earn</div>
+
+                </div>
                 <div class="flex-shrink-0">
                     <ThremeToggle />
                 </div>

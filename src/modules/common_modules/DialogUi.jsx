@@ -8,12 +8,55 @@ import {
 } from "@/components/ui/dialog";
 import { Stepper } from 'react-form-stepper';
 import { SelectUi } from "./SelectUi";
+import { ShimmerButton } from "react-shimmer-effects";
+import { ShimmerButtonThree, ShimmerButtonTen } from "./shimmer-effects/ShimmerButtonUi";
+import { Button } from "@/components/ui/button";
 
-const steps = [{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }];
+const getRandomVariant = () => {
+    const variants = [
+        // "default",
+        "destructive",
+        // "outline",
+        "secondary",
+        // "ghost",
+        // "link",
+        "success",
+        "danger",
+        "info",
+        "warning",
+        // "light",
+        "dark",
+        // "primaryVariant",
+        "accent",
+        // "slate",
+        "teal",
+        "violet",
+        "pink",
+        "coral",
+        "indigo",
+        "olive",
+        "navy",
+        "gray",
+        "brown",
+        "mint",
+        "beige",
+        "lavender",
+        "apricot",
+        "charcoal",
+        // "silver",
+        // Add more variant names as needed
+    ];
+    const randomIndex = Math.floor(Math.random() * variants.length);
+    return variants[randomIndex];
+};
 
-export function DialogUi({ data, setData }) {
+
+export function DialogUi({ data, setData, handleCategories, handleDefficultLevel, steps, handleMoreCategory }) {
+    const { categories, difficulty_level, more_cat_loder } = data;
+
     return (
-        <Dialog open={data.dialog} onOpenChange={setData}>
+        <Dialog open={data.dialog} onOpenChange={(open) => open && setData(prev => ({ ...prev, dialog: open }))}>
+
             <DialogContent className="sm:max-w-[425px]">
                 <Stepper
                     steps={steps}
@@ -39,40 +82,41 @@ export function DialogUi({ data, setData }) {
                                 </div>
                             </div> */}
                             {
-                                data.language !== undefined &&
+                                categories.data === undefined &&
                                 (
                                     <div className="flex flex-wrap justify-center gap-4 p-4">
-                                        {data.language.map((item) =>
-                                            <button className="bg-red-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-red-400">
-                                                {item.TITLE}
-                                            </button>
-                                        )}
+                                        <ShimmerButtonTen className='' />
                                     </div>)
                             }
-                            <div className="flex flex-wrap justify-center gap-4 p-4">
-                                {/* Rainbow Color Buttons */}
-                                <button className="bg-red-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-red-400">
-                                    Red
-                                </button>
-                                <button className="bg-yellow-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-yellow-400">
-                                    Yellow
-                                </button>
-                                <button className="bg-green-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-green-400">
-                                    Green
-                                </button>
-                                <button className="bg-blue-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-blue-400">
-                                    Blue
-                                </button>
-                                <button className="bg-indigo-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-indigo-400">
-                                    Indigo
-                                </button>
-                                <button className="bg-orange-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-orange-400">
-                                    Orange
-                                </button>
-                                <button className="bg-purple-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-purple-400">
-                                    Purple
-                                </button>
-                            </div>
+                            {
+                                more_cat_loder  &&
+                                (
+                                    <div className="flex flex-wrap justify-center gap-4 p-4">
+                                        <ShimmerButtonTen className='' />
+                                    </div>)
+                            }
+                            {
+                                categories.data !== undefined && categories.data.length > 0 && !more_cat_loder &&
+                                (
+                                    <div className="flex flex-wrap justify-center gap-4 p-4">
+                                        {categories.data.map((item) =>
+                                            <Button
+                                                variant={getRandomVariant()}
+                                                size='lg'
+                                                onClick={() => handleCategories(item._id)}
+                                            >
+                                                {item.TITLE}
+                                            </Button>
+                                        )}
+                                        <Button
+                                            variant={getRandomVariant()}
+                                            size='lg'
+                                            onClick={handleMoreCategory}
+                                        >
+                                            more...
+                                        </Button>
+                                    </div>)
+                            }
                         </>
                     )
                 }
@@ -80,55 +124,36 @@ export function DialogUi({ data, setData }) {
                 {
                     data.activeStep == 1 && (
                         <>
-                            <DialogHeader>
+                            {/* <DialogHeader>
                                 <DialogTitle>Select catogo preference</DialogTitle>
                                 <DialogDescription>
                                     Choose your preferences from the available options. Your selection will help us tailor your experience to better suit your needs. Make sure to review and save your changes before proceeding.
                                 </DialogDescription>
-                            </DialogHeader>
-
-                            <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <SelectUi />
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <SelectUi />
-                                </div>
-                            </div>
-
-                            <div className="flex flex-wrap gap-4 p-4">
-                                {/* Rainbow Color Buttons */}
-                                <button className="bg-red-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-red-400">
-                                    Red
-                                </button>
-                                <button className="bg-yellow-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-yellow-400">
-                                    Yellow
-                                </button>
-                                <button className="bg-green-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-green-400">
-                                    Green
-                                </button>
-                                <button className="bg-blue-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-blue-400">
-                                    Blue
-                                </button>
-                                <button className="bg-indigo-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-indigo-400">
-                                    Indigo
-                                </button>
-                                <button className="bg-orange-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-orange-400">
-                                    Orange
-                                </button>
-                                <button className="bg-purple-500 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-purple-400">
-                                    Purple
-                                </button>
-                            </div>
+                            </DialogHeader> */}
+                            {
+                                difficulty_level.data === undefined &&
+                                (
+                                    <div className="flex flex-wrap justify-center gap-4 p-4">
+                                        <ShimmerButtonThree className='' />
+                                    </div>)
+                            }
+                            {
+                                difficulty_level.data !== undefined && difficulty_level.data.length > 0 &&
+                                (
+                                    <div className="flex flex-wrap justify-center gap-4 p-4">
+                                        {difficulty_level.data.map((item) =>
+                                            <Button
+                                                variant={getRandomVariant()}
+                                                size='lg'
+                                                onClick={() => handleDefficultLevel(item._id)}
+                                            >
+                                                {item.DIFFICULTY_LEVEL}
+                                            </Button>
+                                        )}
+                                    </div>)
+                            }
                         </>
-                    )
-                }
 
-                {
-                    data.activeStep == 2 && (
-                        <>
-                            Ready...
-                        </>
                     )
                 }
             </DialogContent>

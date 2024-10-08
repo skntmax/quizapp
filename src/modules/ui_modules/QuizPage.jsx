@@ -1,32 +1,60 @@
 'use client'
-import { questionArray } from "@/Data";
+import "@/app/globals.css";
+import { getRequest, postRequest } from "@/crud_operations/RequestHandler";
+import DataNotFound from '@/images/DataNotFound.png';
+import Image from 'next/image';
+import { useEffect, useState } from "react";
 import { DialogUi } from "../common_modules/DialogUi";
 import { PaginationUi } from "../common_modules/PaginationUi";
-import QuizHeader from "../common_modules/QuizHeader";
 import { QuestionCard } from "../common_modules/QuestionCard";
-import { useEffect, useState } from "react";
-import { postRequest } from "@/crud_operations/RequestHandler";
+import QuizHeader from "../common_modules/QuizHeader";
+import { ShimmerCardUi } from "../common_modules/shimmer-effects/ShimmerCardUi";
+import ShimmerHeader from "../common_modules/shimmer-effects/ShimmerHeader";
+
+const steps = [{ label: 'Step 1' }, { label: 'Step 2' }];
 
 export default function QuizPage() {
     const [data, setData] = useState({
         dialog: true,
         activeStep: 0,
-        language: undefined,
-        defficult_level: undefined
+        correct: 0,
+        incorrect: 0,
+        remaining: 0,
+        pagination_loder: false,
+        more_cat_loder: false,
+        difficulty_level: {
+            pn: 1,
+            itemsPerPage: 10,
+            data: undefined,
+            _id: undefined
+        },
+        categories: {
+            pn: 1,
+            itemsPerPage: 10,
+            data: undefined
+        },
+        questions_list: {
+            pn: 1,
+            itemsPerPage: 10,
+            quizCat: undefined,
+            data: undefined,
+        }
     });
 
     useEffect(() => {
-        fetchLanguage();
+        fetchCategories();
     }, []);
 
-    const fetchLanguage = async () => {
+    const fetchCategories = async () => {
         try {
-            let responce = await postRequest('quiz/get-quiz-categories', { "pn": 1, "itemsPerPage": 10 })
-            console.log('responce.data.quiz_cat' ,responce.result.data.quiz_cat);
+            let responce = await postRequest('quiz/get-quiz-categories', { pn: data.categories.pn, itemsPerPage: data.categories.itemsPerPage })
             if (responce.status) {
                 setData(prevState => ({
                     ...prevState,
-                    language: responce.result.data.quiz_cat
+                    categories: {
+                        ...prevState.categories,
+                        data: responce.result.data.quiz_cat
+                    }
                 }));
             }
         }
@@ -35,52 +63,168 @@ export default function QuizPage() {
         }
     };
 
-    const handleLanguage = async () => {
+    const handleCategories = async (_id) => {
         try {
-            let responce = await getRequest('')
+            handleNext();
+            let responce = await getRequest('quiz/get-difficulty-level')
             if (responce.status) {
-                setData()
+                setData(prevState => ({
+                    ...prevState,
+                    difficulty_level: {
+                        ...prevState.difficulty_level,
+                        data: responce.result.data,
+                    },
+                    questions_list: {
+                        ...prevState.questions_list,
+                        quizCat: _id
+                    }
+                }));
             }
         }
         catch (error) {
 
         }
-        handleNext();
+    };
+
+    const handleDefficultLevel = async (_id) => {
+        try {
+            handleNext()
+            let responce = await postRequest('quiz/get-relvent-questions', { quizCat: data.questions_list.quizCat, difficultyId: _id })
+            if (responce.status) {
+                setData(prevState => ({
+                    ...prevState,
+                    remaining: responce.result.data.totalQuizItems,
+                    difficulty_level: {
+                        ...prevState.difficulty_level.data,
+                        _id: _id
+                    },
+                    questions_list: {
+                        ...prevState.questions_list,
+                        data: responce.result.data.questionList,
+                    }
+                }));
+            }
+        }
+        catch (error) {
+        }
     };
 
     const handleNext = () => {
-        if (activeStep < 2) { // Assuming there are 3 steps (0, 1, 2)
-            set({
-                ...data,
-                activeStep: data.prevStep + 1
-            });
+        if (data.activeStep < steps.length - 1) {
+            setData(prevState => ({
+                ...prevState,
+                activeStep: data.activeStep + 1
+            }));
+        } else if (data.activeStep == steps.length - 1) {
+            setData(prevState => ({
+                ...prevState,
+                dialog: false
+            }));
         }
     };
 
-
-
-    const handleDefficultLevel = async () => {
+    const handlePagination = async (pn) => {
         try {
-            let responce = await getRequest('')
+            setData(prevState => ({
+                ...prevState,
+                pagination_loder: true,
+            }));
+            let responce = await postRequest('quiz/get-relvent-questions', { quizCat: data.questions_list.quizCat, difficultyId: data.difficulty_level._id, pn: pn, itemsPerPage: data.questions_list.itemsPerPage })
             if (responce.status) {
-                setData()
+                setData(prevState => ({
+                    ...prevState,
+                    pagination_loder: false,
+                    questions_list: {
+                        ...prevState.questions_list,
+                        data: responce.result.data.questionList,
+                        pn: pn
+                    }
+                }));
             }
         }
         catch (error) {
-
         }
-        handleNext()
     };
+
+
+    const handleMoreCategory = async () => {
+        try {
+            setData(prevState => ({
+                ...prevState,
+                more_cat_loder: true,
+            }));
+            let responce = await postRequest('quiz/get-quiz-categories', { pn: 1 + data.categories.pn, itemsPerPage: data.categories.itemsPerPage })
+            if (responce.status) {
+                setData(prevState => ({
+                    ...prevState,
+                    more_cat_loder: false,
+                    categories: {
+                        ...prevState.categories,
+                        pn: 1 + data.categories.pn,
+                        data: [...prevState.categories.data, ...responce.result.data.quiz_cat]
+                    }
+                }));
+            }
+        }
+        catch (error) {
+        }
+    };
+
     return (
-        <>            
-            <DialogUi data={data} setData={setData} handleLanguage={handleLanguage} />
-            <QuizHeader correct={1} incorrect={5} remaining={153} />
+        <>
+            <DialogUi steps={steps} data={data} setData={setData} handleCategories={handleCategories} handleDefficultLevel={handleDefficultLevel} handleMoreCategory={handleMoreCategory} />
+
+            {
+                data.questions_list.data === undefined && (
+                    <ShimmerHeader />
+                )
+            }
+
+            {
+                data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
+                <QuizHeader correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
+            }
+
             <div style={{ width: "80%", margin: 'auto', padding: '100px' }}>
-                <PaginationUi />
+
                 {
-                    questionArray.map((item, index) => <QuestionCard data={item} index={index} />)
+                    data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
+                    <PaginationUi total={data.remaining} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
                 }
-                <PaginationUi />
+
+                {
+                    data.questions_list.data === undefined && (
+                        <ShimmerCardUi />
+                    )
+                }
+
+                {
+                    data.pagination_loder && (
+                        <ShimmerCardUi />
+                    )
+                }
+
+                {
+                    data.questions_list.data !== undefined && data.questions_list.data.length === 0 &&
+                    <div className='flex justify-center'>
+                        <Image
+                            src={DataNotFound}
+                            width={300}
+                            height={300}
+                            alt="data not found."
+                        />
+                    </div>
+                }
+                {
+                    data.questions_list.data !== undefined && !data.pagination_loder &&
+                    data.questions_list.data.map((item, index) => <QuestionCard data={item} setData={setData} index={index} pn={data.questions_list.pn} />)
+                }
+
+                {
+                    data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
+                    <PaginationUi total={data.remaining} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
+                }
+
             </div>
         </>
     )

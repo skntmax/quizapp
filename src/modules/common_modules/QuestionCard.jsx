@@ -1,4 +1,3 @@
-
 'use client'
 import { Button } from "@/components/ui/button";
 import {
@@ -11,14 +10,26 @@ import {
 } from "@/components/ui/card";
 import { useState } from 'react';
 import { AccordionUi } from "./AccordionUi";
+import { ShimmerCardUi } from "./shimmer-effects/ShimmerCardUi";
 
-export function QuestionCard({ data, index }) {
+export function QuestionCard({ data, index, setData, pn }) {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
 
   const handleOptionClick = (idx) => {
     setSelectedIndex(idx);
     setIsDisabled(true);
+
+    setData(prevState => ({
+      ...prevState,
+      remaining: prevState.remaining - 1, // Decrement remaining by 1
+      correct: data.QUIZ_QUESTION.CORRECT_ANSWER === idx
+        ? prevState.correct + 1 // Increment correct if the answer is right
+        : prevState.correct, // Otherwise, leave it unchanged
+      incorrect: data.QUIZ_QUESTION.CORRECT_ANSWER !== idx
+        ? prevState.incorrect + 1 // Increment incorrect if the answer is wrong
+        : prevState.incorrect // Otherwise, leave it unchanged
+    }));
   };
 
   return (
@@ -26,7 +37,9 @@ export function QuestionCard({ data, index }) {
       <Card>
         <CardHeader>
           <CardTitle className='text-lg  font-semibold'>
-            ({index + 1}) {data.question}
+            {pn === 1
+              ? (index + 1)
+              : ((pn - 1) * 10) + (index + 1)} {data.QUIZ_QUESTION.QUESTION}
           </CardTitle>
           <CardDescription className='shadow-lg hover:bg-primary/90 p-6'>
             <pre>
@@ -36,15 +49,17 @@ export function QuestionCard({ data, index }) {
         </CardHeader>
         <CardContent>
           {
-            data.options.map((item, idx) => {
+            data.QUIZ_QUESTION.OPTIONS.map((item, idx) => {
               let variant;
-              // Check if the option has been selected
+
+              // Determine button variant based on selected index and correct answer
               if (selectedIndex !== null) {
                 if (idx === selectedIndex) {
-                  // If the selected index is the correct answer
-                  variant = (data.correctAnswer === idx) ? 'success' : 'danger';
-                } else if (data.correctAnswer === idx) {
-                  // If this is the correct answer and not selected
+                  debugger
+                  // If the selected index is correct, mark it as success
+                  variant = (data.QUIZ_QUESTION.CORRECT_ANSWER === idx) ? 'success' : 'danger';
+                } else if (data.QUIZ_QUESTION.CORRECT_ANSWER === idx) {
+                  // Always mark the correct answer as success
                   variant = 'success';
                 }
               }
@@ -64,7 +79,7 @@ export function QuestionCard({ data, index }) {
           }
         </CardContent>
         <CardFooter className="flex justify-between">
-          <AccordionUi disabled={isDisabled} title='Show Explanation' description={data.description} />
+          <AccordionUi disabled={isDisabled} title='Show Explanation' description={data.QUIZ_QUESTION.DISC} />
         </CardFooter>
       </Card>
     </>
