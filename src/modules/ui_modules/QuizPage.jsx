@@ -21,7 +21,10 @@ export default function QuizPage() {
         incorrect: 0,
         remaining: 0,
         pagination_loder: false,
+        more_cat_loder: false,
         difficulty_level: {
+            pn: 1,
+            itemsPerPage: 10,
             data: undefined,
             _id: undefined
         },
@@ -143,9 +146,33 @@ export default function QuizPage() {
         }
     };
 
+
+    const handleMoreCategory = async () => {
+        try {
+            setData(prevState => ({
+                ...prevState,
+                more_cat_loder: true,
+            }));
+            let responce = await postRequest('quiz/get-quiz-categories', { pn: 1 + data.categories.pn, itemsPerPage: data.categories.itemsPerPage })
+            if (responce.status) {
+                setData(prevState => ({
+                    ...prevState,
+                    more_cat_loder: false,
+                    categories: {
+                        ...prevState.categories,
+                        pn: 1 + data.categories.pn,
+                        data: [...prevState.categories.data, ...responce.result.data.quiz_cat]
+                    }
+                }));
+            }
+        }
+        catch (error) {
+        }
+    };
+
     return (
         <>
-            <DialogUi steps={steps} data={data} setData={setData} handleCategories={handleCategories} handleDefficultLevel={handleDefficultLevel} />
+            <DialogUi steps={steps} data={data} setData={setData} handleCategories={handleCategories} handleDefficultLevel={handleDefficultLevel} handleMoreCategory={handleMoreCategory} />
 
             {
                 data.questions_list.data === undefined && (

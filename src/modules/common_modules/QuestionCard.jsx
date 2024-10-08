@@ -1,4 +1,3 @@
-
 'use client'
 import { Button } from "@/components/ui/button";
 import {
@@ -33,8 +32,6 @@ export function QuestionCard({ data, index, setData, pn }) {
     }));
   };
 
-
-
   return (
     <>
       <Card>
@@ -54,13 +51,15 @@ export function QuestionCard({ data, index, setData, pn }) {
           {
             data.QUIZ_QUESTION.OPTIONS.map((item, idx) => {
               let variant;
-              // Check if the option has been selected
+
+              // Determine button variant based on selected index and correct answer
               if (selectedIndex !== null) {
                 if (idx === selectedIndex) {
-                  // If the selected index is the correct answer
+                  debugger
+                  // If the selected index is correct, mark it as success
                   variant = (data.QUIZ_QUESTION.CORRECT_ANSWER === idx) ? 'success' : 'danger';
-                } else if (data.correctAnswer === idx) {
-                  // If this is the correct answer and not selected
+                } else if (data.QUIZ_QUESTION.CORRECT_ANSWER === idx) {
+                  // Always mark the correct answer as success
                   variant = 'success';
                 }
               }

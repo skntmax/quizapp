@@ -45,14 +45,14 @@ const getRandomVariant = () => {
         "charcoal",
         // "silver",
         // Add more variant names as needed
-      ];
+    ];
     const randomIndex = Math.floor(Math.random() * variants.length);
     return variants[randomIndex];
-  };
+};
 
 
-export function DialogUi({ data, setData, handleCategories, handleDefficultLevel, steps }) {
-    const { categories, difficulty_level } = data;
+export function DialogUi({ data, setData, handleCategories, handleDefficultLevel, steps, handleMoreCategory }) {
+    const { categories, difficulty_level, more_cat_loder } = data;
 
     return (
         <Dialog open={data.dialog} onOpenChange={(open) => open && setData(prev => ({ ...prev, dialog: open }))}>
@@ -89,7 +89,14 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                     </div>)
                             }
                             {
-                                categories.data !== undefined && categories.data.length > 0 &&
+                                more_cat_loder  &&
+                                (
+                                    <div className="flex flex-wrap justify-center gap-4 p-4">
+                                        <ShimmerButtonTen className='' />
+                                    </div>)
+                            }
+                            {
+                                categories.data !== undefined && categories.data.length > 0 && !more_cat_loder &&
                                 (
                                     <div className="flex flex-wrap justify-center gap-4 p-4">
                                         {categories.data.map((item) =>
@@ -101,6 +108,13 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                                 {item.TITLE}
                                             </Button>
                                         )}
+                                        <Button
+                                            variant={getRandomVariant()}
+                                            size='lg'
+                                            onClick={handleMoreCategory}
+                                        >
+                                            more...
+                                        </Button>
                                     </div>)
                             }
                         </>
@@ -146,4 +160,3 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
         </Dialog>
     );
 }
-    
