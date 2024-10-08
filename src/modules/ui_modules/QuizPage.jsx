@@ -20,7 +20,11 @@ export default function QuizPage() {
         correct: 0,
         incorrect: 0,
         remaining: 0,
-        difficulty_level: undefined,
+        pagination_loder: false,
+        difficulty_level: {
+            data: undefined,
+            _id: undefined
+        },
         categories: {
             pn: 1,
             itemsPerPage: 10,
@@ -63,7 +67,10 @@ export default function QuizPage() {
             if (responce.status) {
                 setData(prevState => ({
                     ...prevState,
-                    difficulty_level: responce.result.data,
+                    difficulty_level: {
+                        ...prevState.difficulty_level,
+                        data: responce.result.data,
+                    },
                     questions_list: {
                         ...prevState.questions_list,
                         quizCat: _id
@@ -84,6 +91,10 @@ export default function QuizPage() {
                 setData(prevState => ({
                     ...prevState,
                     remaining: responce.result.data.totalQuizItems,
+                    difficulty_level: {
+                        ...prevState.difficulty_level.data,
+                        _id: _id
+                    },
                     questions_list: {
                         ...prevState.questions_list,
                         data: responce.result.data.questionList,
@@ -109,6 +120,29 @@ export default function QuizPage() {
         }
     };
 
+    const handlePagination = async (pn) => {
+        try {
+            setData(prevState => ({
+                ...prevState,
+                pagination_loder: true,
+            }));
+            let responce = await postRequest('quiz/get-relvent-questions', { quizCat: data.questions_list.quizCat, difficultyId: data.difficulty_level._id, pn: pn, itemsPerPage: data.questions_list.itemsPerPage })
+            if (responce.status) {
+                setData(prevState => ({
+                    ...prevState,
+                    pagination_loder: false,
+                    questions_list: {
+                        ...prevState.questions_list,
+                        data: responce.result.data.questionList,
+                        pn: pn
+                    }
+                }));
+            }
+        }
+        catch (error) {
+        }
+    };
+
     return (
         <>
             <DialogUi steps={steps} data={data} setData={setData} handleCategories={handleCategories} handleDefficultLevel={handleDefficultLevel} />
@@ -128,11 +162,17 @@ export default function QuizPage() {
 
                 {
                     data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                    <PaginationUi total={data.remaining} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn}/>
+                    <PaginationUi total={data.remaining} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
                 }
 
                 {
                     data.questions_list.data === undefined && (
+                        <ShimmerCardUi />
+                    )
+                }
+
+                {
+                    data.pagination_loder && (
                         <ShimmerCardUi />
                     )
                 }
@@ -149,13 +189,13 @@ export default function QuizPage() {
                     </div>
                 }
                 {
-                    data.questions_list.data !== undefined &&
-                    data.questions_list.data.map((item, index) => <QuestionCard data={item} setData={setData} index={index} />)
+                    data.questions_list.data !== undefined && !data.pagination_loder &&
+                    data.questions_list.data.map((item, index) => <QuestionCard data={item} setData={setData} index={index} pn={data.questions_list.pn} />)
                 }
 
                 {
                     data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                    <PaginationUi remaining={data.remaining} />
+                    <PaginationUi total={data.remaining} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
                 }
 
             </div>

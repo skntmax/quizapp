@@ -117,17 +117,17 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                 </DialogDescription>
                             </DialogHeader> */}
                             {
-                                difficulty_level === undefined &&
+                                difficulty_level.data === undefined &&
                                 (
                                     <div className="flex flex-wrap justify-center gap-4 p-4">
                                         <ShimmerButtonThree className='' />
                                     </div>)
                             }
                             {
-                                difficulty_level !== undefined && difficulty_level.length > 0 &&
+                                difficulty_level.data !== undefined && difficulty_level.data.length > 0 &&
                                 (
                                     <div className="flex flex-wrap justify-center gap-4 p-4">
-                                        {difficulty_level.map((item) =>
+                                        {difficulty_level.data.map((item) =>
                                             <Button
                                                 variant={getRandomVariant()}
                                                 size='lg'

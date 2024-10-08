@@ -13,34 +13,36 @@ import { useState } from 'react';
 import { AccordionUi } from "./AccordionUi";
 import { ShimmerCardUi } from "./shimmer-effects/ShimmerCardUi";
 
-export function QuestionCard({ data, index, setData }) {
+export function QuestionCard({ data, index, setData, pn }) {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
 
   const handleOptionClick = (idx) => {
     setSelectedIndex(idx);
     setIsDisabled(true);
-  
+
     setData(prevState => ({
       ...prevState,
       remaining: prevState.remaining - 1, // Decrement remaining by 1
-      correct: data.QUIZ_QUESTION.CORRECT_ANSWER === idx 
+      correct: data.QUIZ_QUESTION.CORRECT_ANSWER === idx
         ? prevState.correct + 1 // Increment correct if the answer is right
         : prevState.correct, // Otherwise, leave it unchanged
-      incorrect: data.QUIZ_QUESTION.CORRECT_ANSWER !== idx 
+      incorrect: data.QUIZ_QUESTION.CORRECT_ANSWER !== idx
         ? prevState.incorrect + 1 // Increment incorrect if the answer is wrong
         : prevState.incorrect // Otherwise, leave it unchanged
     }));
   };
-  
-  
+
+
 
   return (
     <>
       <Card>
         <CardHeader>
           <CardTitle className='text-lg  font-semibold'>
-            ({index + 1}) {data.QUIZ_QUESTION.QUESTION}
+            {pn === 1
+              ? (index + 1)
+              : ((pn - 1) * 10) + (index + 1)} {data.QUIZ_QUESTION.QUESTION}
           </CardTitle>
           <CardDescription className='shadow-lg hover:bg-primary/90 p-6'>
             <pre>
