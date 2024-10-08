@@ -10,6 +10,7 @@ import { QuestionCard } from "../common_modules/QuestionCard";
 import QuizHeader from "../common_modules/QuizHeader";
 import { ShimmerCardUi } from "../common_modules/shimmer-effects/ShimmerCardUi";
 import ShimmerHeader from "../common_modules/shimmer-effects/ShimmerHeader";
+import { ProgressUi } from "../common_modules/ProgressUi";
 
 const steps = [{ label: 'Step 1' }, { label: 'Step 2' }];
 
@@ -35,6 +36,7 @@ export default function QuizPage() {
         },
         questions_list: {
             pn: 1,
+            total: undefined,
             itemsPerPage: 10,
             quizCat: undefined,
             data: undefined,
@@ -76,7 +78,7 @@ export default function QuizPage() {
                     },
                     questions_list: {
                         ...prevState.questions_list,
-                        quizCat: _id
+                        quizCat: _id,
                     }
                 }));
             }
@@ -101,6 +103,7 @@ export default function QuizPage() {
                     questions_list: {
                         ...prevState.questions_list,
                         data: responce.result.data.questionList,
+                        total: responce.result.data.totalQuizItems
                     }
                 }));
             }
@@ -185,13 +188,19 @@ export default function QuizPage() {
                 <QuizHeader correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
             }
 
-            <div style={{ width: "80%", margin: 'auto', padding: '100px' }}>
 
+
+            <div style={{ width: "80%", margin: 'auto', padding: '100px' }}>
                 {
                     data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                    <PaginationUi total={data.remaining} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
+                    <PaginationUi total={data.questions_list.total} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
                 }
-
+                {
+                    data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
+                    <div style={{ width: "50%", margin: 'auto', paddingBottom: '50px' }}>
+                        <ProgressUi correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
+                    </div>
+                }
                 {
                     data.questions_list.data === undefined && (
                         <ShimmerCardUi />
@@ -222,7 +231,7 @@ export default function QuizPage() {
 
                 {
                     data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                    <PaginationUi total={data.remaining} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
+                    <PaginationUi total={data.questions_list.total} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
                 }
 
             </div>

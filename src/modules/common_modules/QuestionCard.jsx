@@ -56,7 +56,6 @@ export function QuestionCard({ data, index, setData, pn }) {
               // Determine button variant based on selected index and correct answer
               if (selectedIndex !== null) {
                 if (idx === selectedIndex) {
-                  debugger
                   // If the selected index is correct, mark it as success
                   variant = (data.QUIZ_QUESTION.CORRECT_ANSWER === idx) ? 'success' : 'danger';
                 } else if (data.QUIZ_QUESTION.CORRECT_ANSWER === idx) {

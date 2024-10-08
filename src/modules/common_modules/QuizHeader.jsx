@@ -19,7 +19,7 @@ const QuizHeader = ({ correct, incorrect, remaining }) => {
                 </div>
                 <div class="flex-grow">
                     {/* Refer & Earn */}
-                    <div className="text-lg font-semibold">Refer & Earn</div>
+                    <div className="text-lg font-semibold">Rewards</div>
 
                 </div>
                 <div class="flex-shrink-0">
