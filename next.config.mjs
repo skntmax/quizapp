@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-    basePath:"/quiz"
-};
+const nextConfig = {};
 
 export default nextConfig;
