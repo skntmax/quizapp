@@ -17,6 +17,9 @@ export default function QuizPage() {
     const [data, setData] = useState({
         dialog: true,
         activeStep: 0,
+        correct: 0,
+        incorrect: 0,
+        remaining: 0,
         difficulty_level: undefined,
         categories: {
             pn: 1,
@@ -24,8 +27,10 @@ export default function QuizPage() {
             data: undefined
         },
         questions_list: {
-            quizCat: '67018195a8c5272ddcecb8d6',
-            data: undefined
+            pn: 1,
+            itemsPerPage: 10,
+            quizCat: undefined,
+            data: undefined,
         }
     });
 
@@ -78,6 +83,7 @@ export default function QuizPage() {
             if (responce.status) {
                 setData(prevState => ({
                     ...prevState,
+                    remaining: responce.result.data.totalQuizItems,
                     questions_list: {
                         ...prevState.questions_list,
                         data: responce.result.data.questionList,
@@ -115,14 +121,14 @@ export default function QuizPage() {
 
             {
                 data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                <QuizHeader correct={1} incorrect={5} remaining={153} />
+                <QuizHeader correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
             }
 
             <div style={{ width: "80%", margin: 'auto', padding: '100px' }}>
 
                 {
                     data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                    <PaginationUi />
+                    <PaginationUi total={data.remaining} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn}/>
                 }
 
                 {
@@ -144,12 +150,12 @@ export default function QuizPage() {
                 }
                 {
                     data.questions_list.data !== undefined &&
-                    data.questions_list.data.map((item, index) => <QuestionCard data={item} index={index} />)
+                    data.questions_list.data.map((item, index) => <QuestionCard data={item} setData={setData} index={index} />)
                 }
 
                 {
                     data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                    <PaginationUi />
+                    <PaginationUi remaining={data.remaining} />
                 }
 
             </div>
