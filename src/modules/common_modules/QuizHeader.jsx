@@ -1,4 +1,6 @@
+import { Gift } from "lucide-react";
 import { ThremeToggle } from "./ThremeToggle";
+import Timer from "./Timer";
 
 const QuizHeader = ({ correct, incorrect, remaining }) => {
     return (
@@ -19,8 +21,13 @@ const QuizHeader = ({ correct, incorrect, remaining }) => {
                 </div>
                 <div class="flex-grow">
                     {/* Refer & Earn */}
-                    <div className="text-lg font-semibold">Rewards</div>
-
+                    <div className="flex items-center text-lg font-semibold">
+                        Rewards: <Gift className="ml-2" />
+                    </div>
+                </div>
+                <div class="flex-grow">
+                    {/* Refer & Earn */}
+                    <div className="text-lg font-semibold"><Timer /></div>
                 </div>
                 <div class="flex-shrink-0">
                     <ThremeToggle />
