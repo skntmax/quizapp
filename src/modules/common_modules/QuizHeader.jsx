@@ -1,6 +1,8 @@
-import { Gift } from "lucide-react";
+import { Gift, User } from "lucide-react";
 import { ThremeToggle } from "./ThremeToggle";
 import Timer from "./Timer";
+import { DropdownMenuUi } from "./DropdownMenuUi";
+import { Button } from "@/components/ui/button";
 
 const QuizHeader = ({ correct, incorrect, remaining }) => {
     return (
@@ -30,6 +32,8 @@ const QuizHeader = ({ correct, incorrect, remaining }) => {
                     <div className="text-lg font-semibold"><Timer /></div>
                 </div>
                 <div class="flex-shrink-0">
+                    {/* <DropdownMenuUi/> */}
+                    <Button variant="outline"><User/></Button>
                     <ThremeToggle />
                 </div>
             </div>
