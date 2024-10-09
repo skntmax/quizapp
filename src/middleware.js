@@ -5,7 +5,7 @@ export function middleware(request) {
   const myCookie = request.cookies.get(cookies.btcode_live_cd && cookies.btcode_live_cd_key); // Replace 'myCookieName' with your cookie name
 
   // If the cookie does not exist, redirect to bytecode.live
-  if (myCookie) {
+  if (!myCookie) {
     return NextResponse.redirect(new URL(bytecodeUrls.authenticatedFalse, request.url));
   }
 
