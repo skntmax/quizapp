@@ -32,7 +32,8 @@ export function PaginationUi({ total, itemsPerPage, pn, handlePagination }) {
           <PaginationItem key={number}>
             <PaginationLink
               href="#"
-              className={number === pn ? 'success' : ''}  // Conditionally apply the active class
+              isActive={number === pn ? 'true' : ''}
+              // className={number === pn ? 'success' : ''}  // Conditionally apply the active class
               onClick={() => handlePagination(number)}
             >
               {number}
