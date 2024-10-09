@@ -2,4 +2,9 @@ const cookies = {
     btcode_live_cd: 'btcode_live_cd',
     btcode_live_cd_key: 'btcode_live_cd_key'
 }
-export { cookies }
+
+const bytecodeUrls = {
+    authenticatedFalse:'https://bytecode.live?authenticated=false'
+}
+
+export { cookies, bytecodeUrls }
