@@ -20,7 +20,7 @@ const QuizHeader = ({ correct, incorrect, remaining }) => {
                         </Link>
                     </div>
                     <div className="flex flex-1 items-center justify-end space-x-4">
-                        <nav className="flex items-center bg-gray space-x-1">
+                        <nav className="flex items-center space-x-1">
                             <User /> {cdDetails ? cdDetails.USERNAME : null}
                             <Trophy className="ml-2" />
                             <ThemeToggle />
