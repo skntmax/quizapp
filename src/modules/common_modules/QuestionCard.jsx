@@ -42,11 +42,11 @@ export function QuestionCard({ data, index, setData, pn }) {
               ? (index + 1)
               : ((pn - 1) * 10) + (index + 1)} {data.QUIZ_QUESTION.QUESTION}
           </CardTitle>
-          <CardDescription className='shadow-lg hover:bg-primary/90 p-6'>
+          {/* <CardDescription className='shadow-lg hover:bg-primary/90 p-6'>
             <pre>
               {data.code}
             </pre>
-          </CardDescription>
+          </CardDescription> */}
         </CardHeader>
         <CardContent>
           {
@@ -61,27 +61,31 @@ export function QuestionCard({ data, index, setData, pn }) {
                 } else if (data.QUIZ_QUESTION.CORRECT_ANSWER === idx) {
                   // Always mark the correct answer as success
                   variant = 'success';
+                }else{
+                  variant ="gray"
                 }
               }
 
               return (
-                <Button
-                  className={isDisabled ? 'no-opacity w-full' : 'w-full'}
-                  key={idx}
-                  variant={variant}
-                  onClick={() => handleOptionClick(idx)}
-                  disabled={isDisabled}
-                >
-                  {item}
-                </Button>
+                <div className='my-4 sm:my-4 lg:my-4 xl:my-4'>
+                  <Button
+                    className={isDisabled ? 'no-opacity w-full' : 'w-full'}
+                    key={idx}
+                    variant={variant}
+                    onClick={() => handleOptionClick(idx)}
+                    disabled={isDisabled}
+                  >
+                    {item}
+                  </Button>
+                </div>
               );
             })
           }
         </CardContent>
-         
+
 
         <CardFooter className="flex justify-between">
-          <AccordionUi disabled={isDisabled} title='Show Explanation' description={<MdEditorCmp  disc={data.QUIZ_QUESTION.DISC}/>  } />
+          <AccordionUi disabled={isDisabled} title='Show Explanation' description={<MdEditorCmp disc={data.QUIZ_QUESTION.DISC} />} />
         </CardFooter>
       </Card>
     </>
