@@ -195,7 +195,7 @@ export default function QuizPage() {
                 </div>
             }
 
-            <div>
+            <div className='w-[95vw] md:w-[70vw] m-auto'>
                 {
                     data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
                     <PaginationUi total={data.questions_list.total} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
