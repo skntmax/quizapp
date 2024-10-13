@@ -4,12 +4,20 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+import { ToastDestructive } from "./ToastDestructive"
+import { toast } from "@/hooks/use-toast"
+import { ToastAction } from "@radix-ui/react-toast"
 
 export function AccordionUi({ title, description, disabled }) {
     const handleClick = (e) => {
         if (!disabled) {
             e.preventDefault()  // Prevent default accordion behavior if disabled
-            alert('This section is disabled!')
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+                description: "There was a problem with your selction to show the description please select option first.",
+                action: <ToastAction altText="Try again">Try after select</ToastAction>,
+              })
         }
     }
 
