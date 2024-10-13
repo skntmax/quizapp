@@ -85,7 +85,7 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                 categories.data === undefined &&
                                 (
                                     <div className="flex flex-wrap justify-center gap-4 p-4">
-                                        <ShimmerButtonTen className='' />
+                                        <ShimmerButtonTen className='w-[10px]' />
                                     </div>)
                             }
                             {

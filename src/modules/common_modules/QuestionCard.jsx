@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { AccordionUi } from "./AccordionUi";
 import { ShimmerCardUi } from "./shimmer-effects/ShimmerCardUi";
 import MdEditorCmp from "../md-editor/page";
+import { ToastDestructive } from "./ToastDestructive";
 
 export function QuestionCard({ data, index, setData, pn }) {
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -61,8 +62,8 @@ export function QuestionCard({ data, index, setData, pn }) {
                 } else if (data.QUIZ_QUESTION.CORRECT_ANSWER === idx) {
                   // Always mark the correct answer as success
                   variant = 'success';
-                }else{
-                  variant ="gray"
+                } else {
+                  variant = "gray"
                 }
               }
 
@@ -82,7 +83,7 @@ export function QuestionCard({ data, index, setData, pn }) {
             })
           }
         </CardContent>
-
+        {/* <ToastDestructive /> */}
 
         <CardFooter className="flex justify-between">
           <AccordionUi disabled={isDisabled} title='Show Explanation' description={<MdEditorCmp disc={data.QUIZ_QUESTION.DISC} />} />
