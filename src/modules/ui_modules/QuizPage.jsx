@@ -13,7 +13,7 @@ import ShimmerHeader from "../common_modules/shimmer-effects/ShimmerHeader";
 import { ProgressUi } from "../common_modules/ProgressUi";
 import { useDispatch, useSelector } from "react-redux";
 import DnaLoder from "../loders/DnaLoder";
-import { setActiveStep, setCategories, setDifficultyLevel, setQuestionsList } from "@/redux/counterSlice";
+import { setActiveStep, setCategories, setDialog, setDifficultyLevel, setQuestionsList, setRemaining } from "@/redux/counterSlice";
 
 const steps = [{ label: 'Step 1' }, { label: 'Step 2' }];
 
@@ -95,7 +95,6 @@ export default function QuizPage() {
 
     const handleCategories = async (_id) => {
         try {
-            handleNext();
             let responce = await getRequest('quiz/get-difficulty-level')
             if (responce.status) {
                 setData(prevState => ({
@@ -115,6 +114,7 @@ export default function QuizPage() {
                 dispatch(setQuestionsList({
                     quizCat: _id // Update the quiz category
                 }));
+                handleNext();
             }
         }
         catch (error) {
@@ -124,7 +124,6 @@ export default function QuizPage() {
 
     const handleDefficultLevel = async (_id) => {
         try {
-            handleNext()
             let responce = await postRequest('quiz/get-relvent-questions', { quizCat: data.questions_list.quizCat, difficultyId: _id })
             if (responce.status) {
                 setData(prevState => ({
@@ -145,13 +144,14 @@ export default function QuizPage() {
 
                 dispatch(setDifficultyLevel({
                     _id: _id, // Update difficulty level with the ID
-                    data: responce.result.data.questionList, // Optional: if difficulty level has related data
+                    // data: responce.result.data.questionList, // Optional: if difficulty level has related data
                 }));
 
                 dispatch(setQuestionsList({
                     data: responce.result.data.questionList, // Set the questions data
                     total: responce.result.data.totalQuizItems // Set the total number of quiz items
                 }));
+                handleNext()
             }
         }
         catch (error) {
@@ -164,12 +164,13 @@ export default function QuizPage() {
                 ...prevState,
                 activeStep: data.activeStep + 1
             }));
-            dispatch(setActiveStep(this.activeStep + 1));
+            dispatch(setActiveStep(data.activeStep + 1));
         } else if (data.activeStep == steps.length - 1) {
             setData(prevState => ({
                 ...prevState,
                 dialog: false
             }));
+            dispatch(setDialog(false))
         }
     };
 
@@ -222,7 +223,6 @@ export default function QuizPage() {
 
     return (
         <>
-            {console.log('sttae==', data)}
             {
                 loader ?
                     <>

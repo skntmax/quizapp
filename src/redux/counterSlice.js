@@ -56,6 +56,7 @@ export const quizSlice = createSlice({
       state.more_cat_loder = action.payload;
     },
     setDifficultyLevel: (state, action) => {
+      debugger
       state.difficulty_level = { ...state.difficulty_level, ...action.payload };
     },
     setCategories: (state, action) => {
