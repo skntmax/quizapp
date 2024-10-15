@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { bytecodeUrls, cookies } from './constant';
 export function middleware(request) {
   // Check if a specific cookie exists
-  const myCookie = request.cookies.get(cookies.btcode_live_cd && cookies.btcode_live_cd_key); // Replace 'myCookieName' with your cookie name
+  const myCookie = request.cookies.get(cookies.btcode_live_cd); // Replace 'myCookieName' with your cookie name
 
   // If the cookie does not exist, redirect to bytecode.live
   if (!myCookie) {
