@@ -1,8 +1,6 @@
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import localFont from "next/font/local";
 import "./globals.css";
-import Footer from "@/modules/common_modules/Footer";
-import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,7 +24,6 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Toaster/>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"  // Changed to light theme
