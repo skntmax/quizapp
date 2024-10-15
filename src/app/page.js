@@ -41,21 +41,18 @@ export default function Home() {
           }
         })
         dispatch(setSessionId(response?.result?.data?.user_quiz_session))
+      } else if (Object.keys(response?.result?.data)?.length == 0) {
+        setData((pre) => {
+          return {
+            ...pre,
+            loader: false
+          }
+        })
+        dispatch(setSessionId(null))
       }
-      setData(result); // Set the fetched data in state
     } catch (err) {
-      console.log(err.message); // Set any errors that occur
+      throw new Error(err.message); // Set any errors that occur
     }
-  };
-
-  const handleRestart = () => {
-    // Logic for restart action
-    alert("Restarting...");
-  };
-
-  const handleResume = () => {
-    // Logic for resume action
-    alert("Resuming...");
   };
 
   useEffect(() => {

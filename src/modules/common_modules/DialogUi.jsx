@@ -11,45 +11,7 @@ import { SelectUi } from "./SelectUi";
 import { ShimmerButton } from "react-shimmer-effects";
 import { ShimmerButtonThree, ShimmerButtonTen } from "./shimmer-effects/ShimmerButtonUi";
 import { Button } from "@/components/ui/button";
-
-const getRandomVariant = () => {
-    const variants = [
-        // "default",
-        "destructive",
-        // "outline",
-        "secondary",
-        // "ghost",
-        // "link",
-        "success",
-        "danger",
-        "info",
-        "warning",
-        // "light",
-        "dark",
-        // "primaryVariant",
-        "accent",
-        // "slate",
-        "teal",
-        "violet",
-        "pink",
-        "coral",
-        "indigo",
-        "olive",
-        "navy",
-        "gray",
-        "brown",
-        "mint",
-        "beige",
-        "lavender",
-        "apricot",
-        "charcoal",
-        // "silver",
-        // Add more variant names as needed
-    ];
-    const randomIndex = Math.floor(Math.random() * variants.length);
-    return variants[randomIndex];
-};
-
+import { getRandomVariant } from "@/utils/logix";
 
 export function DialogUi({ data, setData, handleCategories, handleDefficultLevel, steps, handleMoreCategory }) {
     const { categories, difficulty_level, more_cat_loder } = data;
