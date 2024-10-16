@@ -9,6 +9,7 @@ export const quizSlice = createSlice({
     correct: 0,
     incorrect: 0,
     remaining: 0,
+    processPercentage: 0,
     pagination_loder: false,
     more_cat_loder: false,
     difficulty_level: {
@@ -40,21 +41,14 @@ export const quizSlice = createSlice({
       MODIFIED_ON: null,
       __v: 0
     },
-    userResponse: [
-      {
-        quizSessionId: undefined,
-        quizQuestionId: undefined,
-        userResponse: undefined,
-        currentAnswer: undefined,
-        reward: null,
-        timeCollapsed: null,
-        progressStatus: null
-      }
-    ]
+    userResponse: []
   },
   reducers: {
     setSessionId: (state, action) => {
       state.sessionId = action.payload;
+    },
+    setProgressPercentage: (state, action) => {
+      state.processPercentage = action.payload;
     },
     setDialog: (state, action) => {
       state.dialog = action.payload;
@@ -96,7 +90,8 @@ export const quizSlice = createSlice({
       state.correct = 0;
       state.incorrect = 0;
       state.remaining = 0;
-      state.pagination_loder = false;
+      state.processPercentage = 0,
+        state.pagination_loder = false;
       state.more_cat_loder = false;
       state.difficulty_level = {
         pn: 1,
@@ -127,6 +122,7 @@ export const quizSlice = createSlice({
         MODIFIED_ON: null,
         __v: 0
       };
+      state.userResponse = []
     },
     updateAllData: (state, action) => {
       return { ...state, ...action.payload };
@@ -134,8 +130,8 @@ export const quizSlice = createSlice({
     setQuizSessionDetails: (state, action) => {
       state.quizSessionDetails = { ...state.quizSessionDetails, ...action.payload };
     },
-    setUserResponse: (state, action) => {
-      state.userResponse = action.payload
+    setUserResponseData: (state, action) => {
+      state.userResponse = [...state.userResponse, action.payload]
     }
   },
 });
@@ -156,8 +152,9 @@ export const {
   setRemainingTotal,
   setQuestionsList,
   resetQuiz,
-  setUserResponse,
+  setUserResponseData,
   setQuizSessionDetails,
+  setProgressPercentage
 } = quizSlice.actions;
 
 export default quizSlice.reducer;

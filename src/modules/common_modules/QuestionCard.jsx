@@ -3,52 +3,58 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
-import { useState } from 'react';
-import { AccordionUi } from "./AccordionUi";
-import { ShimmerCardUi } from "./shimmer-effects/ShimmerCardUi";
-import MdEditorCmp from "../md-editor/page";
-import { ToastDestructive } from "./ToastDestructive";
-import { useDispatch } from "react-redux";
-import { incrementCorrect, incrementIncorrect, setRemaining } from "@/redux/counterSlice";
-import { getCookie } from "cookies-next";
 import { cookies } from "@/constant";
 import { postRequest } from "@/crud_operations/RequestHandler";
+import { incrementCorrect, incrementIncorrect, setRemaining, setUserResponseData } from "@/redux/counterSlice";
+import { getCookie } from "cookies-next";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import MdEditorCmp from "../md-editor/page";
+import { AccordionUi } from "./AccordionUi";
 
 const customHeader = {
   headers: {
     "Authorization": `Bearer ${getCookie(cookies.btcode_live_cd_key)}`, // Replace with your actual token or header value
-    // Add any other custom headers here
   },
 }
 
 export function QuestionCard({ data, index, setData, pn, sessionId }) {
   const dispatch = useDispatch();
+  const reduxData = useSelector((state) => state.quiz.userResponse);
+  const processPercentage = useSelector((state) => state.quiz.processPercentage);
+  const [filter, setFilter] = useState(null);
   const [userResponse, setUserResponse] = useState({
     selectedIndex: null,
     isDisabled: false
   });
 
+  useEffect(() => {
+    const filterData = reduxData.find((item) => item.quizQuestionId === data._id);
+    setFilter(filterData);
+  }, [reduxData]);
+
   const updateResponce = async (idx) => {
+    alert(processPercentage)
+    let model = {
+      quizSessionId: sessionId,
+      quizQuestionId: data._id,
+      userResponse: idx,
+      currentAnswer: data.QUIZ_QUESTION.CORRECT_ANSWER,
+      reward: 40,
+      timeCollapsed: 20,
+      progressStatus: processPercentage
+    }
     try {
       let responce = await postRequest('quiz/update-quiz-response',
-        {
-          quizSessionId: sessionId,
-          quizQuestionId: data._id,
-          userResponse: idx,
-          currentAnswer: data.QUIZ_QUESTION.CORRECT_ANSWER,
-          reward: 40,
-          timeCollapsed: 20,
-          progressStatus: 20
-        },
+        model,
         customHeader
       )
       if (responce.status) {
-
+        dispatch(setUserResponseData(model))
       }
     }
     catch (error) {
@@ -94,27 +100,36 @@ export function QuestionCard({ data, index, setData, pn, sessionId }) {
             data.QUIZ_QUESTION.OPTIONS.map((item, idx) => {
               let variant;
 
-              // Determine button variant based on selected index and correct answer
-              if (userResponse.selectedIndex !== null) {
-                if (idx === userResponse.selectedIndex) {
-                  // If the selected index is correct, mark it as success
-                  variant = (data.QUIZ_QUESTION.CORRECT_ANSWER === idx) ? 'success' : 'danger';
-                } else if (data.QUIZ_QUESTION.CORRECT_ANSWER === idx) {
-                  // Always mark the correct answer as success
+              // Check the filter data and determine the variant based on previous response and correct answer
+              if (filter && filter.userResponse !== null) {
+                if (idx === filter.userResponse) {
+                  // If it's the selected response, check if it's correct or incorrect
+                  variant = data.QUIZ_QUESTION.CORRECT_ANSWER === idx ? 'success' : 'danger';
+                } else if (idx === data.QUIZ_QUESTION.CORRECT_ANSWER) {
+                  // If it's the correct answer but not selected, mark as success
                   variant = 'success';
                 } else {
-                  variant = "gray"
+                  variant = 'gray'; // Default for unselected and incorrect options
+                }
+              } else if (userResponse.selectedIndex !== null) {
+                // If current user has selected, apply the same logic
+                if (idx === userResponse.selectedIndex) {
+                  variant = data.QUIZ_QUESTION.CORRECT_ANSWER === idx ? 'success' : 'danger';
+                } else if (data.QUIZ_QUESTION.CORRECT_ANSWER === idx) {
+                  variant = 'success';
+                } else {
+                  variant = 'gray';
                 }
               }
 
               return (
                 <div className='my-4 sm:my-4 lg:my-4 xl:my-4'>
                   <Button
-                    className={userResponse.isDisabled ? 'no-opacity w-full' : 'w-full'}
+                    className={userResponse.isDisabled || filter ? 'no-opacity w-full' : 'w-full'}
                     key={idx}
                     variant={variant}
                     onClick={() => handleOptionClick(idx)}
-                    disabled={userResponse.isDisabled}
+                    disabled={userResponse.isDisabled || !!filter}
                   >
                     {item}
                   </Button>
