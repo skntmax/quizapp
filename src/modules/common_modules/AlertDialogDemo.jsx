@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { cookies, quizUrls } from "@/constant";
 import { getRequest } from "@/crud_operations/RequestHandler";
 import { resetQuiz, setDialog } from "@/redux/counterSlice";
+import { getRandomVariant } from "@/utils/logix";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -75,8 +76,8 @@ export function AlertDialogDemo() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <Button onClick={handleRestart}>Restart</Button>
-            <Button onClick={handleResume}>Resume</Button>
+            <Button onClick={handleRestart} variant={getRandomVariant()}>Restart</Button>
+            <Button onClick={handleResume} variant={getRandomVariant()}>Resume</Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
