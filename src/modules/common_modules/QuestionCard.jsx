@@ -38,7 +38,6 @@ export function QuestionCard({ data, index, setData, pn, sessionId }) {
   }, [reduxData]);
 
   const updateResponce = async (idx) => {
-    alert(processPercentage)
     let model = {
       quizSessionId: sessionId,
       quizQuestionId: data._id,
