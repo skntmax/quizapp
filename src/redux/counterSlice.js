@@ -40,6 +40,17 @@ export const quizSlice = createSlice({
       MODIFIED_ON: null,
       __v: 0
     },
+    userResponse: [
+      {
+        quizSessionId: undefined,
+        quizQuestionId: undefined,
+        userResponse: undefined,
+        currentAnswer: undefined,
+        reward: null,
+        timeCollapsed: null,
+        progressStatus: null
+      }
+    ]
   },
   reducers: {
     setSessionId: (state, action) => {
@@ -51,13 +62,16 @@ export const quizSlice = createSlice({
     setActiveStep: (state, action) => {
       state.activeStep = action.payload;
     },
-    incrementCorrect: (state) => {
-      state.correct += 1;
+    incrementCorrect: (state, action) => {
+      state.correct = action.payload ? state.correct + 1 : state.correct
     },
-    incrementIncorrect: (state) => {
-      state.incorrect += 1;
+    incrementIncorrect: (state, action) => {
+      state.incorrect = action.payload ? state.incorrect + 1 : state.incorrect;
     },
-    setRemaining: (state, action) => {
+    setRemaining: (state) => {
+      state.remaining = state.remaining - 1;
+    },
+    setRemainingTotal: (state, action) => {
       state.remaining = action.payload;
     },
     setPaginationLoader: (state, action) => {
@@ -120,6 +134,9 @@ export const quizSlice = createSlice({
     setQuizSessionDetails: (state, action) => {
       state.quizSessionDetails = { ...state.quizSessionDetails, ...action.payload };
     },
+    setUserResponse: (state, action) => {
+      state.userResponse = action.payload
+    }
   },
 });
 
@@ -136,8 +153,10 @@ export const {
   setMoreCatLoader,
   setDifficultyLevel,
   setCategories,
+  setRemainingTotal,
   setQuestionsList,
   resetQuiz,
+  setUserResponse,
   setQuizSessionDetails,
 } = quizSlice.actions;
 
