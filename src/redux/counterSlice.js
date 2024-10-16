@@ -28,7 +28,18 @@ export const quizSlice = createSlice({
       itemsPerPage: 10,
       quizCat: undefined,
       data: undefined,
-    }
+    },
+    quizSessionDetails: {
+      QUIZ_USER: null,
+      QUIZ_CATEGORY: null,
+      QUIZ_DIFFICULTY: null,
+      QUIZ_TIME_LIMIT: null,
+      CREATED_BY: null,
+      _id: null,
+      CREATED_ON: null,
+      MODIFIED_ON: null,
+      __v: 0
+    },
   },
   reducers: {
     setSessionId: (state, action) => {
@@ -56,7 +67,6 @@ export const quizSlice = createSlice({
       state.more_cat_loder = action.payload;
     },
     setDifficultyLevel: (state, action) => {
-      debugger
       state.difficulty_level = { ...state.difficulty_level, ...action.payload };
     },
     setCategories: (state, action) => {
@@ -92,10 +102,24 @@ export const quizSlice = createSlice({
         quizCat: undefined,
         data: undefined,
       };
+      state.quizSessionDetails = {
+        QUIZ_USER: null,
+        QUIZ_CATEGORY: null,
+        QUIZ_DIFFICULTY: null,
+        QUIZ_TIME_LIMIT: null,
+        CREATED_BY: null,
+        _id: null,
+        CREATED_ON: null,
+        MODIFIED_ON: null,
+        __v: 0
+      };
     },
     updateAllData: (state, action) => {
       return { ...state, ...action.payload };
-    }
+    },
+    setQuizSessionDetails: (state, action) => {
+      state.quizSessionDetails = { ...state.quizSessionDetails, ...action.payload };
+    },
   },
 });
 
@@ -114,6 +138,7 @@ export const {
   setCategories,
   setQuestionsList,
   resetQuiz,
+  setQuizSessionDetails,
 } = quizSlice.actions;
 
 export default quizSlice.reducer;
