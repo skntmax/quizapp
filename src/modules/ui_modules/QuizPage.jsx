@@ -13,7 +13,7 @@ import ShimmerHeader from "../common_modules/shimmer-effects/ShimmerHeader";
 import { ProgressUi } from "../common_modules/ProgressUi";
 import { useDispatch, useSelector } from "react-redux";
 import DnaLoder from "../loders/DnaLoder";
-import { setActiveStep, setCategories, setDialog, setDifficultyLevel, setQuestionsList, setQuizSessionDetails, setRemaining, setSessionId } from "@/redux/counterSlice";
+import { setActiveStep, setCategories, setDialog, setDifficultyLevel, setQuestionsList, setQuizSessionDetails, setRemaining, setRemainingTotal, setSessionId } from "@/redux/counterSlice";
 import { getCookie } from "cookies-next";
 import { cookies } from "@/constant";
 
@@ -32,6 +32,7 @@ export default function QuizPage() {
     const [loader, setLoader] = useState(true);
     const [data, setData] = useState({
         dialog: true,
+        sessionId:null,
         activeStep: 0,
         correct: 0,
         incorrect: 0,
@@ -75,6 +76,7 @@ export default function QuizPage() {
             difficulty_level: reduxData.difficulty_level,
             categories: reduxData.categories,
             questions_list: reduxData.questions_list,
+            sessionId:reduxData.sessionId
         });
         setLoader(false);
     }, [reduxData]);
@@ -175,17 +177,17 @@ export default function QuizPage() {
                 handleNext()
                 await createUserSesion(_id);
                 // Dispatch actions to update the Redux store
-                dispatch(setRemaining(responce.result.data.totalQuizItems));
-                
+
                 dispatch(setDifficultyLevel({
                     _id: _id, // Update difficulty level with the ID
                     // data: responce.result.data.questionList, // Optional: if difficulty level has related data
                 }));
-                
+
                 dispatch(setQuestionsList({
                     data: responce.result.data.questionList, // Set the questions data
                     total: responce.result.data.totalQuizItems // Set the total number of quiz items
                 }));
+                dispatch(setRemainingTotal(responce.result.data.totalQuizItems));
             }
         }
         catch (error) {
@@ -224,6 +226,9 @@ export default function QuizPage() {
                         data: responce.result.data.questionList,
                         pn: pn
                     }
+                }));
+                dispatch(setQuestionsList({
+                    pn: pn, // Set the questions data
                 }));
             }
         }
@@ -314,7 +319,7 @@ export default function QuizPage() {
                             }
                             {
                                 data.questions_list.data !== undefined && !data.pagination_loder &&
-                                data.questions_list.data.map((item, index) => <QuestionCard data={item} setData={setData} index={index} pn={data.questions_list.pn} />)
+                                data.questions_list.data.map((item, index) => <QuestionCard data={item} sessionId={data.sessionId}  setData={setData} index={index} pn={data.questions_list.pn} />)
                             }
 
                             {

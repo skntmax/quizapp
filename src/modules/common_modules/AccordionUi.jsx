@@ -13,7 +13,7 @@ export function AccordionUi({ title, description, disabled }) {
         if (!disabled) {
             e.preventDefault()  // Prevent default accordion behavior if disabled
             toast({
-                variant: "destructive",
+                variant: "red",
                 title: "Uh oh! Something went wrong.",
                 description: "There was a problem with your selction to show the description please select option first.",
                 action: <ToastAction altText="Try again">Try after select</ToastAction>,
