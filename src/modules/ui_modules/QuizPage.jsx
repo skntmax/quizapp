@@ -13,7 +13,16 @@ import ShimmerHeader from "../common_modules/shimmer-effects/ShimmerHeader";
 import { ProgressUi } from "../common_modules/ProgressUi";
 import { useDispatch, useSelector } from "react-redux";
 import DnaLoder from "../loders/DnaLoder";
-import { setActiveStep, setCategories, setDialog, setDifficultyLevel, setQuestionsList, setRemaining } from "@/redux/counterSlice";
+import { setActiveStep, setCategories, setDialog, setDifficultyLevel, setQuestionsList, setQuizSessionDetails, setRemaining, setSessionId } from "@/redux/counterSlice";
+import { getCookie } from "cookies-next";
+import { cookies } from "@/constant";
+
+const customHeader = {
+    headers: {
+        "Authorization": `Bearer ${getCookie(cookies.btcode_live_cd_key)}`, // Replace with your actual token or header value
+        // Add any other custom headers here
+    },
+}
 
 const steps = [{ label: 'Step 1' }, { label: 'Step 2' }];
 
@@ -93,6 +102,30 @@ export default function QuizPage() {
         }
     };
 
+    const createUserSesion = async (_id) => {
+        try {
+            let responce = await postRequest('quiz/create-user-quiz-session', { quizCat: data.questions_list.quizCat, difficultyId: _id }, customHeader)
+            if (responce.status) {
+                const sessionData = responce.result.data[0];
+                dispatch(setQuizSessionDetails({
+                    QUIZ_USER: sessionData.QUIZ_USER,
+                    QUIZ_CATEGORY: sessionData.QUIZ_CATEGORY,
+                    QUIZ_DIFFICULTY: sessionData.QUIZ_DIFFICULTY,
+                    QUIZ_TIME_LIMIT: sessionData.QUIZ_TIME_LIMIT,
+                    CREATED_BY: sessionData.CREATED_BY,
+                    _id: sessionData._id,
+                    CREATED_ON: sessionData.CREATED_ON,
+                    MODIFIED_ON: sessionData.MODIFIED_ON,
+                    __v: sessionData.__v
+                }));
+                dispatch(setSessionId(sessionData._id));
+            }
+        }
+        catch (error) {
+
+        }
+    };
+
     const handleCategories = async (_id) => {
         try {
             let responce = await getRequest('quiz/get-difficulty-level')
@@ -139,19 +172,20 @@ export default function QuizPage() {
                         total: responce.result.data.totalQuizItems
                     }
                 }));
+                handleNext()
+                await createUserSesion(_id);
                 // Dispatch actions to update the Redux store
                 dispatch(setRemaining(responce.result.data.totalQuizItems));
-
+                
                 dispatch(setDifficultyLevel({
                     _id: _id, // Update difficulty level with the ID
                     // data: responce.result.data.questionList, // Optional: if difficulty level has related data
                 }));
-
+                
                 dispatch(setQuestionsList({
                     data: responce.result.data.questionList, // Set the questions data
                     total: responce.result.data.totalQuizItems // Set the total number of quiz items
                 }));
-                handleNext()
             }
         }
         catch (error) {

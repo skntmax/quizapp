@@ -41,10 +41,10 @@ export function AlertDialogDemo() {
       throw new Error(err.message); // Set any errors that occur
     }
   };
-  const handleRestart = () => {
+  const handleRestart = async () => {
     // Logic for restart action
     if(sessionId){
-      resetQuizSession()
+      await resetQuizSession()
     }
     dispatch(resetQuiz())
     dispatch(setDialog(true))
