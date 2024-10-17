@@ -6,7 +6,7 @@ import CommonHeader from "@/modules/common_modules/CommonHeader";
 import Footer from "@/modules/common_modules/Footer"; // Ensure this is correct
 import DnaLoder from "@/modules/loders/DnaLoder";
 import QuizPage from "@/modules/ui_modules/QuizPage";
-import { resetQuiz, setSessionId } from "@/redux/counterSlice";
+import { resetQuiz, setQuizSessionDetails, setSessionId } from "@/redux/counterSlice";
 import getSingleCookiesCSR from "@/utils/cookies";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
@@ -35,7 +35,7 @@ export default function Home() {
       );
       if (!response.status) {
         throw new Error({ success: false, message: "Failed to fetch data" });
-      } else if (Object.keys(response?.result?.data)?.length > 0) {
+      } else if (response?.result?.data?.user_quiz_session) {
         setData((pre) => {
           return {
             ...pre,
@@ -43,7 +43,12 @@ export default function Home() {
           }
         })
         dispatch(setSessionId(response?.result?.data?.user_quiz_session))
-      } else if (Object.keys(response?.result?.data)?.length == 0) {
+        dispatch(setQuizSessionDetails({
+          _id: response?.result?.data?.user_quiz_session,
+          CREATED_ON: response?.result?.data?.CREATED_ON,
+          QUIZ_TIMESPAN: response?.result?.data?.QUIZ_TIMESPAN,
+      }));
+      } else if (!response?.result?.data?.user_quiz_session) {
         dispatch(setSessionId(null))
         dispatch(resetQuiz())
         router.push(quizUrls.start)
