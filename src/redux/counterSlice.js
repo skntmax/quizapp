@@ -1,48 +1,44 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+let initialState = {
+  sessionId: null,
+  dialog: true,
+  activeStep: 0,
+  correct: 0,
+  incorrect: 0,
+  remaining: 0,
+  processPercentage: 0,
+  pagination_loder: false,
+  more_cat_loder: false,
+  difficulty_level: {
+    pn: 1,
+    itemsPerPage: 10,
+    data: undefined,
+    _id: undefined
+  },
+  categories: {
+    pn: 1,
+    itemsPerPage: 10,
+    data: undefined
+  },
+  questions_list: {
+    pn: 1,
+    total: undefined,
+    itemsPerPage: 10,
+    quizCat: undefined,
+    data: undefined,
+  },
+  quizSessionDetails: {
+    _id: undefined,
+    CREATED_ON: undefined,
+    QUIZ_TIMESPAN: undefined,
+  },
+  userResponse: []
+}
+
 export const quizSlice = createSlice({
   name: 'quiz',
-  initialState: {
-    sessionId: null,
-    dialog: true,
-    activeStep: 0,
-    correct: 0,
-    incorrect: 0,
-    remaining: 0,
-    processPercentage: 0,
-    pagination_loder: false,
-    more_cat_loder: false,
-    difficulty_level: {
-      pn: 1,
-      itemsPerPage: 10,
-      data: undefined,
-      _id: undefined
-    },
-    categories: {
-      pn: 1,
-      itemsPerPage: 10,
-      data: undefined
-    },
-    questions_list: {
-      pn: 1,
-      total: undefined,
-      itemsPerPage: 10,
-      quizCat: undefined,
-      data: undefined,
-    },
-    quizSessionDetails: {
-      QUIZ_USER: null,
-      QUIZ_CATEGORY: null,
-      QUIZ_DIFFICULTY: null,
-      QUIZ_TIME_LIMIT: null,
-      CREATED_BY: null,
-      _id: null,
-      CREATED_ON: null,
-      MODIFIED_ON: null,
-      __v: 0
-    },
-    userResponse: []
-  },
+  initialState,
   reducers: {
     setSessionId: (state, action) => {
       state.sessionId = action.payload;
@@ -83,47 +79,8 @@ export const quizSlice = createSlice({
     setQuestionsList: (state, action) => {
       state.questions_list = { ...state.questions_list, ...action.payload };
     },
-    resetQuiz: (state) => {
-      state.sessionId = null;
-      state.dialog = true;
-      state.activeStep = 0;
-      state.correct = 0;
-      state.incorrect = 0;
-      state.remaining = 0;
-      state.processPercentage = 0,
-        state.pagination_loder = false;
-      state.more_cat_loder = false;
-      state.difficulty_level = {
-        pn: 1,
-        itemsPerPage: 10,
-        data: undefined,
-        _id: undefined
-      };
-      state.categories = {
-        pn: 1,
-        itemsPerPage: 10,
-        data: undefined
-      };
-      state.questions_list = {
-        pn: 1,
-        total: undefined,
-        itemsPerPage: 10,
-        quizCat: undefined,
-        data: undefined,
-      };
-      state.quizSessionDetails = {
-        QUIZ_USER: null,
-        QUIZ_CATEGORY: null,
-        QUIZ_DIFFICULTY: null,
-        QUIZ_TIME_LIMIT: null,
-        CREATED_BY: null,
-        _id: null,
-        CREATED_ON: null,
-        MODIFIED_ON: null,
-        __v: 0
-      };
-      state.userResponse = []
-    },
+    resetQuiz: () => initialState,
+
     updateAllData: (state, action) => {
       return { ...state, ...action.payload };
     },

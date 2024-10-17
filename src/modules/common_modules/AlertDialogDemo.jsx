@@ -44,7 +44,7 @@ export function AlertDialogDemo() {
   };
   const handleRestart = async () => {
     // Logic for restart action
-    if(sessionId){
+    if (sessionId) {
       await resetQuizSession()
     }
     dispatch(resetQuiz())
@@ -53,9 +53,21 @@ export function AlertDialogDemo() {
     router.push(quizUrls.start)
   };
 
-  const handleResume = () => {
+  const handleResume = async () => {
     // Logic for resume action
     // dispatch(setDialog(false))
+    if (sessionId) {
+      try {
+        const response = await getRequest("quiz/get-paused-quiz-session-data",
+          customHeader
+        );
+        if (response.status) {
+          
+        }
+      } catch (err) {
+        throw new Error(err.message); // Set any errors that occur
+      }
+    }
     router.push(quizUrls.start)
     setIsOpen(false); // Close dialog after resume action
   };

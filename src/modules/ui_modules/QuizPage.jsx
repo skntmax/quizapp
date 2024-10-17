@@ -32,7 +32,7 @@ export default function QuizPage() {
     const [loader, setLoader] = useState(true);
     const [data, setData] = useState({
         dialog: true,
-        sessionId:null,
+        sessionId: null,
         activeStep: 0,
         correct: 0,
         incorrect: 0,
@@ -76,7 +76,7 @@ export default function QuizPage() {
             difficulty_level: reduxData.difficulty_level,
             categories: reduxData.categories,
             questions_list: reduxData.questions_list,
-            sessionId:reduxData.sessionId
+            sessionId: reduxData.sessionId
         });
         setLoader(false);
     }, [reduxData]);
@@ -108,17 +108,11 @@ export default function QuizPage() {
         try {
             let responce = await postRequest('quiz/create-user-quiz-session', { quizCat: data.questions_list.quizCat, difficultyId: _id }, customHeader)
             if (responce.status) {
-                const sessionData = responce.result.data[0];
+                const sessionData = responce.result.data;
                 dispatch(setQuizSessionDetails({
-                    QUIZ_USER: sessionData.QUIZ_USER,
-                    QUIZ_CATEGORY: sessionData.QUIZ_CATEGORY,
-                    QUIZ_DIFFICULTY: sessionData.QUIZ_DIFFICULTY,
-                    QUIZ_TIME_LIMIT: sessionData.QUIZ_TIME_LIMIT,
-                    CREATED_BY: sessionData.CREATED_BY,
                     _id: sessionData._id,
                     CREATED_ON: sessionData.CREATED_ON,
-                    MODIFIED_ON: sessionData.MODIFIED_ON,
-                    __v: sessionData.__v
+                    QUIZ_TIMESPAN: sessionData.QUIZ_TIMESPAN,
                 }));
                 dispatch(setSessionId(sessionData._id));
             }
@@ -227,9 +221,12 @@ export default function QuizPage() {
                         pn: pn
                     }
                 }));
-                dispatch(setQuestionsList({
-                    pn: pn, // Set the questions data
-                }));
+                dispatch(setQuestionsList(
+                    {
+                        data: responce.result.data.questionList,
+                        pn: pn
+                    }
+                ));
             }
         }
         catch (error) {
@@ -319,7 +316,7 @@ export default function QuizPage() {
                             }
                             {
                                 data.questions_list.data !== undefined && !data.pagination_loder &&
-                                data.questions_list.data.map((item, index) => <QuestionCard data={item} sessionId={data.sessionId}  setData={setData} index={index} pn={data.questions_list.pn} />)
+                                data.questions_list.data.map((item, index) => <QuestionCard data={item} sessionId={data.sessionId} setData={setData} index={index} pn={data.questions_list.pn} />)
                             }
 
                             {

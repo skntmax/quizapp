@@ -36,4 +36,21 @@ const getRandomVariant = () => {
     return variants[randomIndex];
 };
 
-export { getRandomVariant }
+
+function isTimeLeftOrNot ( createdOn , quizTimeSpan) {
+   
+    let startTime= moment(createdOn).format('HH:mm:ss');
+    let currentTime= moment(new Date()).format('HH:mm:ss');
+    
+    
+    const sTime = moment(startTime, 'HH:mm:ss');
+    const eTime = moment(currentTime, 'HH:mm:ss');
+    
+    const diffInMinutes = eTime.diff(sTime, 'minutes');
+    
+    let timeLeft  = quizTimeSpan-diffInMinutes 
+    return timeLeft 
+    }
+    
+
+export { getRandomVariant, isTimeLeftOrNot }

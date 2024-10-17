@@ -26,16 +26,18 @@ export function QuestionCard({ data, index, setData, pn, sessionId }) {
   const dispatch = useDispatch();
   const reduxData = useSelector((state) => state.quiz.userResponse);
   const processPercentage = useSelector((state) => state.quiz.processPercentage);
+  const [percentgae, setPercentage] = useState(null);
   const [filter, setFilter] = useState(null);
   const [userResponse, setUserResponse] = useState({
     selectedIndex: null,
-    isDisabled: false
+    isDisabled: false,
+    quizQuestionId: undefined
   });
 
   useEffect(() => {
     const filterData = reduxData.find((item) => item.quizQuestionId === data._id);
     setFilter(filterData);
-  }, [reduxData]);
+  }, [reduxData, processPercentage, data]);
 
   const updateResponce = async (idx) => {
     let model = {
@@ -62,7 +64,7 @@ export function QuestionCard({ data, index, setData, pn, sessionId }) {
   };
 
   const handleOptionClick = async (idx) => {
-    setUserResponse({ selectedIndex: idx, isDisabled: true })
+    setUserResponse({ selectedIndex: idx, isDisabled: true, setUserResponse:data._id })
     setData(prevState => ({
       ...prevState,
       remaining: prevState.remaining - 1, // Decrement remaining by 1
@@ -98,9 +100,8 @@ export function QuestionCard({ data, index, setData, pn, sessionId }) {
           {
             data.QUIZ_QUESTION.OPTIONS.map((item, idx) => {
               let variant;
-
               // Check the filter data and determine the variant based on previous response and correct answer
-              if (filter && filter.userResponse !== null) {
+              if (filter && filter.userResponse !== null && filter.quizQuestionId == data._id) {
                 if (idx === filter.userResponse) {
                   // If it's the selected response, check if it's correct or incorrect
                   variant = data.QUIZ_QUESTION.CORRECT_ANSWER === idx ? 'success' : 'danger';
@@ -110,7 +111,8 @@ export function QuestionCard({ data, index, setData, pn, sessionId }) {
                 } else {
                   variant = 'gray'; // Default for unselected and incorrect options
                 }
-              } else if (userResponse.selectedIndex !== null) {
+              }
+               else if (userResponse.selectedIndex !== null) {
                 // If current user has selected, apply the same logic
                 if (idx === userResponse.selectedIndex) {
                   variant = data.QUIZ_QUESTION.CORRECT_ANSWER === idx ? 'success' : 'danger';
