@@ -142,7 +142,7 @@ export function QuestionCard({ data, index, setData, pn, sessionId }) {
         {/* <ToastDestructive /> */}
 
         <CardFooter className="flex justify-between">
-          <AccordionUi disabled={userResponse.isDisabled} title='Show Explanation' description={<MdEditorCmp disc={data.QUIZ_QUESTION.DISC} />} />
+          <AccordionUi disabled={userResponse.isDisabled || filter?.quizQuestionId ? true : false} title='Show Explanation' description={<MdEditorCmp disc={data.QUIZ_QUESTION.DISC} />} />
         </CardFooter>
       </Card>
     </>
