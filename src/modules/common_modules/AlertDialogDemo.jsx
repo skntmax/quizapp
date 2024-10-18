@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { cookies, quizUrls } from "@/constant";
 import { getRequest } from "@/crud_operations/RequestHandler";
 import { resetQuiz, setDialog } from "@/redux/counterSlice";
-import { getRandomVariant } from "@/utils/logix";
+import { getRandomVariant, mapApiDataToReduxModel } from "@/utils/logix";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -62,7 +62,7 @@ export function AlertDialogDemo() {
           customHeader
         );
         if (response.status) {
-          
+          // alert(JSON.stringify(mapApiDataToReduxModel(response.result.data)))
         }
       } catch (err) {
         throw new Error(err.message); // Set any errors that occur
