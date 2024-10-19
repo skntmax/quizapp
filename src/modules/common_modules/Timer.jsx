@@ -1,9 +1,19 @@
 'use client'
+import { isTimeLeftOrNot } from "@/utils/logix";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { ClockLoader } from "react-spinners";
 
+
 export default function Timer() {
-    const [time, setTime] = useState(6000); // Initialize time to 10 seconds for testing
+   
+    let  quizDetails = useSelector(ele=> ele?.quiz?.quizSessionDetails) 
+    let initTimer =0 
+    if(quizDetails?.QUIZ_TIMESPAN && quizDetails?.CREATED_ON ) {
+        initTimer= isTimeLeftOrNot(quizDetails?.CREATED_ON ,quizDetails?.QUIZ_TIMESPAN )
+     }
+
+    const [time, setTime] = useState(initTimer); // Initialize time to 10 seconds for testing
 
     useEffect(() => {
         // Check if time is greater than 0 before setting the interval
@@ -15,7 +25,10 @@ export default function Timer() {
             return () => clearInterval(timer); // Cleanup the interval on unmount
         } else {
             // When time reaches 0, refresh the page
-            window.location.reload();
+            // window.location.reload();
+            // calling submti api , then return to
+            // https://bytecode.live/quiz/history
+            window.location.href= window.location.origin+"/quiz/history"
         }
     }, [time]); // Re-run effect whenever 'time' changes
 

@@ -10,7 +10,7 @@ function MdEditorCmp({disc}) {
       tabWidth={0}
       codeFoldable={false}
       theme={"light"}
-       language='en-US'
+      language='en-US'
        codeTheme=''
         editorId={"preview-only"} 
         previewTheme="github"

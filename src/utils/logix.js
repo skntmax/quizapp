@@ -1,3 +1,5 @@
+import moment from "moment";
+
 const getRandomVariant = () => {
     const variants = [
         // "default",
@@ -49,7 +51,7 @@ function isTimeLeftOrNot(createdOn, quizTimeSpan) {
     const diffInMinutes = eTime.diff(sTime, 'minutes');
 
     let timeLeft = quizTimeSpan - diffInMinutes
-    return timeLeft
+    return timeLeft *60  // in seconds
 }
 
 const mapApiDataToReduxModel = (apiData) => {
@@ -71,4 +73,4 @@ const mapApiDataToReduxModel = (apiData) => {
 };
 
 
-export { getRandomVariant, isTimeLeftOrNot, mapApiDataToReduxModel }
+export { getRandomVariant, isTimeLeftOrNot, mapApiDataToReduxModel  }
