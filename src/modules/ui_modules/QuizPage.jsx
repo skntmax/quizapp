@@ -11,12 +11,28 @@ import QuizHeader from "../common_modules/QuizHeader";
 import { ShimmerCardUi } from "../common_modules/shimmer-effects/ShimmerCardUi";
 import ShimmerHeader from "../common_modules/shimmer-effects/ShimmerHeader";
 import { ProgressUi } from "../common_modules/ProgressUi";
+import { useDispatch, useSelector } from "react-redux";
+import DnaLoder from "../loders/DnaLoder";
+import { setActiveStep, setCategories, setDialog, setDifficultyLevel, setQuestionsList, setQuizSessionDetails, setRemaining, setRemainingTotal, setSessionId } from "@/redux/counterSlice";
+import { getCookie } from "cookies-next";
+import { cookies } from "@/constant";
+
+const customHeader = {
+    headers: {
+        "Authorization": `Bearer ${getCookie(cookies.btcode_live_cd_key)}`, // Replace with your actual token or header value
+        // Add any other custom headers here
+    },
+}
 
 const steps = [{ label: 'Step 1' }, { label: 'Step 2' }];
 
 export default function QuizPage() {
+    const dispatch = useDispatch();
+    const reduxData = useSelector((state) => state.quiz);
+    const [loader, setLoader] = useState(true);
     const [data, setData] = useState({
         dialog: true,
+        sessionId: null,
         activeStep: 0,
         correct: 0,
         incorrect: 0,
@@ -47,6 +63,24 @@ export default function QuizPage() {
         fetchCategories();
     }, []);
 
+    useEffect(() => {
+        // Update local state when Redux state changes
+        setData({
+            dialog: reduxData.dialog,
+            activeStep: reduxData.activeStep,
+            correct: reduxData.correct,
+            incorrect: reduxData.incorrect,
+            remaining: reduxData.remaining,
+            pagination_loder: reduxData.pagination_loder,
+            more_cat_loder: reduxData.more_cat_loder,
+            difficulty_level: reduxData.difficulty_level,
+            categories: reduxData.categories,
+            questions_list: reduxData.questions_list,
+            sessionId: reduxData.sessionId
+        });
+        setLoader(false);
+    }, [reduxData]);
+
     const fetchCategories = async () => {
         try {
             let responce = await postRequest('quiz/get-quiz-categories', { pn: data.categories.pn, itemsPerPage: data.categories.itemsPerPage })
@@ -58,6 +92,29 @@ export default function QuizPage() {
                         data: responce.result.data.quiz_cat
                     }
                 }));
+                dispatch(setCategories({
+                    data: responce.result.data.quiz_cat,
+                    pn: data.categories.pn, // Update other relevant fields if necessary
+                    itemsPerPage: data.categories.itemsPerPage,
+                }));
+            }
+        }
+        catch (error) {
+
+        }
+    };
+
+    const createUserSesion = async (_id) => {
+        try {
+            let responce = await postRequest('quiz/create-user-quiz-session', { quizCat: data.questions_list.quizCat, difficultyId: _id }, customHeader)
+            if (responce.status) {
+                const sessionData = responce.result.data;
+                dispatch(setQuizSessionDetails({
+                    _id: sessionData._id,
+                    CREATED_ON: sessionData.CREATED_ON,
+                    QUIZ_TIMESPAN: sessionData.QUIZ_TIMESPAN,
+                }));
+                dispatch(setSessionId(sessionData._id));
             }
         }
         catch (error) {
@@ -67,7 +124,6 @@ export default function QuizPage() {
 
     const handleCategories = async (_id) => {
         try {
-            handleNext();
             let responce = await getRequest('quiz/get-difficulty-level')
             if (responce.status) {
                 setData(prevState => ({
@@ -81,6 +137,13 @@ export default function QuizPage() {
                         quizCat: _id,
                     }
                 }));
+                dispatch(setDifficultyLevel({
+                    data: responce.result.data // Update the difficulty level data
+                }));
+                dispatch(setQuestionsList({
+                    quizCat: _id // Update the quiz category
+                }));
+                handleNext();
             }
         }
         catch (error) {
@@ -90,7 +153,6 @@ export default function QuizPage() {
 
     const handleDefficultLevel = async (_id) => {
         try {
-            handleNext()
             let responce = await postRequest('quiz/get-relvent-questions', { quizCat: data.questions_list.quizCat, difficultyId: _id })
             if (responce.status) {
                 setData(prevState => ({
@@ -106,6 +168,20 @@ export default function QuizPage() {
                         total: responce.result.data.totalQuizItems
                     }
                 }));
+                handleNext()
+                await createUserSesion(_id);
+                // Dispatch actions to update the Redux store
+
+                dispatch(setDifficultyLevel({
+                    _id: _id, // Update difficulty level with the ID
+                    // data: responce.result.data.questionList, // Optional: if difficulty level has related data
+                }));
+
+                dispatch(setQuestionsList({
+                    data: responce.result.data.questionList, // Set the questions data
+                    total: responce.result.data.totalQuizItems // Set the total number of quiz items
+                }));
+                dispatch(setRemainingTotal(responce.result.data.totalQuizItems));
             }
         }
         catch (error) {
@@ -118,11 +194,13 @@ export default function QuizPage() {
                 ...prevState,
                 activeStep: data.activeStep + 1
             }));
+            dispatch(setActiveStep(data.activeStep + 1));
         } else if (data.activeStep == steps.length - 1) {
             setData(prevState => ({
                 ...prevState,
                 dialog: false
             }));
+            dispatch(setDialog(false))
         }
     };
 
@@ -143,6 +221,12 @@ export default function QuizPage() {
                         pn: pn
                     }
                 }));
+                dispatch(setQuestionsList(
+                    {
+                        data: responce.result.data.questionList,
+                        pn: pn
+                    }
+                ));
             }
         }
         catch (error) {
@@ -175,66 +259,75 @@ export default function QuizPage() {
 
     return (
         <>
-            <DialogUi steps={steps} data={data} setData={setData} handleCategories={handleCategories} handleDefficultLevel={handleDefficultLevel} handleMoreCategory={handleMoreCategory} />
-
             {
-                data.questions_list.data === undefined && (
-                    <ShimmerHeader />
-                )
+                loader ?
+                    <>
+                        <DnaLoder />
+                    </>
+                    :
+                    <>
+                        <DialogUi steps={steps} data={data} setData={setData} handleCategories={handleCategories} handleDefficultLevel={handleDefficultLevel} handleMoreCategory={handleMoreCategory} />
+
+                        {
+                            data.questions_list.data === undefined && (
+                                <ShimmerHeader />
+                            )
+                        }
+
+                        {
+                            data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
+                            <QuizHeader correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
+                        }
+
+                        {
+                            data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
+                            <div>
+                                <ProgressUi correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
+                            </div>
+                        }
+
+                        <div className='w-[95vw] md:w-[70vw] m-auto'>
+                            {
+                                data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
+                                <PaginationUi total={data.questions_list.total} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
+                            }
+                            {
+                                data.questions_list.data === undefined && (
+                                    <ShimmerCardUi />
+                                )
+                            }
+
+                            {
+                                data.pagination_loder && (
+                                    <ShimmerCardUi />
+                                )
+                            }
+
+                            {
+                                data.questions_list.data !== undefined && data.questions_list.data.length === 0 &&
+                                <div className='flex justify-center'>
+                                    <Image
+                                        src={DataNotFound}
+                                        width={300}
+                                        height={300}
+                                        alt="data not found."
+                                    />
+                                </div>
+                            }
+                            {
+                                data.questions_list.data !== undefined && !data.pagination_loder &&
+                                data.questions_list.data.map((item, index) => <QuestionCard data={item} sessionId={data.sessionId} setData={setData} index={index} pn={data.questions_list.pn} />)
+                            }
+
+                            {
+                                data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
+                                <PaginationUi total={data.questions_list.total} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
+                            }
+
+                        </div>
+                    </>
             }
 
-            {
-                data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                <QuizHeader correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
-            }
-
-
-
-            <div style={{ width: "80%", margin: 'auto', padding: '100px' }}>
-                {
-                    data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                    <PaginationUi total={data.questions_list.total} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
-                }
-                {
-                    data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                    <div style={{ width: "50%", margin: 'auto', paddingBottom: '50px' }}>
-                        <ProgressUi correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
-                    </div>
-                }
-                {
-                    data.questions_list.data === undefined && (
-                        <ShimmerCardUi />
-                    )
-                }
-
-                {
-                    data.pagination_loder && (
-                        <ShimmerCardUi />
-                    )
-                }
-
-                {
-                    data.questions_list.data !== undefined && data.questions_list.data.length === 0 &&
-                    <div className='flex justify-center'>
-                        <Image
-                            src={DataNotFound}
-                            width={300}
-                            height={300}
-                            alt="data not found."
-                        />
-                    </div>
-                }
-                {
-                    data.questions_list.data !== undefined && !data.pagination_loder &&
-                    data.questions_list.data.map((item, index) => <QuestionCard data={item} setData={setData} index={index} pn={data.questions_list.pn} />)
-                }
-
-                {
-                    data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                    <PaginationUi total={data.questions_list.total} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
-                }
-
-            </div>
         </>
     )
 }

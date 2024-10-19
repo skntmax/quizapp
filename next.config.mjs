@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    basePath:"/quiz"
+    basePath:"/quiz",
+    reactStrictMode: false
 };
 
 export default nextConfig;
