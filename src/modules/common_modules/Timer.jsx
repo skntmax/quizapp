@@ -5,12 +5,12 @@ import { useSelector } from "react-redux";
 import { ClockLoader } from "react-spinners";
 
 
-export default function Timer() {
+export default function Timer({timerSession}) {
    
-    let  quizDetails = useSelector(ele=> ele?.quiz?.quizSessionDetails) 
     let initTimer =0 
-    if(quizDetails?.QUIZ_TIMESPAN && quizDetails?.CREATED_ON ) {
-        initTimer= isTimeLeftOrNot(quizDetails?.CREATED_ON ,quizDetails?.QUIZ_TIMESPAN )
+    const {QUIZ_TIMESPAN ,CREATED_ON }  = timerSession 
+    if(QUIZ_TIMESPAN && CREATED_ON ) {
+        initTimer= isTimeLeftOrNot(CREATED_ON ,QUIZ_TIMESPAN )
      }
 
     const [time, setTime] = useState(initTimer); // Initialize time to 10 seconds for testing
@@ -28,7 +28,7 @@ export default function Timer() {
             // window.location.reload();
             // calling submti api , then return to
             // https://bytecode.live/quiz/history
-            window.location.href= window.location.origin+"/quiz/history"
+            // window.location.href= window.location.origin+"/quiz/history"
         }
     }, [time]); // Re-run effect whenever 'time' changes
 
