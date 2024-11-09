@@ -55,12 +55,8 @@ function isTimeLeftOrNot(createdOn, quizTimeSpan) {
 }
 
 const mapApiDataToReduxModel = (apiData) => {
-    debugger
     let correct = apiData.RESPONDED_QUIZ_QUESTION_LIST.filter(q => q.CORRECT_ANSWER === q.USER_RESPONDED_ANSWER).length; 
     let incorrect =apiData.RESPONDED_QUIZ_QUESTION_LIST.filter(q => q.CORRECT_ANSWER !== q.USER_RESPONDED_ANSWER).length;
-    
-
-
     let userResponse = apiData.RESPONDED_QUIZ_QUESTION_LIST.map(item => ({
         quizSessionId: item.QUIZ_SESSION_ID,
         quizQuestionId: item.QUIZ_QUESITION_ID,
@@ -70,9 +66,6 @@ const mapApiDataToReduxModel = (apiData) => {
         timeCollapsed: item.TIME_COLLAPSED,
         progressStatus: item.PROGRESS_STATUS,
       }));
-
-
-      
     return {
         sessionId: apiData.RESPONDED_QUIZ_QUESTION_LIST[0]?.QUIZ_SESSION_ID || null,
         correct: correct,
@@ -86,8 +79,15 @@ const mapApiDataToReduxModel = (apiData) => {
             pn: 1,
             total: apiData.SESSION_QUIZ_LIST.totalQuizItems,
             itemsPerPage: 10,
+            quizCat:apiData.QUIZ_CATEGORY,
             data: apiData.SESSION_QUIZ_LIST.questionList,
         },
+        difficulty_level: {
+            pn: 1,
+            itemsPerPage: 10,
+            data: undefined,
+            _id: apiData.QUIZ_DIFFICULTY
+          },
         userResponse: userResponse
     };
 };
