@@ -55,22 +55,40 @@ function isTimeLeftOrNot(createdOn, quizTimeSpan) {
 }
 
 const mapApiDataToReduxModel = (apiData) => {
+    debugger
+    let correct = apiData.RESPONDED_QUIZ_QUESTION_LIST.filter(q => q.CORRECT_ANSWER === q.USER_RESPONDED_ANSWER).length; 
+    let incorrect =apiData.RESPONDED_QUIZ_QUESTION_LIST.filter(q => q.CORRECT_ANSWER !== q.USER_RESPONDED_ANSWER).length;
+    
+
+
+    let userResponse = apiData.RESPONDED_QUIZ_QUESTION_LIST.map(item => ({
+        quizSessionId: item.QUIZ_SESSION_ID,
+        quizQuestionId: item.QUIZ_QUESITION_ID,
+        userResponse: item.USER_RESPONDED_ANSWER,
+        currentAnswer: item.CORRECT_ANSWER,
+        reward: item.REWARD,
+        timeCollapsed: item.TIME_COLLAPSED,
+        progressStatus: item.PROGRESS_STATUS,
+      }));
+
+
+      
     return {
         sessionId: apiData.RESPONDED_QUIZ_QUESTION_LIST[0]?.QUIZ_SESSION_ID || null,
-        correct: apiData.SESSION_QUIZ_LIST.questionList.filter(q => q.CORRECT_ANSWER === 1).length,
-        incorrect: apiData.SESSION_QUIZ_LIST.questionList.filter(q => q.CORRECT_ANSWER === 0).length,
-        remaining: apiData.SESSION_QUIZ_LIST.questionList.filter(q => q.USER_RESPONDED_ANSWER === undefined).length,
+        correct: correct,
+        incorrect: incorrect,
+        remaining: apiData.SESSION_QUIZ_LIST.totalQuizItems - (incorrect + correct),
         process_percentage: apiData.PROGRESS_STATUS || 0,
-        quiz_time_span:apiData.QUIZ_TIME_SPAN,
-        reward:apiData.REWARD,
-        quiz_category_name:apiData.SESSION_QUIZ_LIST.questionList[0].QUIZ_CATEGORY_NAME,
+        quiz_time_span: apiData.QUIZ_TIME_SPAN,
+        reward: apiData.REWARD,
+        quiz_category_name: apiData.SESSION_QUIZ_LIST.questionList[0].QUIZ_CATEGORY_NAME,
         questions_list: {
             pn: 1,
             total: apiData.SESSION_QUIZ_LIST.totalQuizItems,
             itemsPerPage: 10,
             data: apiData.SESSION_QUIZ_LIST.questionList,
         },
-        userResponse: apiData.RESPONDED_QUIZ_QUESTION_LIST
+        userResponse: userResponse
     };
 };
 

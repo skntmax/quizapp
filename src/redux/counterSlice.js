@@ -55,8 +55,14 @@ export const quizSlice = createSlice({
     incrementCorrect: (state, action) => {
       state.correct = action.payload ? state.correct + 1 : state.correct
     },
+    setCorrect: (state, action) => {
+      state.correct = action.payload;
+    },
     incrementIncorrect: (state, action) => {
       state.incorrect = action.payload ? state.incorrect + 1 : state.incorrect;
+    },
+    setIncorrect: (state, action) => {
+      state.incorrect = action.payload;;
     },
     setRemaining: (state) => {
       state.remaining = state.remaining - 1;
@@ -80,6 +86,7 @@ export const quizSlice = createSlice({
       state.questions_list = { ...state.questions_list, ...action.payload };
     },
     resetQuiz: () => initialState,
+
     updateAllData: (state, action) => {
       return { ...state, ...action.payload };
     },
@@ -88,6 +95,9 @@ export const quizSlice = createSlice({
     },
     setUserResponseData: (state, action) => {
       state.userResponse = [...state.userResponse, action.payload]
+    },
+    setUserResumeResponseData: (state, action) => {
+      state.userResponse = action.payload
     }
   },
 });
@@ -110,7 +120,10 @@ export const {
   resetQuiz,
   setUserResponseData,
   setQuizSessionDetails,
-  setProgressPercentage
+  setProgressPercentage,
+  setCorrect,
+  setIncorrect,
+  setUserResumeResponseData
 } = quizSlice.actions;
 
 export default quizSlice.reducer;

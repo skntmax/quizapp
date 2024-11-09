@@ -7,6 +7,7 @@ const bytecodeUrls = {
     authenticatedFalse:'https://bytecode.live?authenticated=false'
 }
 const quizUrls = {
-    start:'/start'
+    start:'/start',
+    history:'/history'
 }
 export { cookies, bytecodeUrls, quizUrls }

@@ -45,6 +45,7 @@ const buttonVariants = cva(
         default: "px-4 text-wrap py-2",
         sm: "rounded-md text-wrap px-3 py-2 text-xs",
         lg: "rounded-md text-wrap px-8 py-3",
+        full: "rounded-md text-wrap px-8 py-3",
         icon: "h-9 w-9 text-wrap",
       },
     },

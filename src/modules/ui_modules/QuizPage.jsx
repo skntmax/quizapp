@@ -15,7 +15,21 @@ import { useDispatch, useSelector } from "react-redux";
 import DnaLoder from "../loders/DnaLoder";
 import { setActiveStep, setCategories, setDialog, setDifficultyLevel, setQuestionsList, setQuizSessionDetails, setRemaining, setRemainingTotal, setSessionId } from "@/redux/counterSlice";
 import { getCookie } from "cookies-next";
-import { cookies } from "@/constant";
+import { cookies, quizUrls } from "@/constant";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
+import {
+    AlertDialog,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle
+} from "@/components/ui/alert-dialog";
+import { getRandomVariant } from "@/utils/logix";
 
 const customHeader = {
     headers: {
@@ -28,8 +42,10 @@ const steps = [{ label: 'Step 1' }, { label: 'Step 2' }];
 
 export default function QuizPage() {
     const dispatch = useDispatch();
+    const router = useRouter();
     const reduxData = useSelector((state) => state.quiz);
     const [loader, setLoader] = useState(true);
+    const [result, setResult] = useState(false);
     const [data, setData] = useState({
         dialog: true,
         sessionId: null,
@@ -257,6 +273,20 @@ export default function QuizPage() {
         }
     };
 
+    const handleRedirect = async () => {
+        try {
+            const response = await getRequest("quiz/finished-quiz",
+                customHeader
+            );
+
+            if (response.status) {
+                router.push(quizUrls.history)
+            }
+        } catch (err) {
+            throw new Error(err.message); // Set any errors that occur
+        }
+    }
+
     return (
         <>
             {
@@ -319,10 +349,43 @@ export default function QuizPage() {
                                 data.questions_list.data.map((item, index) => <QuestionCard data={item} sessionId={data.sessionId} setData={setData} index={index} pn={data.questions_list.pn} />)
                             }
 
+                            {data.questions_list.data !== undefined && data.remaining === 0 &&
+                                <div className='my-4 sm:my-4 lg:my-4 xl:my-4 flex justify-end'>
+                                    <Button
+                                        className={cn('w-full')}
+                                        variant='success'
+                                        size='lg'
+                                        onClick={() => setResult(true)}
+                                    >
+                                        FINISH
+                                    </Button>
+                                </div>
+                            }
+
+                            {
+                                <>
+                                    <AlertDialog open={result} onOpenChange={setResult}>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    This action cannot be undone. This will permanently.
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <Button onClick={handleRedirect} variant={getRandomVariant()}>Yes</Button>
+                                                <Button onClick={() => setResult(false)} variant={getRandomVariant()}>No</Button>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+                                </>
+                            }
+
                             {
                                 data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
                                 <PaginationUi total={data.questions_list.total} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
                             }
+
 
                         </div>
                     </>
