@@ -67,6 +67,7 @@ export function AlertDialogDemo() {
           dispatch(setSessionId(data.sessionId))
           dispatch(setProgressPercentage(data.process_percentage))
           dispatch(setQuestionsList(data.questions_list))
+          dispatch(setIsOpen(false))
           // alert(JSON.stringify(mapApiDataToReduxModel(response.result.data)))
         }
       } catch (err) {
@@ -74,7 +75,7 @@ export function AlertDialogDemo() {
       }
     }
     router.push(quizUrls.start)
-    setIsOpen(false); // Close dialog after resume action
+    // setIsOpen(false); // Close dialog after resume action
   };
   return (
     <>
