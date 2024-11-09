@@ -80,7 +80,6 @@ export const quizSlice = createSlice({
       state.questions_list = { ...state.questions_list, ...action.payload };
     },
     resetQuiz: () => initialState,
-
     updateAllData: (state, action) => {
       return { ...state, ...action.payload };
     },

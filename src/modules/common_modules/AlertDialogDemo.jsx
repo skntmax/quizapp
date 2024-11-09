@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { cookies, quizUrls } from "@/constant";
 import { getRequest } from "@/crud_operations/RequestHandler";
-import { resetQuiz, setDialog } from "@/redux/counterSlice";
+import { resetQuiz, setDialog, setProgressPercentage, setQuestionsList, setSessionId } from "@/redux/counterSlice";
 import { getRandomVariant, mapApiDataToReduxModel } from "@/utils/logix";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
@@ -61,7 +61,12 @@ export function AlertDialogDemo() {
         const response = await getRequest("quiz/get-paused-quiz-session-data",
           customHeader
         );
+        
         if (response.status) {
+          let data = mapApiDataToReduxModel(response.result.data);
+          dispatch(setSessionId(data.sessionId))
+          dispatch(setProgressPercentage(data.process_percentage))
+          dispatch(setQuestionsList(data.questions_list))
           // alert(JSON.stringify(mapApiDataToReduxModel(response.result.data)))
         }
       } catch (err) {
