@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { cookies, quizUrls } from "@/constant";
 import { getRequest } from "@/crud_operations/RequestHandler";
-import { resetQuiz, setCorrect, setDialog, setIncorrect, setProgressPercentage, setQuestionsList, setRemaining, setRemainingTotal, setSessionId, setUserResponseData, setUserResumeResponseData } from "@/redux/counterSlice";
+import { resetQuiz, setCorrect, setDialog, setDifficultyLevel, setIncorrect, setProgressPercentage, setQuestionsList, setRemaining, setRemainingTotal, setSessionId, setUserResponseData, setUserResumeResponseData } from "@/redux/counterSlice";
 import { getRandomVariant, mapApiDataToReduxModel } from "@/utils/logix";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
@@ -71,6 +71,7 @@ export function AlertDialogDemo() {
           dispatch(setIncorrect(data.incorrect))
           dispatch(setRemainingTotal(data.remaining))
           dispatch(setUserResumeResponseData(data.userResponse))
+          dispatch(setDifficultyLevel(data.userResponse))
           dispatch(setDialog(false))
           // alert(JSON.stringify(mapApiDataToReduxModel(response.result.data)))
         }
