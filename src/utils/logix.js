@@ -53,13 +53,15 @@ function isTimeLeftOrNot(createdOn, quizTimeSpan) {
 }
 
 const mapApiDataToReduxModel = (apiData) => {
-    debugger
     return {
-        sessionId: apiData.SESSION_QUIZ_LIST.questionList[0]?.QUIZ_SESSION_ID || null,
+        sessionId: apiData.RESPONDED_QUIZ_QUESTION_LIST[0]?.QUIZ_SESSION_ID || null,
         correct: apiData.SESSION_QUIZ_LIST.questionList.filter(q => q.CORRECT_ANSWER === 1).length,
         incorrect: apiData.SESSION_QUIZ_LIST.questionList.filter(q => q.CORRECT_ANSWER === 0).length,
         remaining: apiData.SESSION_QUIZ_LIST.questionList.filter(q => q.USER_RESPONDED_ANSWER === undefined).length,
-        processPercentage: apiData.PROGRESS_STATUS || 0,
+        process_percentage: apiData.PROGRESS_STATUS || 0,
+        quiz_time_span:apiData.QUIZ_TIME_SPAN,
+        reward:apiData.REWARD,
+        quiz_category_name:apiData.SESSION_QUIZ_LIST.questionList[0].QUIZ_CATEGORY_NAME,
         questions_list: {
             pn: 1,
             total: apiData.SESSION_QUIZ_LIST.totalQuizItems,
