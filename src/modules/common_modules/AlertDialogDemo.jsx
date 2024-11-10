@@ -71,9 +71,8 @@ export function AlertDialogDemo() {
           dispatch(setIncorrect(data.incorrect))
           dispatch(setRemainingTotal(data.remaining))
           dispatch(setUserResumeResponseData(data.userResponse))
-          dispatch(setDifficultyLevel(data.userResponse))
+          dispatch(setDifficultyLevel(data.difficulty_level))
           dispatch(setDialog(false))
-          // alert(JSON.stringify(mapApiDataToReduxModel(response.result.data)))
         }
       } catch (err) {
         throw new Error(err.message); // Set any errors that occur

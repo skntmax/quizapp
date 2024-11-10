@@ -13,7 +13,7 @@ import ShimmerHeader from "../common_modules/shimmer-effects/ShimmerHeader";
 import { ProgressUi } from "../common_modules/ProgressUi";
 import { useDispatch, useSelector } from "react-redux";
 import DnaLoder from "../loders/DnaLoder";
-import { setActiveStep, setCategories, setDialog, setDifficultyLevel, setQuestionsList, setQuizSessionDetails, setRemaining, setRemainingTotal, setSessionId } from "@/redux/counterSlice";
+import { resetQuiz, setActiveStep, setCategories, setDialog, setDifficultyLevel, setQuestionsList, setQuizSessionDetails, setRemaining, setRemainingTotal, setSessionId } from "@/redux/counterSlice";
 import { getCookie } from "cookies-next";
 import { cookies, quizUrls } from "@/constant";
 import { Button } from "@/components/ui/button";
@@ -280,6 +280,7 @@ export default function QuizPage() {
             );
 
             if (response.status) {
+                dispatch(resetQuiz())
                 router.push(quizUrls.history)
             }
         } catch (err) {
