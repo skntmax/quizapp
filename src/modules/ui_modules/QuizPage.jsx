@@ -3,7 +3,7 @@ import "@/app/globals.css";
 import { getRequest, postRequest } from "@/crud_operations/RequestHandler";
 import DataNotFound from '@/images/DataNotFound.png';
 import Image from 'next/image';
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { DialogUi } from "../common_modules/DialogUi";
 import { PaginationUi } from "../common_modules/PaginationUi";
 import { QuestionCard } from "../common_modules/QuestionCard";
@@ -30,6 +30,7 @@ import {
     AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import { getRandomVariant } from "@/utils/logix";
+import { throttle } from "lodash";
 
 const customHeader = {
     headers: {
@@ -45,6 +46,7 @@ export default function QuizPage() {
     const router = useRouter();
     const reduxData = useSelector((state) => state.quiz);
     const [loader, setLoader] = useState(true);
+    const [catAndDiffloader, setCatAndDiffloader] = useState(false);
     const [result, setResult] = useState(false);
     const [data, setData] = useState({
         dialog: true,
@@ -139,8 +141,9 @@ export default function QuizPage() {
     };
 
     const handleCategories = async (_id) => {
+        setCatAndDiffloader(true);
         try {
-            let responce = await getRequest('quiz/get-difficulty-level')
+            let responce = await getRequest(`quiz/get-difficulty-level?quizCat=${_id}`)
             if (responce.status) {
                 setData(prevState => ({
                     ...prevState,
@@ -160,14 +163,16 @@ export default function QuizPage() {
                     quizCat: _id // Update the quiz category
                 }));
                 handleNext();
+                setCatAndDiffloader(false)
             }
         }
         catch (error) {
-
+            setCatAndDiffloader(false)
         }
     };
 
     const handleDefficultLevel = async (_id) => {
+        setCatAndDiffloader(true)
         try {
             let responce = await postRequest('quiz/get-relvent-questions', { quizCat: data.questions_list.quizCat, difficultyId: _id })
             if (responce.status) {
@@ -198,9 +203,11 @@ export default function QuizPage() {
                     total: responce.result.data.totalQuizItems // Set the total number of quiz items
                 }));
                 dispatch(setRemainingTotal(responce.result.data.totalQuizItems));
+                setCatAndDiffloader(false)
             }
         }
         catch (error) {
+            setCatAndDiffloader(false)
         }
     };
 
@@ -220,34 +227,44 @@ export default function QuizPage() {
         }
     };
 
-    const handlePagination = async (pn) => {
-        try {
-            setData(prevState => ({
-                ...prevState,
-                pagination_loder: true,
-            }));
-            let responce = await postRequest('quiz/get-relvent-questions', { quizCat: data.questions_list.quizCat, difficultyId: data.difficulty_level._id, pn: pn, itemsPerPage: data.questions_list.itemsPerPage })
-            if (responce.status) {
+    const handlePagination = useCallback(
+        throttle(async (pn) => {
+            try {
                 setData(prevState => ({
                     ...prevState,
-                    pagination_loder: false,
-                    questions_list: {
-                        ...prevState.questions_list,
-                        data: responce.result.data.questionList,
-                        pn: pn
-                    }
+                    pagination_loder: true,
                 }));
-                dispatch(setQuestionsList(
-                    {
-                        data: responce.result.data.questionList,
+                // setLoader(true);
+                let response = await postRequest('quiz/get-relvent-questions', {
+                    quizCat: data.questions_list.quizCat,
+                    difficultyId: data.difficulty_level._id,
+                    pn: pn,
+                    itemsPerPage: data.questions_list.itemsPerPage
+                });
+
+                if (response.status) {
+                    setData(prevState => ({
+                        ...prevState,
+                        pagination_loder: false,
+                        questions_list: {
+                            ...prevState.questions_list,
+                            data: response.result.data.questionList,
+                            pn: pn
+                        }
+                    }));
+
+                    dispatch(setQuestionsList({
+                        data: response.result.data.questionList,
                         pn: pn
-                    }
-                ));
+                    }));
+                }
+            } catch (error) {
+                // Handle error
             }
-        }
-        catch (error) {
-        }
-    };
+        }, 2000),
+        [data.questions_list.quizCat, data.difficulty_level._id, data.questions_list.itemsPerPage, data.questions_list.pn]
+    );
+
 
 
     const handleMoreCategory = async () => {
@@ -280,11 +297,11 @@ export default function QuizPage() {
             );
 
             if (response.status) {
-                dispatch(resetQuiz())
                 router.push(quizUrls.history)
+                dispatch(resetQuiz())
             }
         } catch (err) {
-            throw new Error(err.message); // Set any errors that occur
+            throw new Error(err.message);
         }
     }
 
@@ -297,7 +314,7 @@ export default function QuizPage() {
                     </>
                     :
                     <>
-                        <DialogUi steps={steps} data={data} setData={setData} handleCategories={handleCategories} handleDefficultLevel={handleDefficultLevel} handleMoreCategory={handleMoreCategory} />
+                        <DialogUi loder={catAndDiffloader} steps={steps} data={data} setData={setData} handleCategories={handleCategories} handleDefficultLevel={handleDefficultLevel} handleMoreCategory={handleMoreCategory} />
 
                         {
                             data.questions_list.data === undefined && (
