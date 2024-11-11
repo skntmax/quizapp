@@ -9,7 +9,8 @@ import {
 } from "@/components/ui/card";
 import { cookies } from "@/constant";
 import { postRequest } from "@/crud_operations/RequestHandler";
-import { incrementCorrect, incrementIncorrect, setRemaining, setUserResponseData } from "@/redux/counterSlice";
+import { incrementCorrect, incrementIncorrect, setLastSentReward, setRemaining, setUserResponseData } from "@/redux/counterSlice";
+import { calculateProgressPercentage, calculateReward } from "@/utils/logix";
 import { getCookie } from "cookies-next";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
@@ -22,10 +23,11 @@ const customHeader = {
   },
 }
 
-export function QuestionCard({ data, index, setData, pn, sessionId }) {
+export function QuestionCard({ data, index, setData, pn, sessionId, correct, incorrect, remaining }) {
   const dispatch = useDispatch();
   const reduxData = useSelector((state) => state.quiz.userResponse);
   const processPercentage = useSelector((state) => state.quiz.processPercentage);
+  const lastSentReward = useSelector((state) => state.quiz.lastSentReward);
   const [percentgae, setPercentage] = useState(null);
   const [filter, setFilter] = useState(null);
   const [userResponse, setUserResponse] = useState({
@@ -40,12 +42,16 @@ export function QuestionCard({ data, index, setData, pn, sessionId }) {
   }, [reduxData, processPercentage, data]);
 
   const updateResponce = async (idx) => {
+    debugger
+    let percentage = calculateProgressPercentage(correct, incorrect, remaining);
+    let rewardsValue = calculateReward(percentage, lastSentReward);
+    dispatch(setLastSentReward(rewardsValue.lastSentReward))
     let model = {
       quizSessionId: sessionId,
       quizQuestionId: data._id,
       userResponse: idx,
       currentAnswer: data.QUIZ_QUESTION.CORRECT_ANSWER,
-      reward: 40,
+      reward: rewardsValue.reward,
       timeCollapsed: 20,
       progressStatus: processPercentage
     }
@@ -64,7 +70,7 @@ export function QuestionCard({ data, index, setData, pn, sessionId }) {
   };
 
   const handleOptionClick = async (idx) => {
-    setUserResponse({ selectedIndex: idx, isDisabled: true, setUserResponse:data._id })
+    setUserResponse({ selectedIndex: idx, isDisabled: true, setUserResponse: data._id })
     setData(prevState => ({
       ...prevState,
       remaining: prevState.remaining - 1, // Decrement remaining by 1
@@ -112,7 +118,7 @@ export function QuestionCard({ data, index, setData, pn, sessionId }) {
                   variant = 'gray'; // Default for unselected and incorrect options
                 }
               }
-               else if (userResponse.selectedIndex !== null) {
+              else if (userResponse.selectedIndex !== null) {
                 // If current user has selected, apply the same logic
                 if (idx === userResponse.selectedIndex) {
                   variant = data.QUIZ_QUESTION.CORRECT_ANSWER === idx ? 'success' : 'danger';

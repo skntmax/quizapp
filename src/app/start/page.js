@@ -5,6 +5,7 @@ import CommonHeader from "@/modules/common_modules/CommonHeader";
 import Footer from "@/modules/common_modules/Footer";
 import QuizPage from "@/modules/ui_modules/QuizPage";
 import { getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const customHeader = {
@@ -16,7 +17,7 @@ const customHeader = {
 
 export default function Page() {
     const [data, setData] = useState(undefined);
-
+    const router = useRouter();
     useEffect(() => {
         fetchData();
     }, []);
@@ -28,7 +29,10 @@ export default function Page() {
             );
             if (!response.status) {
                 throw new Error({ success: false, message: "Failed to fetch data" });
-            } else {
+            } else if (response.result.data.length === 0) {
+                router.push('/')
+            }
+            else {
                 setData(response.result)
             }
         } catch (err) {

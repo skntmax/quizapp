@@ -55,8 +55,8 @@ function isTimeLeftOrNot(createdOn, quizTimeSpan) {
 }
 
 const mapApiDataToReduxModel = (apiData) => {
-    let correct = apiData.RESPONDED_QUIZ_QUESTION_LIST.filter(q => q.CORRECT_ANSWER === q.USER_RESPONDED_ANSWER).length; 
-    let incorrect =apiData.RESPONDED_QUIZ_QUESTION_LIST.filter(q => q.CORRECT_ANSWER !== q.USER_RESPONDED_ANSWER).length;
+    let correct = apiData.RESPONDED_QUIZ_QUESTION_LIST.filter(q => q.CORRECT_ANSWER === q.USER_RESPONDED_ANSWER).length;
+    let incorrect = apiData.RESPONDED_QUIZ_QUESTION_LIST.filter(q => q.CORRECT_ANSWER !== q.USER_RESPONDED_ANSWER).length;
     let userResponse = apiData.RESPONDED_QUIZ_QUESTION_LIST.map(item => ({
         quizSessionId: item.QUIZ_SESSION_ID,
         quizQuestionId: item.QUIZ_QUESITION_ID,
@@ -65,7 +65,7 @@ const mapApiDataToReduxModel = (apiData) => {
         reward: item.REWARD,
         timeCollapsed: item.TIME_COLLAPSED,
         progressStatus: item.PROGRESS_STATUS,
-      }));
+    }));
     return {
         sessionId: apiData.RESPONDED_QUIZ_QUESTION_LIST[0]?.QUIZ_SESSION_ID || null,
         correct: correct,
@@ -79,7 +79,7 @@ const mapApiDataToReduxModel = (apiData) => {
             pn: 1,
             total: apiData.SESSION_QUIZ_LIST.totalQuizItems,
             itemsPerPage: 10,
-            quizCat:apiData.QUIZ_CATEGORY,
+            quizCat: apiData.QUIZ_CATEGORY,
             data: apiData.SESSION_QUIZ_LIST.questionList,
         },
         difficulty_level: {
@@ -87,10 +87,59 @@ const mapApiDataToReduxModel = (apiData) => {
             itemsPerPage: 10,
             data: undefined,
             _id: apiData.QUIZ_DIFFICULTY
-          },
+        },
         userResponse: userResponse
     };
 };
 
+const calculateReward = (processPercentage, lastSentReward) => {
+    let reward = 0;
 
-export { getRandomVariant, isTimeLeftOrNot, mapApiDataToReduxModel  }
+    if (processPercentage >= 10 && processPercentage < 20 && lastSentReward < 10) {
+        reward = 10;
+        lastSentReward = 10;
+    } else if (processPercentage >= 20 && processPercentage < 30 && lastSentReward < 20) {
+        reward = 20;
+        lastSentReward = 20;
+    } else if (processPercentage >= 30 && processPercentage < 40 && lastSentReward < 30) {
+        reward = 30;
+        lastSentReward = 30;
+    } else if (processPercentage >= 40 && processPercentage < 50 && lastSentReward < 40) {
+        reward = 40;
+        lastSentReward = 40;
+    } else if (processPercentage >= 50 && processPercentage < 60 && lastSentReward < 50) {
+        reward = 50;
+        lastSentReward = 50;
+    } else if (processPercentage >= 60 && processPercentage < 70 && lastSentReward < 60) {
+        reward = 60;
+        lastSentReward = 60;
+    } else if (processPercentage >= 70 && processPercentage < 80 && lastSentReward < 70) {
+        reward = 70;
+        lastSentReward = 70;
+    } else if (processPercentage >= 80 && processPercentage < 90 && lastSentReward < 80) {
+        reward = 80;
+        lastSentReward = 80;
+    } else if (processPercentage >= 90 && processPercentage <= 100 && lastSentReward < 90) {
+        reward = 90;
+        lastSentReward = 90;
+    }else{
+        reward = 0;
+        lastSentReward = lastSentReward;
+    }
+
+    return { reward, lastSentReward };
+};
+
+
+const calculateProgressPercentage = (correct, incorrect, remaining) => {
+    const total = correct + incorrect + remaining;
+    if (Math.ceil(total) > 0) {
+        return Math.round(((correct + incorrect) / total) * 100); // No division by 10, so it returns exact percentages
+    } else {
+        return 0;
+    }
+}
+
+
+
+export { getRandomVariant, isTimeLeftOrNot, mapApiDataToReduxModel, calculateReward, calculateProgressPercentage }
