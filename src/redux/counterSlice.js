@@ -10,6 +10,7 @@ let initialState = {
   processPercentage: 0,
   pagination_loder: false,
   more_cat_loder: false,
+  lastSentReward:0,
   difficulty_level: {
     pn: 1,
     itemsPerPage: 10,
@@ -42,6 +43,9 @@ export const quizSlice = createSlice({
   reducers: {
     setSessionId: (state, action) => {
       state.sessionId = action.payload;
+    },
+    setLastSentReward: (state, action) => {
+      state.lastSentReward = action.payload;
     },
     setProgressPercentage: (state, action) => {
       state.processPercentage = action.payload;
@@ -123,7 +127,8 @@ export const {
   setProgressPercentage,
   setCorrect,
   setIncorrect,
-  setUserResumeResponseData
+  setUserResumeResponseData,
+  setLastSentReward
 } = quizSlice.actions;
 
 export default quizSlice.reducer;

@@ -30,7 +30,7 @@ import {
     AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import { getRandomVariant } from "@/utils/logix";
-import { throttle } from "lodash";
+import { set, throttle } from "lodash";
 
 const customHeader = {
     headers: {
@@ -52,6 +52,7 @@ export default function QuizPage() {
         dialog: true,
         sessionId: null,
         activeStep: 0,
+        processPercentage:undefined,
         correct: 0,
         incorrect: 0,
         remaining: 0,
@@ -291,6 +292,7 @@ export default function QuizPage() {
     };
 
     const handleRedirect = async () => {
+        setLoader(true)
         try {
             const response = await getRequest("quiz/finished-quiz",
                 customHeader
@@ -299,6 +301,7 @@ export default function QuizPage() {
             if (response.status) {
                 router.push(quizUrls.history)
                 dispatch(resetQuiz())
+                setLoader(false)
             }
         } catch (err) {
             throw new Error(err.message);
@@ -364,7 +367,7 @@ export default function QuizPage() {
                             }
                             {
                                 data.questions_list.data !== undefined && !data.pagination_loder &&
-                                data.questions_list.data.map((item, index) => <QuestionCard data={item} sessionId={data.sessionId} setData={setData} index={index} pn={data.questions_list.pn} />)
+                                data.questions_list.data.map((item, index) => <QuestionCard data={item} sessionId={data.sessionId} setData={setData} index={index} pn={data.questions_list.pn} correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />)
                             }
 
                             {data.questions_list.data !== undefined && data.remaining === 0 &&
