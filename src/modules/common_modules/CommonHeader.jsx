@@ -10,11 +10,12 @@ import { useSelector } from "react-redux"
 
 export default function CommonHeader() {
     const cdDetails = getSingleCookiesCSR(cookies.btcode_live_cd)
-    let  quizDetails = useSelector(ele=> ele?.quiz?.quizSessionDetails) 
+    let quizDetails = useSelector(ele => ele?.quiz?.quizSessionDetails)
+    const lastSentReward = useSelector((state) => state.quiz.lastSentReward);
 
-    let TimerCmp = useCallback(()=>{
-       return <Timer timerSession = {quizDetails} />
-    },[quizDetails?.QUIZ_TIMESPAN , quizDetails?.CREATED_ON])
+    let TimerCmp = useCallback(() => {
+        return <Timer timerSession={quizDetails} />
+    }, [quizDetails?.QUIZ_TIMESPAN, quizDetails?.CREATED_ON])
 
     return (
         <header className="sticky top-0 z-40 w-full px-4 bg-background">
@@ -27,9 +28,10 @@ export default function CommonHeader() {
                 </div>
                 <div className="flex flex-1 items-center justify-end space-x-4">
                     <nav className="flex items-center space-x-1">
-                        {quizDetails?.QUIZ_TIMESPAN && quizDetails?.CREATED_ON &&  TimerCmp()}
+                        {quizDetails?.QUIZ_TIMESPAN && quizDetails?.CREATED_ON && TimerCmp()}
                         <User /> {cdDetails ? cdDetails.USERNAME : null}
                         <Trophy className="ml-2" />
+                        {lastSentReward}
                         <ThemeToggle />
                     </nav>
                 </div>
