@@ -41,51 +41,65 @@ export function QuestionCard({ data, index, setData, pn, sessionId, correct, inc
     setFilter(filterData);
   }, [reduxData, processPercentage, data]);
 
-  const updateResponce = async (idx) => {
-    debugger
-    let percentage = calculateProgressPercentage(correct, incorrect, remaining);
-    let rewardsValue = calculateReward(percentage, lastSentReward);
-    dispatch(setLastSentReward(rewardsValue.lastSentReward))
-    let model = {
+  const updateResponce = async (idx, latestProgressPercentage) => {
+    debugger;
+  
+    // Calculate rewards based on the latest progress percentage
+    const rewardsValue = calculateReward(latestProgressPercentage, lastSentReward);
+  
+    // Update the last sent reward in Redux
+    dispatch(setLastSentReward(rewardsValue.lastSentReward));
+  
+    // Build the model with the latest progress percentage
+    const model = {
       quizSessionId: sessionId,
       quizQuestionId: data._id,
       userResponse: idx,
       currentAnswer: data.QUIZ_QUESTION.CORRECT_ANSWER,
       reward: rewardsValue.reward,
       timeCollapsed: 20,
-      progressStatus: processPercentage
-    }
+      progressStatus: latestProgressPercentage // Updated with the latest progress percentage
+    };
+  
     try {
-      let responce = await postRequest('quiz/update-quiz-response',
-        model,
-        customHeader
-      )
-      if (responce.status) {
-        dispatch(setUserResponseData(model))
+      const response = await postRequest('quiz/update-quiz-response', model, customHeader);
+      if (response.status) {
+        dispatch(setUserResponseData(model));
       }
-    }
-    catch (error) {
-
+    } catch (error) {
+      console.error("Error updating response:", error);
     }
   };
+  
 
   const handleOptionClick = async (idx) => {
-    setUserResponse({ selectedIndex: idx, isDisabled: true, setUserResponse: data._id })
+    setUserResponse({ selectedIndex: idx, isDisabled: true, setUserResponse: data._id });
+  
+    // Update the state based on the user's selection
     setData(prevState => ({
       ...prevState,
-      remaining: prevState.remaining - 1, // Decrement remaining by 1
-      correct: data.QUIZ_QUESTION.CORRECT_ANSWER === idx
-        ? prevState.correct + 1 // Increment correct if the answer is right
-        : prevState.correct, // Otherwise, leave it unchanged
-      incorrect: data.QUIZ_QUESTION.CORRECT_ANSWER !== idx
-        ? prevState.incorrect + 1 // Increment incorrect if the answer is wrong
-        : prevState.incorrect // Otherwise, leave it unchanged
+      remaining: prevState.remaining - 1,
+      correct: data.QUIZ_QUESTION.CORRECT_ANSWER === idx ? prevState.correct + 1 : prevState.correct,
+      incorrect: data.QUIZ_QUESTION.CORRECT_ANSWER !== idx ? prevState.incorrect + 1 : prevState.incorrect
     }));
-    dispatch(incrementCorrect(data.QUIZ_QUESTION.CORRECT_ANSWER === idx))
-    dispatch(incrementIncorrect(data.QUIZ_QUESTION.CORRECT_ANSWER !== idx))
-    dispatch(setRemaining())
-    await updateResponce(idx)
+  
+    // Dispatch actions to update Redux state
+    dispatch(incrementCorrect(data.QUIZ_QUESTION.CORRECT_ANSWER === idx));
+    dispatch(incrementIncorrect(data.QUIZ_QUESTION.CORRECT_ANSWER !== idx));
+    dispatch(setRemaining());
+  
+    // Calculate the latest progress percentage after the answer selection
+    const latestProgressPercentage = calculateProgressPercentage(
+      data.QUIZ_QUESTION.CORRECT_ANSWER === idx ? correct + 1 : correct,
+      data.QUIZ_QUESTION.CORRECT_ANSWER !== idx ? incorrect + 1 : incorrect,
+      remaining - 1
+    );
+  
+    // Pass the selected index and latest progress percentage to updateResponce
+    await updateResponce(idx, latestProgressPercentage);
   };
+  
+  
 
   return (
     <>
