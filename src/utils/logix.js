@@ -119,7 +119,7 @@ const calculateReward = (processPercentage, lastSentReward) => {
     } else if (processPercentage >= 80 && processPercentage < 90 && lastSentReward < 80) {
         reward = 80;
         lastSentReward = 80;
-    } else if (processPercentage >= 90 && processPercentage <= 100 && lastSentReward < 90) {
+    } else if (processPercentage >= 90 && processPercentage < 100 && lastSentReward < 90) {
         reward = 90;
         lastSentReward = 90;
     }else{
