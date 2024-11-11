@@ -123,7 +123,7 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                                                     {`${item.DIFFICULTY_LEVEL} ${item.TOTAL_COUNT}`}
                                                                 </div>
                                                                 <div className="flex items-center space-x-2 mt-1">
-                                                                    <span>{'10:20:00'}</span>
+                                                                    <span>{item.QUIZ_TIMESPAN}</span>
                                                                     <Clock className="w-5 h-5" /> {/* Adjust size as needed */}
                                                                 </div>
                                                             </div>
