@@ -42,7 +42,6 @@ export function QuestionCard({ data, index, setData, pn, sessionId, correct, inc
   }, [reduxData, processPercentage, data]);
 
   const updateResponce = async (idx, latestProgressPercentage) => {
-    debugger;
   
     // Calculate rewards based on the latest progress percentage
     const rewardsValue = calculateReward(latestProgressPercentage, lastSentReward);
