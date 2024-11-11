@@ -41,10 +41,10 @@ export function QuestionCard({ data, index, setData, pn, sessionId, correct, inc
     setFilter(filterData);
   }, [reduxData, processPercentage, data]);
 
-  const updateResponce = async (idx, latestProgressPercentage) => {
+  const updateResponce = async (idx, latestProgressPercentage, isCorrect) => {
   
     // Calculate rewards based on the latest progress percentage
-    const rewardsValue = calculateReward(latestProgressPercentage, lastSentReward);
+    const rewardsValue = calculateReward(latestProgressPercentage, lastSentReward ,isCorrect);
   
     // Update the last sent reward in Redux
     dispatch(setLastSentReward(rewardsValue.lastSentReward));
@@ -94,8 +94,9 @@ export function QuestionCard({ data, index, setData, pn, sessionId, correct, inc
       remaining - 1
     );
   
+    const isCorrect = data.QUIZ_QUESTION.CORRECT_ANSWER === idx;
     // Pass the selected index and latest progress percentage to updateResponce
-    await updateResponce(idx, latestProgressPercentage);
+    await updateResponce(idx, latestProgressPercentage, isCorrect);
   };
   
   
