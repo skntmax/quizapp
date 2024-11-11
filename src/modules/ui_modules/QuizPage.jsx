@@ -299,7 +299,7 @@ export default function QuizPage() {
             );
 
             if (response.status) {
-                router.push(quizUrls.history)
+                router.push('/history')
                 dispatch(resetQuiz())
                 setLoader(false)
             }
