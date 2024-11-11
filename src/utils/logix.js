@@ -51,7 +51,7 @@ function isTimeLeftOrNot(createdOn, quizTimeSpan) {
     const diffInMinutes = eTime.diff(sTime, 'minutes');
 
     let timeLeft = quizTimeSpan - diffInMinutes
-    return timeLeft *60  // in seconds
+    return timeLeft * 60  // in seconds
 }
 
 const mapApiDataToReduxModel = (apiData) => {
@@ -92,41 +92,46 @@ const mapApiDataToReduxModel = (apiData) => {
     };
 };
 
-const calculateReward = (processPercentage, lastSentReward) => {
+const calculateReward = (processPercentage, lastSentReward, isCorrect) => {
     let reward = 0;
 
-    if (processPercentage >= 10 && processPercentage < 20 && lastSentReward < 10) {
-        reward = 10;
-        lastSentReward = 10;
-    } else if (processPercentage >= 20 && processPercentage < 30 && lastSentReward < 20) {
-        reward = 20;
-        lastSentReward = 20;
-    } else if (processPercentage >= 30 && processPercentage < 40 && lastSentReward < 30) {
-        reward = 30;
-        lastSentReward = 30;
-    } else if (processPercentage >= 40 && processPercentage < 50 && lastSentReward < 40) {
-        reward = 40;
-        lastSentReward = 40;
-    } else if (processPercentage >= 50 && processPercentage < 60 && lastSentReward < 50) {
-        reward = 50;
-        lastSentReward = 50;
-    } else if (processPercentage >= 60 && processPercentage < 70 && lastSentReward < 60) {
-        reward = 60;
-        lastSentReward = 60;
-    } else if (processPercentage >= 70 && processPercentage < 80 && lastSentReward < 70) {
-        reward = 70;
-        lastSentReward = 70;
-    } else if (processPercentage >= 80 && processPercentage < 90 && lastSentReward < 80) {
-        reward = 80;
-        lastSentReward = 80;
-    } else if (processPercentage >= 90 && processPercentage < 99 && lastSentReward < 90) {
-        reward = 90;
-        lastSentReward = 90;
-    }else if(processPercentage === 100){
-        reward = 100;
-        lastSentReward = 100;
-    }
-    else{
+    if (isCorrect) {
+        if (processPercentage >= 10 && processPercentage < 20 && lastSentReward < 10) {
+            reward = 10;
+            lastSentReward = 10;
+        } else if (processPercentage >= 20 && processPercentage < 30 && lastSentReward < 20) {
+            reward = 20;
+            lastSentReward = 20;
+        } else if (processPercentage >= 30 && processPercentage < 40 && lastSentReward < 30) {
+            reward = 30;
+            lastSentReward = 30;
+        } else if (processPercentage >= 40 && processPercentage < 50 && lastSentReward < 40) {
+            reward = 40;
+            lastSentReward = 40;
+        } else if (processPercentage >= 50 && processPercentage < 60 && lastSentReward < 50) {
+            reward = 50;
+            lastSentReward = 50;
+        } else if (processPercentage >= 60 && processPercentage < 70 && lastSentReward < 60) {
+            reward = 60;
+            lastSentReward = 60;
+        } else if (processPercentage >= 70 && processPercentage < 80 && lastSentReward < 70) {
+            reward = 70;
+            lastSentReward = 70;
+        } else if (processPercentage >= 80 && processPercentage < 90 && lastSentReward < 80) {
+            reward = 80;
+            lastSentReward = 80;
+        } else if (processPercentage >= 90 && processPercentage < 99 && lastSentReward < 90) {
+            reward = 90;
+            lastSentReward = 90;
+        } else if (processPercentage === 100) {
+            reward = 100;
+            lastSentReward = 100;
+        }
+        else {
+            reward = 0;
+            lastSentReward = lastSentReward;
+        }
+    } else {
         reward = 0;
         lastSentReward = lastSentReward;
     }
