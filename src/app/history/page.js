@@ -7,6 +7,8 @@ import QuizPage from "@/modules/ui_modules/QuizPage";
 import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
 
+
+
 const customHeader = {
     headers: {
         "Authorization": `Bearer ${getCookie(cookies.btcode_live_cd_key)}`, // Replace with your actual token or header value
