@@ -47,7 +47,9 @@ export function QuestionCard({ data, index, setData, pn, sessionId, correct, inc
     const rewardsValue = calculateReward(latestProgressPercentage, lastSentReward ,isCorrect);
   
     // Update the last sent reward in Redux
-    dispatch(setLastSentReward(rewardsValue.lastSentReward));
+    if(isCorrect){
+      dispatch(setLastSentReward(rewardsValue.lastSentReward));
+    }
   
     // Build the model with the latest progress percentage
     const model = {
