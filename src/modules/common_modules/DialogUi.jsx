@@ -150,6 +150,7 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                         Progress Tracker: Include a progress bar to show completion status.
 
                                         These additions will enhance the user experience and reduce concerns during the quiz.
+                                        
                                         <Button variant={getRandomVariant()} size='lg' onClick={() => handleNext()}>Finish</Button>
                                     </div>
                                 )
