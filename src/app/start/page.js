@@ -30,7 +30,7 @@ export default function Page() {
             if (!response.status) {
                 throw new Error({ success: false, message: "Failed to fetch data" });
             } else if (response.result.data.length === 0) {
-                router.push('/')
+                // router.push('/')
             }
             else {
                 setData(response.result)
