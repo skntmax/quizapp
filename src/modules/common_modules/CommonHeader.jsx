@@ -5,8 +5,8 @@ import { cookies } from "@/constant"
 import getSingleCookiesCSR from "@/utils/cookies"
 import { Link, Trophy, User } from "lucide-react"
 import Timer from "./Timer"
-import { useCallback } from "react"
 import { useSelector } from "react-redux"
+import { useCallback } from "react"
 
 export default function CommonHeader() {
     const cdDetails = getSingleCookiesCSR(cookies.btcode_live_cd)
