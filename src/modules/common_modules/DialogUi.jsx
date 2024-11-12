@@ -10,8 +10,9 @@ import { InfinitySpin } from "react-loader-spinner";
 import { ShimmerButtonTen, ShimmerButtonThree } from "./shimmer-effects/ShimmerButtonUi";
 import { useState } from "react";
 import { Clock } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export function DialogUi({ data, setData, handleCategories, handleDefficultLevel, steps, handleMoreCategory, loder }) {
+export function DialogUi({ data, setData, handleCategories, handleDefficultLevel, steps, handleMoreCategory, loder, handleNext }) {
     const { categories, difficulty_level, more_cat_loder } = data;
 
     return (
@@ -123,7 +124,7 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                                                     {`${item.DIFFICULTY_LEVEL} ${item.TOTAL_COUNT}`}
                                                                 </div>
                                                                 <div className="flex items-center space-x-2 mt-1">
-                                                                    <span>{'10:20:00'}</span>
+                                                                    <span>{item.QUIZ_TIMESPAN}</span>
                                                                     <Clock className="w-5 h-5" /> {/* Adjust size as needed */}
                                                                 </div>
                                                             </div>
@@ -133,6 +134,24 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                         }
                                     </>
 
+                                )
+                            }
+                            {
+                                data.activeStep == 2 && (
+                                    <div className={cn("flex flex-wrap justify-center gap-4 p-4")}>
+                                        For your quiz app, here’s a quick summary to address user concerns:
+                                        Instructions & Navigation: Show a welcome screen with clear quiz rules, scoring, and how to navigate between questions.
+                                        Time Management: Add a countdown timer and provide a warning when time is almost up.
+
+                                        Autosave & Resume: Enable autosave so users can resume if interrupted.
+
+                                        Question Review: Allow users to flag questions to revisit before submission.
+
+                                        Progress Tracker: Include a progress bar to show completion status.
+
+                                        These additions will enhance the user experience and reduce concerns during the quiz.
+                                        <Button variant={getRandomVariant()} size='lg' onClick={() => handleNext()}>Finish</Button>
+                                    </div>
                                 )
                             }
                         </>

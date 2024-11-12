@@ -39,7 +39,7 @@ const customHeader = {
     },
 }
 
-const steps = [{ label: 'Step 1' }, { label: 'Step 2' }];
+const steps = [{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }];
 
 export default function QuizPage() {
     const dispatch = useDispatch();
@@ -52,7 +52,7 @@ export default function QuizPage() {
         dialog: true,
         sessionId: null,
         activeStep: 0,
-        processPercentage:undefined,
+        processPercentage: undefined,
         correct: 0,
         incorrect: 0,
         remaining: 0,
@@ -317,7 +317,7 @@ export default function QuizPage() {
                     </>
                     :
                     <>
-                        <DialogUi loder={catAndDiffloader} steps={steps} data={data} setData={setData} handleCategories={handleCategories} handleDefficultLevel={handleDefficultLevel} handleMoreCategory={handleMoreCategory} />
+                        <DialogUi handleNext={handleNext} loder={catAndDiffloader} steps={steps} data={data} setData={setData} handleCategories={handleCategories} handleDefficultLevel={handleDefficultLevel} handleMoreCategory={handleMoreCategory} />
 
                         {
                             data.questions_list.data === undefined && (
@@ -325,17 +325,19 @@ export default function QuizPage() {
                             )
                         }
 
-                        {
-                            data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                            <QuizHeader correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
-                        }
+                        <div className="sticky z-40 bg-background" style={{ top: '64px' }}>
+                            {
+                                data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
+                                <QuizHeader correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
+                            }
 
-                        {
-                            data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                            <div>
-                                <ProgressUi correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
-                            </div>
-                        }
+                            {
+                                data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
+                                <div>
+                                    <ProgressUi correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
+                                </div>
+                            }
+                        </div>
 
                         <div className='w-[95vw] md:w-[70vw] m-auto'>
                             {
