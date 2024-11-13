@@ -6,8 +6,7 @@ import Footer from "@/modules/common_modules/Footer";
 import QuizPage from "@/modules/ui_modules/QuizPage";
 import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
-
-
+import HistoryList from "@/modules/HistoryList/HistoryList.jsx";
 
 const customHeader = {
     headers: {
@@ -43,7 +42,7 @@ export default function Page() {
 
         <CommonHeader />
         
-        { data !==undefined && data.length > 0 &&
+        {/* { data !==undefined && data.length > 0 &&
             <div>
                 <h1>Quiz List</h1>
                 <table>
@@ -67,7 +66,9 @@ export default function Page() {
                     </tbody>
                 </table>
             </div>
-        }
+        } */}
+
+<HistoryList/>
 
         <Footer />
 
