@@ -6,6 +6,7 @@ import Footer from "@/modules/common_modules/Footer";
 import QuizPage from "@/modules/ui_modules/QuizPage";
 import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
+import HistoryList from "@/modules/ui_modules/HistoryList/HistoryList.jsx";
 
 
 
@@ -68,6 +69,8 @@ export default function Page() {
                 </table>
             </div>
         }
+
+        <HistoryList/>
 
         <Footer />
 
