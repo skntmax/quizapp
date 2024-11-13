@@ -7,6 +7,7 @@ import QuizPage from "@/modules/ui_modules/QuizPage";
 import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
 import HistoryList from "@/modules/HistoryList/HistoryList.jsx";
+import DnaLoder from "@/modules/loders/DnaLoder";
 
 const customHeader = {
     headers: {
@@ -16,12 +17,14 @@ const customHeader = {
 
 export default function Page() {
     const [data, setData] = useState(undefined)
+    const [loader, setLoader] = useState(false)
 
     useEffect(() => {
         fetchHistory();
     }, []);
 
     const fetchHistory = async () => {
+        setLoader(true)
         try {
             const response = await getRequest("quiz/get-users-quiz-history",
                 customHeader
@@ -31,46 +34,24 @@ export default function Page() {
                 setData(response.result.data)
             }
         } catch (err) {
+            setLoader(false)
             throw new Error(err.message); // Set any errors that occur
         }
+        setLoader(false)
     };
 
     return <>
+        {
+            data !== undefined && data.length > 0 ? <>
+                <CommonHeader />
+                <HistoryList data={data} />
+                <Footer />
+            </> :
+                <>
+                    <DnaLoder />
+                </>
+        }
 
-
-
-
-        <CommonHeader />
-        
-        {/* { data !==undefined && data.length > 0 &&
-            <div>
-                <h1>Quiz List</h1>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Category</th>
-                            <th>Difficulty</th>
-                            <th>Reward</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((quiz) => (
-                            <tr key={quiz._id}>
-                                <td>{quiz._id}</td>
-                                <td>{quiz.QUIZ_CAT}</td>
-                                <td>{quiz.QUIZ_DIFF}</td>
-                                <td>{quiz.REWARD}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        } */}
-
-<HistoryList/>
-
-        <Footer />
 
     </>
 }
