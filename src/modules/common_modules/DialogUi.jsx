@@ -11,9 +11,11 @@ import { ShimmerButtonTen, ShimmerButtonThree } from "./shimmer-effects/ShimmerB
 import { useState } from "react";
 import { Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function DialogUi({ data, setData, handleCategories, handleDefficultLevel, steps, handleMoreCategory, loder, handleNext }) {
     const { categories, difficulty_level, more_cat_loder } = data;
+    const [checked, setChecked] = useState(false);
 
     return (
         <Dialog open={data.dialog} onOpenChange={(open) => open && setData(prev => ({ ...prev, dialog: open }))}>
@@ -138,20 +140,23 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                             }
                             {
                                 data.activeStep == 2 && (
-                                    <div className={cn("flex flex-wrap justify-center gap-4 p-4")}>
-                                        For your quiz app, here’s a quick summary to address user concerns:
-                                        Instructions & Navigation: Show a welcome screen with clear quiz rules, scoring, and how to navigate between questions.
-                                        Time Management: Add a countdown timer and provide a warning when time is almost up.
-
-                                        Autosave & Resume: Enable autosave so users can resume if interrupted.
-
-                                        Question Review: Allow users to flag questions to revisit before submission.
-
-                                        Progress Tracker: Include a progress bar to show completion status.
-
-                                        These additions will enhance the user experience and reduce concerns during the quiz.
-                                        
-                                        <Button variant={getRandomVariant()} size='lg' onClick={() => handleNext()}>Finish</Button>
+                                    <div>
+                                        <div className={cn("flex flex-wrap justify-center gap-4 p-4")}>“ By proceeding with this test, you acknowledge that you have read and understood the information provided and consent to participate voluntarily. Your participation implies agreement with the terms outlined, including any data usage as described “</div>
+                                        <div className="flex items-center space-x-2 px-4">
+                                            <Checkbox
+                                                onClick={() => setChecked(!checked)}
+                                                checked={checked}
+                                            />
+                                            <label
+                                                htmlFor="terms"
+                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                            >
+                                                Accept terms and conditions
+                                            </label>
+                                        </div>
+                                        <div className={cn("flex flex-wrap justify-center gap-4 p-4")}>
+                                            <Button disabled={!checked} variant={getRandomVariant()} size='lg' onClick={() => handleNext()}>Start Test...</Button>
+                                        </div>
                                     </div>
                                 )
                             }
