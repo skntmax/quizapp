@@ -15,6 +15,7 @@ import { getRandomVariant, mapApiDataToReduxModel } from "@/utils/logix";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { InfinitySpin } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
 
 const customHeader = {
@@ -27,6 +28,7 @@ const customHeader = {
 export function AlertDialogDemo() {
   const sessionId = useSelector((state) => state.quiz.sessionId);
   const router = useRouter();
+  const [loader, setLoader] = useState(false);
   const [isOpen, setIsOpen] = useState(true); // Dialog state
   const dispatch = useDispatch()
 
@@ -56,12 +58,13 @@ export function AlertDialogDemo() {
   const handleResume = async () => {
     // Logic for resume action
     // dispatch(setDialog(false))
+    setLoader(true)
     if (sessionId) {
       try {
         const response = await getRequest("quiz/get-paused-quiz-session-data",
           customHeader
         );
-        
+
         if (response.status) {
           let data = mapApiDataToReduxModel(response.result.data);
           dispatch(setSessionId(data.sessionId))
@@ -80,6 +83,7 @@ export function AlertDialogDemo() {
     }
     router.push(quizUrls.start)
     setIsOpen(false); // Close dialog after resume action
+    setLoader(false)
   };
   return (
     <>
@@ -91,18 +95,35 @@ export function AlertDialogDemo() {
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogTitle>What would you like to do?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
+              You can restart the quiz to begin a new challenge or resume where you left off to continue your progress.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <Button onClick={handleRestart} variant={getRandomVariant()}>Restart</Button>
-            <Button onClick={handleResume} variant={getRandomVariant()}>Resume</Button>
+            {
+              loader ?
+                <InfinitySpin
+                  visible={true}
+                  width="200"
+                  color="#ed1d24"
+                  ariaLabel="infinity-spin-loading"
+                />
+                :
+                <div className="flex flex-col-2">
+                  <div className="py-2 px-2">
+                    <Button onClick={handleRestart} variant={getRandomVariant()}>Start New Quiz</Button>
+                  </div>
+                  <div  className="py-2 px-2">
+                    <Button onClick={handleResume} variant={getRandomVariant()}>Resume Last Quiz</Button>
+                  </div>
+                </div>
+            }
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+
     </>
   );
 }

@@ -23,7 +23,13 @@ export default function CommonHeader() {
                 <div className="flex gap-6 md:gap-10">
                     <div className="flex items-center text-black dark:text-white space-x-4">
                         {/* <Icons.logo className="h-6 w-6" /> */}
-                        <span className="inline-block font-bold ">BYTE CODE</span>
+                        <a href="https://bytecode.live/">
+                        <span className="inline-block font-bold ">
+                        <img  width="170" height="25" 
+                         src="https://bytecode.live/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flightlogo.178ba7a4.png&w=256&q=75" 
+                         style={{color: "transparent"}} />
+                        </span>
+                        </a>
                     </div>
                 </div>
                 <div className="flex flex-1 items-center justify-end space-x-4">

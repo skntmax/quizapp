@@ -104,8 +104,8 @@ export function QuestionCard({ data, index, setData, pn, sessionId, correct, inc
   
 
   return (
-    <>
-      <Card>
+    <div>
+      <Card className="my-4">
         <CardHeader>
           <CardTitle className='text-lg  font-semibold'>
             {pn === 1
@@ -167,6 +167,6 @@ export function QuestionCard({ data, index, setData, pn, sessionId, correct, inc
           <AccordionUi disabled={userResponse.isDisabled || filter?.quizQuestionId ? true : false} title='Show Explanation' description={<MdEditorCmp disc={data.QUIZ_QUESTION.DISC} />} />
         </CardFooter>
       </Card>
-    </>
+    </div>
   );
 }

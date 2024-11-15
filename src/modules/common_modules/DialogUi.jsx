@@ -59,14 +59,24 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                             categories.data === undefined &&
                                             (
                                                 <div className="flex flex-wrap justify-center gap-4 p-4">
-                                                    <ShimmerButtonTen className='w-[10px]' />
+                                                    <InfinitySpin
+                                                        visible={true}
+                                                        width="200"
+                                                        color="#ed1d24"
+                                                        ariaLabel="infinity-spin-loading"
+                                                    />
                                                 </div>)
                                         }
                                         {
                                             more_cat_loder &&
                                             (
                                                 <div className="flex flex-wrap justify-center gap-4 p-4">
-                                                    <ShimmerButtonTen className='' />
+                                                    <InfinitySpin
+                                                        visible={true}
+                                                        width="200"
+                                                        color="#ed1d24"
+                                                        ariaLabel="infinity-spin-loading"
+                                                    />
                                                 </div>)
                                         }
                                         {
@@ -108,7 +118,12 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                             difficulty_level.data === undefined &&
                                             (
                                                 <div className="flex flex-wrap justify-center gap-4 p-4">
-                                                    <ShimmerButtonThree className='' />
+                                                    <InfinitySpin
+                                                        visible={true}
+                                                        width="200"
+                                                        color="#ed1d24"
+                                                        ariaLabel="infinity-spin-loading"
+                                                    />
                                                 </div>)
                                         }
                                         {
@@ -141,15 +156,15 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                             {
                                 data.activeStep == 2 && (
                                     <div>
-                                        <div className={cn("flex flex-wrap justify-center gap-4 p-4")}>“ By proceeding with this test, you acknowledge that you have read and understood the information provided and consent to participate voluntarily. Your participation implies agreement with the terms outlined, including any data usage as described “</div>
-                                        <div className="flex items-center space-x-2 px-4">
+                                        <div className={cn("flex flex-wrap justify-center text-center gap-4 p-4")}>By proceeding with this test, you acknowledge that you have read and understood the information provided and consent to participate voluntarily. Your participation implies agreement with the terms outlined, including any data usage as described.</div>
+                                        <div className="flex items-center  justify-center text-center space-x-2 px-4">
                                             <Checkbox
                                                 onClick={() => setChecked(!checked)}
                                                 checked={checked}
                                             />
                                             <label
                                                 htmlFor="terms"
-                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                className="text-sm font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                             >
                                                 Accept terms and conditions
                                             </label>

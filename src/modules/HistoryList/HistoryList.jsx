@@ -23,8 +23,8 @@ export default function HistoryList({ data }) {
             <div className="w-full px-2 py-4">
                 <div className="border rounded-lg p-6">
                     <div className="mb-6">
-                        <div className="flex flex-col-2 gap-4">
-                            <div className="md:w-1/2 px-2">
+                        <div className="flex gap-4">
+                            <div className="px-2">
                                 <h4 className="text-lg font-semibold mb-4">TERMS TO REFER</h4>
                                 <div className="flex flex-col gap-4">
                                     <div className="flex items-start gap-4">
@@ -86,7 +86,7 @@ export default function HistoryList({ data }) {
                                     </span>
                                 </div>
                             </div>
-                            <div className="md:w-1/2 px-2">
+                            <div className="px-2">
                                 <div className="relative">
                                     <img
                                         alt="one-lakh-img"
@@ -125,7 +125,7 @@ export default function HistoryList({ data }) {
                             />
                         </div>
                         {/* Right Section */}
-                        <div className="w-full md:w-1/2 flex-1 gap-4" style={{ height: "500px", overflow: 'hidden scroll' }}>
+                        <div className="w-full md:w-1/2 flex-1 gap-4" style={{ maxHeight: "500px", maxHeight: "500px", overflow: 'hidden scroll' }}>
                             {data && data.length > 0 ? (
                                 data.map((item, index) => (
                                     <div key={item._id} className="bg-white shadow-md p-4 rounded-md flex justify-between items-center">
