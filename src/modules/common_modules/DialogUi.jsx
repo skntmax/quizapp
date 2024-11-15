@@ -169,23 +169,44 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                     <div>
                                         <div className={cn("flex flex-wrap justify-center text-center gap-4 p-4")}> 
                                         
-                                                <Alert variant="info" className="text-right">
-                                        <AlertTitle>📜 Official Quiz Guidelines</AlertTitle>
-                                        <AlertDescription>
-                                            <ul className="list-none space-y-4 pr-6">
-                                            <li><strong>No Pausing or Exiting:</strong> Once you begin the quiz, it must be completed in one session. Pausing or leaving is not permitted.</li>
-                                            <li><strong>Timer Continuity:</strong> The quiz timer will continue running in the background, even if the system is reset or exited.</li>
-                                            <li><strong>Rewards for Accuracy:</strong> Correct answers will earn you rewards, redeemable as coins after the quiz.</li>
-                                            <li><strong>Integrity is Mandatory:</strong> All submissions must reflect your individual effort. Cheating or malpractice will result in disqualification.</li>
-                                            <li><strong>Simulated Exam Environment:</strong> This quiz mirrors coding interview conditions to assess problem-solving and time-management skills.</li>
-                                            <li><strong>Attention to Detail:</strong> Read all questions carefully and verify your responses before submission.</li>
-                                            <li><strong>Effective Time Management:</strong> Allocate your time wisely to maximize performance across all questions.</li>
-                                            <li><strong>Solution Validation:</strong> Ensure your code is properly tested and error-free before submitting.</li>
-                                            <li><strong>Final Preparations:</strong> Confirm a stable internet connection, have necessary materials ready, and ensure a distraction-free environment.</li>
-                                            <li>By starting this quiz, you agree to comply with all the above guidelines. <strong>We wish you the best of luck!</strong></li>
-                                            </ul>
-                                        </AlertDescription>
-                                        </Alert>
+                                        <Alert variant="info" className="text-right">
+      <AlertTitle className="text-right">⚖️ Official Quiz Rules & Regulations</AlertTitle>
+      <AlertDescription>
+        <ul className="list-none space-y-6 pr-8 text-right">
+          <li>
+            ⚠️ <strong>No Pausing or Exiting:</strong> Once you begin, you are committed to completing the quiz in one continuous session. The system will not permit any pause, and leaving midway is strictly prohibited.
+          </li>
+          <li>
+            ⏳ <strong>Timer Continuity:</strong> The timer runs relentlessly in the background. Any reset or system exit will not halt its progress. Be prepared to endure till the end.
+          </li>
+          <li>
+            🎖️ <strong>Rewards for Precision:</strong> Each correct response is a step towards victory, earning you rewards redeemable as valuable coins. Precision is paramount.
+          </li>
+          <li>
+            🛑 <strong>Absolute Integrity:</strong> This is a test of your skill and character. Any act of dishonesty will not only disqualify you but may also lead to further action. Adhere strictly to ethical practices.
+          </li>
+          <li>
+            💻 <strong>A True Coding Challenge:</strong> This environment replicates the intensity and conditions of real-world coding interviews. It tests not just your technical abilities but your composure under pressure.
+          </li>
+          <li>
+            🔍 <strong>Attention to Every Detail:</strong> Read each question meticulously. Mistakes borne of carelessness can cost you significantly.
+          </li>
+          <li>
+            ⏱️ <strong>Time Management is Key:</strong> The clock is your silent adversary. Allocate time wisely to each question, balancing speed with accuracy.
+          </li>
+          <li>
+            ✅ <strong>Code Testing is Essential:</strong> Submit only when you are confident of your solution’s correctness. This is as much a test of precision as it is of skill.
+          </li>
+          <li>
+            📶 <strong>Final Preparations:</strong> Double-check your setup—a stable internet connection, a distraction-free space, and all necessary tools at hand. Your focus is your most valuable asset.
+          </li>
+          <li>
+            ⚔️ <strong>This is Your Arena:</strong> By starting this quiz, you acknowledge these rules and accept the challenge. This is not just a test; it is a testament to your capabilities. <strong>May you emerge victorious!</strong>
+          </li>
+        </ul>
+      </AlertDescription>
+    </Alert>
+
                                           </div>
                                         <div className="flex items-center  justify-center text-center space-x-2 px-4">
                                             
@@ -202,9 +223,8 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                 difficulty_level.data !== undefined && difficulty_level.data.length > 0 &&  data.activeStep == 3 && (
                                     <div>
                                         <div className={cn("flex flex-wrap justify-center text-center gap-4 p-4")}>By proceeding with this test, you acknowledge that you have read and understood the information provided and consent to participate voluntarily. Your participation implies agreement with the terms outlined, including any data usage as described.</div>
-                                        <div className="flex items-center  justify-center text-center space-x-2 px-4">
+                                        <div   onClick={() => setChecked(!checked)} style={{cursor:"pointer"}} className="flex items-center  justify-center text-center space-x-2 px-4">
                                             <Checkbox
-                                                onClick={() => setChecked(!checked)}
                                                 checked={checked}
                                             />
                                             <label

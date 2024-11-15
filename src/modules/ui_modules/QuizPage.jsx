@@ -39,7 +39,7 @@ const customHeader = {
     },
 }
 
-const steps = [{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' } , { label: 'Step 4' } ];
+const steps = [{ label: 'Choose Language' }, { label: 'Difficulty' }, { label: 'Guidelines' } , { label: 'Terms and Conditions' } ];
 
 export default function QuizPage() {
     const dispatch = useDispatch();
