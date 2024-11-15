@@ -301,7 +301,9 @@ export default function QuizPage() {
             if (response.status) {
                 router.push('/history')
                 dispatch(resetQuiz())
-                setLoader(false)
+                setTimeout(() => {
+                    setLoader(false)
+                }, 2000)
             }
         } catch (err) {
             throw new Error(err.message);
@@ -342,7 +344,9 @@ export default function QuizPage() {
                         <div className='w-[95vw] md:w-[70vw] m-auto'>
                             {
                                 data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                                <PaginationUi total={data.questions_list.total} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
+                                <div className="py-4">
+                                    <PaginationUi total={data.questions_list.total} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
+                                </div>
                             }
                             {
                                 data.questions_list.data === undefined && (
@@ -369,8 +373,11 @@ export default function QuizPage() {
                             }
                             {
                                 data.questions_list.data !== undefined && !data.pagination_loder &&
-                                data.questions_list.data.map((item, index) => <QuestionCard data={item} sessionId={data.sessionId} setData={setData} index={index} pn={data.questions_list.pn} correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />)
-                            }
+                                data.questions_list.data.map((item, index) =>
+                                    <div className="py-4">
+                                        <QuestionCard data={item} sessionId={data.sessionId} setData={setData} index={index} pn={data.questions_list.pn} correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
+                                    </div>
+                                )}
 
                             {data.questions_list.data !== undefined && data.remaining === 0 &&
                                 <div className='my-4 sm:my-4 lg:my-4 xl:my-4 flex justify-end'>
@@ -380,7 +387,7 @@ export default function QuizPage() {
                                         size='lg'
                                         onClick={() => setResult(true)}
                                     >
-                                        FINISH
+                                        Challenge Yourself!
                                     </Button>
                                 </div>
                             }
@@ -390,23 +397,32 @@ export default function QuizPage() {
                                     <AlertDialog open={result} onOpenChange={setResult}>
                                         <AlertDialogContent>
                                             <AlertDialogHeader>
-                                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                <AlertDialogTitle>Confirm Your Decision</AlertDialogTitle>
                                                 <AlertDialogDescription>
-                                                    This action cannot be undone. This will permanently.
+                                                    Are you certain you want to proceed? This action is irreversible and will permanently apply the changes.
                                                 </AlertDialogDescription>
                                             </AlertDialogHeader>
                                             <AlertDialogFooter>
-                                                <Button onClick={handleRedirect} variant={getRandomVariant()}>Yes</Button>
-                                                <Button onClick={() => setResult(false)} variant={getRandomVariant()}>No</Button>
+                                                <div div className="flex justify-center flex-col-2">
+                                                    <div className="py px-2">
+                                                        <Button onClick={handleRedirect} variant={getRandomVariant()}>Yes, I’m Sure</Button>
+                                                    </div>
+                                                    <div className="py px-2">
+                                                        <Button onClick={() => setResult(false)} variant={getRandomVariant()}>Cancel</Button>
+                                                    </div>
+                                                </div>
                                             </AlertDialogFooter>
                                         </AlertDialogContent>
                                     </AlertDialog>
+
                                 </>
                             }
 
                             {
                                 data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
-                                <PaginationUi total={data.questions_list.total} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
+                                <div className="py-4">
+                                    <PaginationUi total={data.questions_list.total} itemsPerPage={data.questions_list.itemsPerPage} pn={data.questions_list.pn} handlePagination={handlePagination} />
+                                </div>
                             }
 
 

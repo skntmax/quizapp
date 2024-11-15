@@ -42,6 +42,8 @@ export default function Page() {
     return <>
         <CommonHeader />
         <QuizPage />
+        <div className="my-4">
         <Footer />
+        </div>
     </>
 }

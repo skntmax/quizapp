@@ -16,7 +16,7 @@ export function AccordionUi({ title, description, disabled }) {
                 variant: "red",
                 title: "Uh oh! Something went wrong.",
                 description: "There was a problem with your selction to show the description please select option first.",
-                action: <ToastAction altText="Try again">Try after select</ToastAction>,
+                action: <ToastAction altText="Retry action">Please select an option first</ToastAction>
               })
         }
     }
