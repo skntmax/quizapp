@@ -2,8 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getRandomVariant } from "@/utils/logix";
+import { Trophy } from "lucide-react";
 
 export default function HistoryList({ data }) {
+    const handleRedeem = (sectionId) => {
+        alert(sectionId)
+    }
     return (<>
         <div className="w-full px-4 py-4" >
 
@@ -86,8 +90,10 @@ export default function HistoryList({ data }) {
                                 <div className="relative">
                                     <img
                                         alt="one-lakh-img"
+                                        width="100%"
+                                        style={{ height: "450px" }}
                                         className="w-full rounded-lg"
-                                        src="https://bytecode.live/_next/static/media/banner.0c14cfef.png"
+                                        src="https://bytecode.live/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fleaderboard.ccb97d62.png&w=384&q=75"
                                     />
                                     <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity rounded-lg">
                                         <span className="text-white text-sm">Preview</span>
@@ -103,147 +109,52 @@ export default function HistoryList({ data }) {
                 </div>
             </div>
 
-            <div className="w-full px-2 py-4">
-                <div className="border rounded-md p-4">
-                    <div className="border rounded-md p-4">
-                        <div className="flex justify-between items-center">
-                            <span className="font-semibold">Quiz Id</span>
-                            <span className="font-semibold">Catogery</span>
-                            <div className="flex">
-                                <span className="font-semibold">Diffculty level</span>
-                            </div>
-                            <span className="font-semibold">  Rewards</span>
+            <div className="w-full px-2">
+                <section className="leaderboard-section border rounded-md p-4">
+                    <div className="flex md:flex-col-2 flex-wrap">
+                        {/* Left Section */}
+                        <div className="w-full md:w-1/2 flex-1 items-center md:items-start">
+                            <h2 className="text-2xl font-bold md:text-left">
+                                LEADER <span className="text-blue-500">BOARD</span>
+                            </h2>
+                            <img
+                                width='100%'
+                                src="https://bytecode.live/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fleaderboard.ccb97d62.png&w=384&q=75"
+                                className="mt-4"
+                                style={{ color: "transparent", height: "476px" }}
+                            />
+                        </div>
+                        {/* Right Section */}
+                        <div className="w-full md:w-1/2 flex-1 gap-4" style={{ height: "500px", overflow: 'hidden scroll' }}>
+                            {data && data.length > 0 ? (
+                                data.map((item, index) => (
+                                    <div key={item._id} className="bg-white shadow-md p-4 rounded-md flex justify-between items-center">
+                                        {/* Rank */}
+                                        <span className="font-bold text-lg">{index + 1}</span>
+                                        {/* Name */}
+                                        <span className="text-base">{item.QUIZ_CAT} - {item.QUIZ_DIFF}</span>
+                                        {/* Avatar and Coins */}
+                                        <div className="flex items-center gap-2">
+                                            <span><Trophy /></span>
+                                            <span className="font-medium">{item.REWARD || 0}</span>
+                                        </div>
+                                        {/* Reward */}
+                                        <span className="text-green-600 font-semibold">
+                                            <Button variant={getRandomVariant()} size='sm' onClick={() => handleRedeem(item.sectionId)}>₹ REDEEM</Button>
+                                        </span>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="text-center text-gray-500">No data available</div>
+                            )}
                         </div>
                     </div>
-                    {data && data.length > 0 &&
-                        data.map((quiz) => (
-                            <div key={quiz._id} className="border rounded-md p-4">
-                                <div className="flex justify-between">
-                                    <span className="font-semibold">{quiz._id}</span>
-                                    <span>{quiz.QUIZ_CAT}</span>
-                                    <div className="flex items-center space-x-2">
-                                        <span>{quiz.QUIZ_DIFF}</span>
-                                    </div>
-                                    <span>{quiz.REWARD}</span>
-                                </div>
-                            </div>
-                        ))
-                    }
-                </div>
+                </section>
             </div>
 
-            <div class="w-full px-2 py-4">
-                <div class="border rounded-md p-4">
-                    <div>
-                        <h4 class="text-xl font-semibold mb-4">REFERRAL LINK</h4>
-                        <div>
-                            <a hreef='#'>https://bytecode.live/students?referralCode=undefined</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="w-full px-2 py-4">
-                <div class="border rounded-md p-4">
-                    <div>
-                        <h4 class="text-xl font-semibold mb-4">HOW TO REFER</h4>
-                        <ol class="list-decimal list-inside space-y-2">
-                            <li>Go to our Full-time Job/ Other Jobs/ Internship section.</li>
-                            <li>Click on the Share icon or the blue strip as shown in the figure. Copy the link and share it with your friends or in groups.</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
 
-            <div className="w-full px-2 py-4">
-                <div id="reward" className="border border-gray-300 rounded-lg">
-                    <div className="p-4">
-                        <h4 className="text-xl font-semibold">Rewards</h4>
-                        <div className="">
-                            <div class="flex space-x-4">
-                                <div class="flex-1 border border-gray-300 rounded-lg">
-                                    {/* Cash Redeem Reward */}
-                                    <div className="w-full sm:w-1/3 p-2">
-                                        <div className="">
-                                            <div className="p-4">
-                                                <div className="relative">
-                                                    <img
-                                                        alt="Cash Redeem"
-                                                        className="w-full h-auto object-cover rounded-lg"
-                                                        src="https://production-cuvette.s3.ap-south-1.amazonaws.com/Rewards/cash+redeem.png"
-                                                    />
-                                                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-200">
-                                                        <div className="text-white text-lg font-semibold">Preview</div>
-                                                    </div>
-                                                </div>
-                                                <p className="text-center mt-2">Convert your Cuva coins to Cash in bank!</p>
-                                                <Button
-                                                    variant={getRandomVariant()}
-                                                    size='sm'
-                                                >
-                                                    Redeem
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex-1  border border-gray-300 rounded-lg">
-                                    {/* DSA Roadmap Reward */}
-                                    <div className="w-full sm:w-1/3 p-2">
-                                        <div className="">
-                                            <div className="p-4">
-                                                <div className="relative">
-                                                    <img
-                                                        alt="DSA Roadmap"
-                                                        className="w-full h-auto object-cover rounded-lg"
-                                                        src="https://production-cuvette.s3.ap-south-1.amazonaws.com/Rewards/DSA_roadmap.png"
-                                                    />
-                                                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-200">
-                                                        <div className="text-white text-lg font-semibold">Preview</div>
-                                                    </div>
-                                                </div>
-                                                <p className="text-center mt-2">Complete DSA roadmap to crack Product based companies + Certificate</p>
-                                                <Button
-                                                    variant={getRandomVariant()}
-                                                    size='sm'
-                                                >
-                                                    Redeem
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex-1 border border-gray-300 rounded-lg">
-                                    {/* T-shirt Reward */}
-                                    <div className="w-full sm:w-1/3 p-2">
-                                        <div className="">
-                                            <div className="p-4">
-                                                <div className="relative">
-                                                    <img
-                                                        alt="T-Shirt"
-                                                        className="w-full h-auto object-cover rounded-lg"
-                                                        src="https://production-cuvette.s3.ap-south-1.amazonaws.com/Rewards/Tshirt.png"
-                                                    />
-                                                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-200">
-                                                        <div className="text-white text-lg font-semibold">Preview</div>
-                                                    </div>
-                                                </div>
-                                                <p className="text-center mt-2">Refer your friends and Get an exclusive Cuvette branded T-shirt</p>
-                                                <Button
-                                                    variant={getRandomVariant()}
-                                                    size='sm'
-                                                >
-                                                    Redeem
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
 
         </div>
     </>)
