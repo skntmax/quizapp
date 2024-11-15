@@ -39,7 +39,7 @@ const customHeader = {
     },
 }
 
-const steps = [{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }];
+const steps = [{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' } , { label: 'Step 4' } ];
 
 export default function QuizPage() {
     const dispatch = useDispatch();
@@ -387,7 +387,7 @@ export default function QuizPage() {
                                         size='lg'
                                         onClick={() => setResult(true)}
                                     >
-                                        Challenge Yourself!
+                                        Finish Quiz
                                     </Button>
                                 </div>
                             }
@@ -397,9 +397,9 @@ export default function QuizPage() {
                                     <AlertDialog open={result} onOpenChange={setResult}>
                                         <AlertDialogContent>
                                             <AlertDialogHeader>
-                                                <AlertDialogTitle>Confirm Your Decision</AlertDialogTitle>
+                                                <AlertDialogTitle>Are you Finished</AlertDialogTitle>
                                                 <AlertDialogDescription>
-                                                    Are you certain you want to proceed? This action is irreversible and will permanently apply the changes.
+                                                     This action is irreversible and will permanently apply the changes.
                                                 </AlertDialogDescription>
                                             </AlertDialogHeader>
                                             <AlertDialogFooter>
