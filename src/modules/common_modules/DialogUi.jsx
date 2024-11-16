@@ -170,42 +170,42 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                         <div className={cn("flex flex-wrap justify-center text-center gap-4 p-4")}> 
                                         
                                         <Alert variant="info" className="text-right">
-      <AlertTitle className="text-right">⚖️ Official Quiz Rules & Regulations</AlertTitle>
-      <AlertDescription>
-        <ul className="list-none space-y-6 pr-8 text-right">
-          <li>
-            ⚠️ <strong>No Pausing or Exiting:</strong> Once you begin, you are committed to completing the quiz in one continuous session. The system will not permit any pause, and leaving midway is strictly prohibited.
-          </li>
-          <li>
-            ⏳ <strong>Timer Continuity:</strong> The timer runs relentlessly in the background. Any reset or system exit will not halt its progress. Be prepared to endure till the end.
-          </li>
-          <li>
-            🎖️ <strong>Rewards for Precision:</strong> Each correct response is a step towards victory, earning you rewards redeemable as valuable coins. Precision is paramount.
-          </li>
-          <li>
-            🛑 <strong>Absolute Integrity:</strong> This is a test of your skill and character. Any act of dishonesty will not only disqualify you but may also lead to further action. Adhere strictly to ethical practices.
-          </li>
-          <li>
-            💻 <strong>A True Coding Challenge:</strong> This environment replicates the intensity and conditions of real-world coding interviews. It tests not just your technical abilities but your composure under pressure.
-          </li>
-          <li>
-            🔍 <strong>Attention to Every Detail:</strong> Read each question meticulously. Mistakes borne of carelessness can cost you significantly.
-          </li>
-          <li>
-            ⏱️ <strong>Time Management is Key:</strong> The clock is your silent adversary. Allocate time wisely to each question, balancing speed with accuracy.
-          </li>
-          <li>
-            ✅ <strong>Code Testing is Essential:</strong> Submit only when you are confident of your solution’s correctness. This is as much a test of precision as it is of skill.
-          </li>
-          <li>
-            📶 <strong>Final Preparations:</strong> Double-check your setup—a stable internet connection, a distraction-free space, and all necessary tools at hand. Your focus is your most valuable asset.
-          </li>
-          <li>
-            ⚔️ <strong>This is Your Arena:</strong> By starting this quiz, you acknowledge these rules and accept the challenge. This is not just a test; it is a testament to your capabilities. <strong>May you emerge victorious!</strong>
-          </li>
-        </ul>
-      </AlertDescription>
-    </Alert>
+                                        <AlertTitle className="text-right">⚖️ Official Quiz Rules & Regulations</AlertTitle>
+                                        <AlertDescription>
+                                            <ul className="list-none space-y-6 pr-8 text-right">
+                                            <li>
+                                                ⚠️ <strong>No Pausing or Exiting:</strong> Once you begin, you are committed to completing the quiz in one continuous session. The system will not permit any pause, and leaving midway is strictly prohibited.
+                                            </li>
+                                            <li>
+                                                ⏳ <strong>Timer Continuity:</strong> The timer runs relentlessly in the background. Any reset or system exit will not halt its progress. Be prepared to endure till the end.
+                                            </li>
+                                            <li>
+                                                🎖️ <strong>Rewards for Precision:</strong> Each correct response is a step towards victory, earning you rewards redeemable as valuable coins. Precision is paramount.
+                                            </li>
+                                            <li>
+                                                🛑 <strong>Absolute Integrity:</strong> This is a test of your skill and character. Any act of dishonesty will not only disqualify you but may also lead to further action. Adhere strictly to ethical practices.
+                                            </li>
+                                            <li>
+                                                💻 <strong>A True Coding Challenge:</strong> This environment replicates the intensity and conditions of real-world coding interviews. It tests not just your technical abilities but your composure under pressure.
+                                            </li>
+                                            <li>
+                                                🔍 <strong>Attention to Every Detail:</strong> Read each question meticulously. Mistakes borne of carelessness can cost you significantly.
+                                            </li>
+                                            <li>
+                                                ⏱️ <strong>Time Management is Key:</strong> The clock is your silent adversary. Allocate time wisely to each question, balancing speed with accuracy.
+                                            </li>
+                                            <li>
+                                                ✅ <strong>Code Testing is Essential:</strong> Submit only when you are confident of your solution’s correctness. This is as much a test of precision as it is of skill.
+                                            </li>
+                                            <li>
+                                                📶 <strong>Final Preparations:</strong> Double-check your setup—a stable internet connection, a distraction-free space, and all necessary tools at hand. Your focus is your most valuable asset.
+                                            </li>
+                                            <li>
+                                                ⚔️ <strong>This is Your Arena:</strong> By starting this quiz, you acknowledge these rules and accept the challenge. This is not just a test; it is a testament to your capabilities. <strong>May you emerge victorious!</strong>
+                                            </li>
+                                            </ul>
+                                        </AlertDescription>
+                                        </Alert>
 
                                           </div>
                                         <div className="flex items-center  justify-center text-center space-x-2 px-4">
