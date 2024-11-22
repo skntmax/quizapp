@@ -6,7 +6,8 @@ import Footer from "@/modules/common_modules/Footer";
 import QuizPage from "@/modules/ui_modules/QuizPage";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
+import { useSelector } from "react-redux";
 
 const customHeader = {
     headers: {
@@ -18,7 +19,10 @@ const customHeader = {
 export default function Page() {
     const [data, setData] = useState(undefined);
     const router = useRouter();
-    useEffect(() => {
+   let  quizStates= useSelector(ele=> ele.quiz)
+  
+    
+  useEffect(() => {
         fetchData();
     }, []);
 
@@ -30,7 +34,7 @@ export default function Page() {
             if (!response.status) {
                 throw new Error({ success: false, message: "Failed to fetch data" });
             } else if (response.result.data.length === 0) {
-                router.push('/')
+                // router.push('/')
             }
             else {
                 setData(response.result)
@@ -39,9 +43,11 @@ export default function Page() {
             throw new Error(err.message); // Set any errors that occur
         }
     };
+
+
     return <>
-        <CommonHeader />
-        <QuizPage />
+        { !quizStates.dialog && <CommonHeader />} 
+        <QuizPage  setActiveStepData={ ({step ,  dialogue})=> setStepperState({step ,  dialogue})  } />
         <div className="my-4">
         <Footer />
         </div>
