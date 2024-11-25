@@ -49,7 +49,7 @@ export default function Timer({timerSession}) {
                     aria-label="Loading Spinner"
                     data-testid="loader"
                 />
-                :{formatTime(time)}
+                  :{formatTime(time)}
             </div>
         </div>
     );
