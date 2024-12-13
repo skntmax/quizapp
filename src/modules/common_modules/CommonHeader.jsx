@@ -24,7 +24,7 @@ export default function CommonHeader() {
 
     return (
         <>
-            <header className="sticky top-0 z-40 w-full px-1 md:px-4 bg-background">
+            <header className="z-40 w-full px-1 md:px-4 bg-background">
                 <nav className="border-gray-200 px-1 md:px-4 lg:px-6 py-2.5">
                     <div className="flex flex-wrap justify-between items-center mx-auto w-full">
                         <a href="https://bytecode.live/" className="flex items-center">
