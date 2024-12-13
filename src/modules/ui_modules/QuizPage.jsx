@@ -327,7 +327,7 @@ export default function QuizPage() {
                             )
                         }
 
-                        <div className="sticky z-40 bg-background" style={{ top: '64px' }}>
+                        <div className="sticky z-40 bg-background" style={{ top: '0px' }}>
                             {
                                 data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
                                 <QuizHeader correct={data.correct} incorrect={data.incorrect} remaining={data.remaining} />
