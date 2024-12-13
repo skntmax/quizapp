@@ -67,23 +67,21 @@ export default function HistoryList({ data }) {
                                     </div>
                                 </div>
                                 <div className="py-4">
-                                    <h4 className="text-lg font-semibold">REDEEM NOW</h4>
-                                    <span className="">
-                                        <Button
+                                    <h4 className="text-lg font-semibold">REDEEM&nbsp;NOW</h4>
+                                    <div className="flex mt-4">
+                                        <Button className="mr-4"
                                             variant={getRandomVariant()}
                                             size='lg'
                                         >
-                                            UPI CASH
+                                            UPI&nbsp;CASH
                                         </Button>
-                                    </span>
-                                    <span className="px-4">
                                         <Button
                                             variant='success'
                                             size='lg'
                                         >
                                             REWARDS
                                         </Button>
-                                    </span>
+                                    </div>
                                 </div>
                             </div>
                             <div className="px-2">
@@ -130,12 +128,12 @@ export default function HistoryList({ data }) {
                                 data.map((item, index) => (
                                     <div key={item._id} className="bg-white shadow-md p-4 rounded-md flex justify-between items-center">
                                         {/* Rank */}
-                                        <span className="font-bold text-lg">{index + 1}</span>
+                                        <span className="font-bold text-xs">{index + 1}</span>
                                         {/* Name */}
-                                        <span className="text-base">{item.QUIZ_CAT} - {item.QUIZ_DIFF}</span>
+                                        <span className="text-xs">{item.QUIZ_CAT} - {item.QUIZ_DIFF}</span>
                                         {/* Avatar and Coins */}
                                         <div className="flex items-center gap-2">
-                                            <span><Trophy /></span>
+                                            <span className="text-xs"><Trophy /></span>
                                             <span className="font-medium">{item.REWARD || 0}</span>
                                         </div>
                                         {/* Reward */}
