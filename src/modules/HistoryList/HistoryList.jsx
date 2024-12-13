@@ -23,7 +23,7 @@ export default function HistoryList({ data }) {
             <div className="w-full px-2 py-4">
                 <div className="border rounded-lg p-6">
                     <div className="mb-6">
-                        <div className="flex gap-4">
+                        <div className="flex flex-wrap gap-4">
                             <div className="px-2">
                                 <h4 className="text-lg font-semibold mb-4">TERMS TO REFER</h4>
                                 <div className="flex flex-col gap-4">
@@ -111,9 +111,9 @@ export default function HistoryList({ data }) {
 
             <div className="w-full px-2">
                 <section className="leaderboard-section border rounded-md p-4">
-                    <div className="flex md:flex-col-2 flex-wrap">
+                    <div className={cn("md:grid md:grid-cols-2")}>
                         {/* Left Section */}
-                        <div className="w-full md:w-1/2 flex-1 items-center md:items-start">
+                        <div className="py-2">
                             <h2 className="text-2xl font-bold md:text-left">
                                 LEADER <span className="text-blue-500">BOARD</span>
                             </h2>
@@ -125,7 +125,7 @@ export default function HistoryList({ data }) {
                             />
                         </div>
                         {/* Right Section */}
-                        <div className="w-full md:w-1/2 flex-1 gap-4" style={{ maxHeight: "500px", maxHeight: "500px", overflow: 'hidden scroll' }}>
+                        <div className="" style={{ maxHeight: "500px", maxHeight: "500px", overflow: 'hidden scroll' }}>
                             {data && data.length > 0 ? (
                                 data.map((item, index) => (
                                     <div key={item._id} className="bg-white shadow-md p-4 rounded-md flex justify-between items-center">
@@ -151,11 +151,6 @@ export default function HistoryList({ data }) {
                     </div>
                 </section>
             </div>
-
-
-
-
-
         </div>
     </>)
 }
