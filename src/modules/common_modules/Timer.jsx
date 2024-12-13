@@ -1,12 +1,16 @@
 'use client'
+import { resetQuiz } from "@/redux/counterSlice";
 import { getRandomVariant, isTimeLeftOrNot } from "@/utils/logix";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ClockLoader } from "react-spinners";
 
 
 export default function Timer({timerSession}) {
-   
+    const router = useRouter();
+    const dispatch = useDispatch();
+
     let initTimer =0 
     const {QUIZ_TIMESPAN ,CREATED_ON }  = timerSession 
     if(QUIZ_TIMESPAN && CREATED_ON ) {
@@ -24,11 +28,8 @@ export default function Timer({timerSession}) {
 
             return () => clearInterval(timer); // Cleanup the interval on unmount
         } else {
-            // When time reaches 0, refresh the page
-            // window.location.reload();
-            // calling submti api , then return to
-            // https://bytecode.live/quiz/history
-            // window.location.href= window.location.origin+"/quiz/history"
+            router.push('/history');
+            dispatch(resetQuiz())
         }
     }, [time]); // Re-run effect whenever 'time' changes
 
