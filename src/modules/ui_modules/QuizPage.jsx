@@ -341,7 +341,7 @@ export default function QuizPage() {
                             }
                         </div>
 
-                        <div className='w-[95vw] md:w-[70vw] m-auto'>
+                        <div className='w-[95vw] md:w-[60vw] m-auto'>
                             {
                                 data.questions_list.data !== undefined && data.questions_list.data.length > 0 &&
                                 <div className="py-4">
