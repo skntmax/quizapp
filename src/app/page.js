@@ -1,6 +1,7 @@
 'use client'
 import { cookies, quizUrls } from "@/constant";
 import { getRequest } from "@/crud_operations/RequestHandler";
+import { cn } from "@/lib/utils";
 import { AlertDialogDemo } from "@/modules/common_modules/AlertDialogDemo";
 import CommonHeader from "@/modules/common_modules/CommonHeader";
 import Footer from "@/modules/common_modules/Footer"; // Ensure this is correct
@@ -47,7 +48,7 @@ export default function Home() {
           _id: response?.result?.data?.user_quiz_session,
           CREATED_ON: response?.result?.data?.CREATED_ON,
           QUIZ_TIMESPAN: response?.result?.data?.QUIZ_TIMESPAN,
-      }));
+        }));
       } else if (!response?.result?.data?.user_quiz_session) {
         dispatch(setSessionId(null))
         dispatch(resetQuiz())

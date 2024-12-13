@@ -12,16 +12,16 @@ const QuizHeader = ({ correct, incorrect, remaining }) => {
     return (
         <>
             <div class="flex flex-row justify-between shadow hover:bg-primary/90 p-6 items-center">
-                <div class="flex-shrink-0">
+                <div class="flex-grow text-center">
                     {/* Correct */}
                     <div className="text-lg font-semibold">Correct: {correct}</div>
                 </div>
-                <div class="flex-grow">
+                <div class="flex-grow text-center">
                     {/* Incorrect */}
                     <div className="text-lg font-semibold">Incorrect: {incorrect}</div>
 
                 </div>
-                <div class="flex-grow">
+                <div class="flex-grow text-center">
                     {/* Remaining */}
                     <div className="text-lg font-semibold">Remaining: {remaining}</div>
                 </div>
