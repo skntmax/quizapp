@@ -170,9 +170,9 @@ export function DialogUi({ data, setData, handleCategories, handleDefficultLevel
                                         <div className={cn("flex flex-wrap justify-center text-center gap-4 p-4")}  style={{overflowY:'scroll', minHeight:'400px', maxHeight:'400px'}}>
 
                                             <Alert variant="info" className="text-right">
-                                                <AlertTitle className="text-right">⚖️ Official Quiz Rules & Regulations</AlertTitle>
+                                                <AlertTitle className="text-center font-bold">⚖️ Official Quiz Rules & Regulations</AlertTitle>
                                                 <AlertDescription>
-                                                    <ul className="list-none space-y-6 pr-8 text-right">
+                                                    <ul className="list-none space-y-6 pr-8 text-left">
                                                         <li>
                                                             ⚠️ <strong>No Pausing or Exiting:</strong> Once you begin, you are committed to completing the quiz in one continuous session. The system will not permit any pause, and leaving midway is strictly prohibited.
                                                         </li>
