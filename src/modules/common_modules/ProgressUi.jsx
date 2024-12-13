@@ -22,7 +22,7 @@ export function ProgressUi({ correct, incorrect, remaining }) {
     }, [correct, incorrect, remaining]); // Recalculate when any of these values change
 
     return <>
-        <Progress value={progress} className="w-[60%]" />
+        <Progress value={progress} className="w-full" />
         <div className='flex justify-center items-center'>{calculateProgressPercentage(correct, incorrect, remaining)}%</div>
     </>
 }
