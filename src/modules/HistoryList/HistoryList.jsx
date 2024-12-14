@@ -6,7 +6,22 @@ import { Coins, IndianRupee, Trophy, User } from "lucide-react";
 import CardImg from '@/images/5165532.jpg'
 import Image from "next/image";
 import { postRequest } from "@/crud_operations/RequestHandler";
+import { useGetReferralCodeQuery } from "@/app/AsyncApi/referral";
+import SharableContent from "@/components/SharableContent";
+
+
+
 export default function HistoryList({ data ,top }) {
+
+
+
+    // api section
+    const {data: referralCode ,  isLoading :referralCodeLoading   }  = useGetReferralCodeQuery()
+
+
+    let referral_link = `${process.env.NEXT_PUBLIC_WEB_LOCAL_URL}/students?referralCode=${referralCode?.result?.data?.REFERREL_CODE}`  
+
+
     const handleRedeem =  async(sectionId) => {
         try{
             debugger
@@ -97,6 +112,13 @@ export default function HistoryList({ data ,top }) {
                                     </div>
                                 </div>
                             </div>
+                            
+                      
+
+
+
+                            
+                            
                             <div className="px-2  w-[50%]">
                                 <div className="flex justify-between">
                                     <span className="ant-typography css-fypblu font-semibold ">YOUR QUIZ HISTORIES</span>
@@ -127,9 +149,29 @@ export default function HistoryList({ data ,top }) {
                             </div>
                         </div>
                     </div>
+                
+                
+
+      <h4 className="text-lg font-semibold mb-4"> REFERRAL LINK</h4>
+      <div className="flex justify-between items-center">
+        <a
+          href={referral_link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 font-bold underline break-all"
+        >
+          {referral_link}
+        </a>
+
+        <SharableContent shareUrl={referral_link} title={"Invite"} />
+      
+       </div>
                 </div>
+
+                
             </div>
 
+          
             <div className="w-full px-2">
                 <section className="leaderboard-section border rounded-md p-4">
                     <div className={cn("md:grid md:grid-cols-2")}>
