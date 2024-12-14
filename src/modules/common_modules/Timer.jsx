@@ -1,12 +1,16 @@
 'use client'
-import { isTimeLeftOrNot } from "@/utils/logix";
+import { resetQuiz } from "@/redux/counterSlice";
+import { getRandomVariant, isTimeLeftOrNot } from "@/utils/logix";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ClockLoader } from "react-spinners";
 
 
 export default function Timer({timerSession}) {
-   
+    const router = useRouter();
+    const dispatch = useDispatch();
+
     let initTimer =0 
     const {QUIZ_TIMESPAN ,CREATED_ON }  = timerSession 
     if(QUIZ_TIMESPAN && CREATED_ON ) {
@@ -24,11 +28,8 @@ export default function Timer({timerSession}) {
 
             return () => clearInterval(timer); // Cleanup the interval on unmount
         } else {
-            // When time reaches 0, refresh the page
-            // window.location.reload();
-            // calling submti api , then return to
-            // https://bytecode.live/quiz/history
-            // window.location.href= window.location.origin+"/quiz/history"
+            router.push('/history');
+            dispatch(resetQuiz())
         }
     }, [time]); // Re-run effect whenever 'time' changes
 
@@ -41,15 +42,17 @@ export default function Timer({timerSession}) {
 
     return (
         <div className="flex flex-col items-center">
-            <div className="flex items-center text-lg font-semibold">
+            <div className="flex items-center mb-2 text-lg font-semibold">
+            {formatTime(time)}&nbsp;:&nbsp;
                 <ClockLoader
                     loading={true} // Keep the loader visible
                     size={25}
+                    color='#6ee7b7'
                     speedMultiplier={time > 0 ? 0.5 : 0} // Stop the loader animation when time hits 0
                     aria-label="Loading Spinner"
                     data-testid="loader"
                 />
-                :{formatTime(time)}
+                  
             </div>
         </div>
     );

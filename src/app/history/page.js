@@ -17,6 +17,7 @@ const customHeader = {
 
 export default function Page() {
     const [data, setData] = useState(undefined)
+    const [top, setTop] = useState(undefined)
     const [loader, setLoader] = useState(false)
 
     useEffect(() => {
@@ -29,9 +30,14 @@ export default function Page() {
             const response = await getRequest("quiz/get-users-quiz-history",
                 customHeader
             );
-
             if (response.status) {
                 setData(response.result.data)
+            }
+            const response2 = await getRequest("quiz/top-five-reward-winners",
+                customHeader
+            );
+            if (response2.status) {
+                setTop(response2.result.data)
             }
         } catch (err) {
             setLoader(false)
@@ -44,7 +50,7 @@ export default function Page() {
         {
             data !== undefined && data.length > 0 ? <>
                 <CommonHeader />
-                <HistoryList data={data} />
+                <HistoryList data={data} top={top} />
                 <Footer />
             </> :
                 <>

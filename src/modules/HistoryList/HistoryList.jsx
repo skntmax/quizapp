@@ -2,11 +2,24 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getRandomVariant } from "@/utils/logix";
-import { Trophy } from "lucide-react";
+import { Coins, IndianRupee, Trophy, User } from "lucide-react";
+import CardImg from '@/images/5165532.jpg'
+import Image from "next/image";
+import { postRequest } from "@/crud_operations/RequestHandler";
+export default function HistoryList({ data ,top }) {
+    const handleRedeem =  async(sectionId) => {
+        try{
+            debugger
+            const response = await postRequest("quiz/redeem-rewards-into-coins",
+                { quizHistoryId:sectionId },
+                customHeader,
+            );
+            if (response.status) {
+                setData(response.result.data)
+            }
+        }catch(error){
 
-export default function HistoryList({ data }) {
-    const handleRedeem = (sectionId) => {
-        alert(sectionId)
+        }
     }
     return (<>
         <div className="w-full px-4 py-4" >
@@ -23,8 +36,8 @@ export default function HistoryList({ data }) {
             <div className="w-full px-2 py-4">
                 <div className="border rounded-lg p-6">
                     <div className="mb-6">
-                        <div className="flex gap-4">
-                            <div className="px-2">
+                        <div className="flex flex-wrap">
+                            <div className="px-2 w-[50%]">
                                 <h4 className="text-lg font-semibold mb-4">TERMS TO REFER</h4>
                                 <div className="flex flex-col gap-4">
                                     <div className="flex items-start gap-4">
@@ -67,42 +80,50 @@ export default function HistoryList({ data }) {
                                     </div>
                                 </div>
                                 <div className="py-4">
-                                    <h4 className="text-lg font-semibold">REDEEM NOW</h4>
-                                    <span className="">
-                                        <Button
+                                    <h4 className="text-lg font-semibold">REDEEM&nbsp;NOW</h4>
+                                    <div className="flex mt-4">
+                                        <Button className="mr-4"
                                             variant={getRandomVariant()}
                                             size='lg'
                                         >
-                                            UPI CASH
+                                            UPI&nbsp;CASH
                                         </Button>
-                                    </span>
-                                    <span className="px-4">
                                         <Button
                                             variant='success'
                                             size='lg'
                                         >
                                             REWARDS
                                         </Button>
-                                    </span>
-                                </div>
-                            </div>
-                            <div className="px-2">
-                                <div className="relative">
-                                    <img
-                                        alt="one-lakh-img"
-                                        width="100%"
-                                        style={{ height: "450px" }}
-                                        className="w-full rounded-lg"
-                                        src="https://bytecode.live/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fleaderboard.ccb97d62.png&w=384&q=75"
-                                    />
-                                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity rounded-lg">
-                                        <span className="text-white text-sm">Preview</span>
                                     </div>
                                 </div>
-                                <span className="text-sm text-gray-500 mt-2 block">
-                                    NOTE: If we find anyone doing suspicious activities to increase
-                                    their coins, their complete coins will be invalid to redeem.
-                                </span>
+                            </div>
+                            <div className="px-2  w-[50%]">
+                                <div className="flex justify-between">
+                                    <span className="ant-typography css-fypblu font-semibold ">YOUR QUIZ HISTORIES</span>
+                                </div>
+                                <div className="" style={{ maxHeight: "300px", maxHeight: "300px", overflow: 'hidden scroll' }}>
+                                    {data && data.length > 0 ? (
+                                        data.map((item, index) => (
+                                            <div key={item._id} className="bg-white shadow-md p-4 rounded-md flex justify-between items-center">
+                                                {/* Rank */}
+                                                <span className="font-bold text-xs">{index + 1}</span>
+                                                {/* Name */}
+                                                <span className="text-xs">{item.QUIZ_CAT} - {item.QUIZ_DIFF}</span>
+                                                {/* Avatar and Coins */}
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-xs"><Trophy /></span>
+                                                    <span className="font-medium">{item.REWARD || 0}</span>
+                                                </div>
+                                                {/* Reward */}
+                                                <span className="text-green-600 font-semibold">
+                                                    <Button variant={getRandomVariant()} size='sm' onClick={() => handleRedeem(item._id)}>₹ REDEEM</Button>
+                                                </span>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="text-center text-gray-500">No data available</div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -111,36 +132,38 @@ export default function HistoryList({ data }) {
 
             <div className="w-full px-2">
                 <section className="leaderboard-section border rounded-md p-4">
-                    <div className="flex md:flex-col-2 flex-wrap">
+                    <div className={cn("md:grid md:grid-cols-2")}>
                         {/* Left Section */}
-                        <div className="w-full md:w-1/2 flex-1 items-center md:items-start">
+                        <div className="py-2">
                             <h2 className="text-2xl font-bold md:text-left">
                                 LEADER <span className="text-blue-500">BOARD</span>
                             </h2>
-                            <img
+                            <Image
                                 width='100%'
-                                src="https://bytecode.live/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fleaderboard.ccb97d62.png&w=384&q=75"
+                                src={CardImg}
                                 className="mt-4"
                                 style={{ color: "transparent", height: "476px" }}
                             />
                         </div>
                         {/* Right Section */}
-                        <div className="w-full md:w-1/2 flex-1 gap-4" style={{ maxHeight: "500px", maxHeight: "500px", overflow: 'hidden scroll' }}>
-                            {data && data.length > 0 ? (
-                                data.map((item, index) => (
+                        <div >
+                        <span className="ant-typography css-fypblu font-semibold border-b-1 border-gray">TOP FIVE REWARDS WINNER OF THE MONTH</span>
+                            {top && top.length > 0 ? (
+                                top.map((item, index) => (
                                     <div key={item._id} className="bg-white shadow-md p-4 rounded-md flex justify-between items-center">
                                         {/* Rank */}
-                                        <span className="font-bold text-lg">{index + 1}</span>
+                                        <span className="font-bold text-xs">{index + 1}</span>
                                         {/* Name */}
-                                        <span className="text-base">{item.QUIZ_CAT} - {item.QUIZ_DIFF}</span>
+                                        <span className="text-xs">{item.USER_INFO.username}</span>
                                         {/* Avatar and Coins */}
                                         <div className="flex items-center gap-2">
-                                            <span><Trophy /></span>
-                                            <span className="font-medium">{item.REWARD || 0}</span>
+                                            <span className="text-xs"><Coins /></span>
+                                            <span className="font-medium">{item.COINS || 0}</span>
                                         </div>
                                         {/* Reward */}
                                         <span className="text-green-600 font-semibold">
-                                            <Button variant={getRandomVariant()} size='sm' onClick={() => handleRedeem(item.sectionId)}>₹ REDEEM</Button>
+                                            {/* <Button variant={getRandomVariant()} size='sm' onClick={() => handleRedeem(item.sectionId)}>₹ REDEEM</Button> */}
+                                            ₹ 200
                                         </span>
                                     </div>
                                 ))
@@ -151,11 +174,6 @@ export default function HistoryList({ data }) {
                     </div>
                 </section>
             </div>
-
-
-
-
-
         </div>
     </>)
 }
