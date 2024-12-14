@@ -1,29 +1,59 @@
-'use client'
-import React from "react";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 
+const getRandomImage = async () => {
+    try {
+      const response = await fetch("https://source.unsplash.com/random/96x96");
+      return response.url;
+    } catch (error) {
+      console.error("Failed to fetch random image:", error);
+      return null;
+    }
+  };
+
+
 const TopWinnersSlider = ({ top }) => {
-  return (
+
+    const [profileImages, setProfileImages] = useState([]);
+
+    
+
+  
+  const calculateRs = (coins)=>{       
+    return  (coins/10)*1
+  }
+
+  
+  
+   
+    return (
     <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-100 rounded-lg shadow-lg">
-      <h1 className="text-xl font-bold text-center text-indigo-700 mb-6">
-        TOP FIVE REWARDS WINNER OF THE MONTH
-      </h1>
+   
       {top && top.length > 0 ? (
         <Swiper
           modules={[Pagination]}
           pagination={{ clickable: true }}
           spaceBetween={20}
-          slidesPerView={1} // Adjust based on how many cards you want visible
+          slidesPerView={1} // Adjust for the number of visible cards
           className="w-full"
         >
           {top.map((item, index) => (
             <SwiperSlide key={item._id}>
               <div className="bg-white shadow-md p-6 rounded-lg flex flex-col items-center text-center">
+                {/* Profile Image */}
+                <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-indigo-600 shadow-md">
+                  <img
+                   src={profileImages[index] || "https://via.placeholder.com/96"}
+                    alt={`${item.USER_INFO.username}'s Profile`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
                 {/* Rank */}
-                <span className="text-indigo-600 font-bold text-lg">
+                <span className="text-indigo-600 font-bold text-lg mt-4">
                   #{index + 1}
                 </span>
 
@@ -42,7 +72,7 @@ const TopWinnersSlider = ({ top }) => {
 
                 {/* Reward */}
                 <span className="text-green-600 font-bold text-2xl mt-4">
-                  ₹ {item.REWARD || 200}
+                  ₹ {calculateRs(item.COINS)}
                 </span>
               </div>
             </SwiperSlide>

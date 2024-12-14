@@ -25,7 +25,7 @@ export default function HistoryList({ data ,top }) {
       ];
 
 
-      const calculateRs = (coins)=>{       
+       const calculateRs = (coins)=>{       
         return  (coins/10)*1
       }
 
