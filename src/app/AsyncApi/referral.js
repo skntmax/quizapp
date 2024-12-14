@@ -51,7 +51,22 @@ const referralApi = createApi({
     }),
     providesTags:['checkValidReferralCode']
   },  
- )    
+ ),
+ 
+ redeemRewardIntoCoins: builder.mutation({
+  query: (body) => (  {
+     url: api_urls.referrals['redeem-rewards-into-coins'],
+     method: 'POST',
+     headers:{
+       "authorization": `Bearer ${getCookie(cookies.btcode_live_cd_key)}`,
+       "Content-Type": "appliation/json"  
+       },
+       body:body
+  }),
+  providesTags:['checkValidReferralCode']
+},  
+)    
+
 
 
     }),
@@ -63,6 +78,6 @@ const referralApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetReferralCodeQuery , useCheckValidReferralCodeQuery , useCheckReferralCodeMutation  } = referralApi    
+export const { useGetReferralCodeQuery , useCheckValidReferralCodeQuery , useCheckReferralCodeMutation ,useRedeemRewardIntoCoinsMutation  } = referralApi    
 
 export default referralApi

@@ -6,7 +6,7 @@ import { Coins, IndianRupee, Trophy, User } from "lucide-react";
 import CardImg from '@/images/5165532.jpg'
 import Image from "next/image";
 import { postRequest } from "@/crud_operations/RequestHandler";
-import { useGetReferralCodeQuery } from "@/app/AsyncApi/referral";
+import { useGetReferralCodeQuery, useRedeemRewardIntoCoinsMutation } from "@/app/AsyncApi/referral";
 import SharableContent from "@/components/SharableContent";
 
 
@@ -17,25 +17,12 @@ export default function HistoryList({ data ,top }) {
 
     // api section
     const {data: referralCode ,  isLoading :referralCodeLoading   }  = useGetReferralCodeQuery()
+    const [ redeemCoins , {data: redeemCoinsData ,  isLoading :redeemCoinsLoading   }  ]   = useRedeemRewardIntoCoinsMutation()
 
-
+    
     let referral_link = `${process.env.NEXT_PUBLIC_WEB_LOCAL_URL}/students?referralCode=${referralCode?.result?.data?.REFERREL_CODE}`  
 
 
-    const handleRedeem =  async(sectionId) => {
-        try{
-            debugger
-            const response = await postRequest("quiz/redeem-rewards-into-coins",
-                { quizHistoryId:sectionId },
-                customHeader,
-            );
-            if (response.status) {
-                setData(response.result.data)
-            }
-        }catch(error){
-
-        }
-    }
     return (<>
         <div className="w-full px-4 py-4" >
 
@@ -138,7 +125,7 @@ export default function HistoryList({ data ,top }) {
                                                 </div>
                                                 {/* Reward */}
                                                 <span className="text-green-600 font-semibold">
-                                                    <Button variant={getRandomVariant()} size='sm' onClick={() => handleRedeem(item._id)}>₹ REDEEM</Button>
+                                                    <Button variant={getRandomVariant()} size='sm' onClick={() => redeemCoins({quizHistoryId:item._id}) }>₹ REDEEM</Button>
                                                 </span>
                                             </div>
                                         ))

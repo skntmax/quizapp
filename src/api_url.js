@@ -41,7 +41,8 @@ export const api_urls  = {
 
     referrals:{
       ['get-referral-code']:'referral/get-referral-code',
-      ['check-valid-referral-code']:'v1/referral/check-valid-referral-code/:referralCode'
+      ['check-valid-referral-code']:'referral/check-valid-referral-code/:referralCode',
+      ['redeem-rewards-into-coins']:'quiz/redeem-rewards-into-coins'
     }
      
 }
