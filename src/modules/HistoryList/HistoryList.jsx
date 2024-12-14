@@ -8,13 +8,29 @@ import Image from "next/image";
 import { postRequest } from "@/crud_operations/RequestHandler";
 import { useGetReferralCodeQuery, useRedeemRewardIntoCoinsMutation } from "@/app/AsyncApi/referral";
 import SharableContent from "@/components/SharableContent";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setLastSentReward, setTotalCoins } from "@/redux/counterSlice";
+import TopWinnersSlider from "./TopWinnersSlider";
 
 
 
 export default function HistoryList({ data ,top }) {
 
+    const config = [
+        { coins: 10, rupees: 1 },
+        { coins: 500, rupees: 50 },
+        { coins: 1000, rupees: 100 },
+        { coins: 1500, rupees: 150 },
+      ];
 
 
+      const calculateRs = (coins)=>{       
+        return  (coins/10)*1
+      }
+
+      
+    let dispatch = useDispatch()
     // api section
     const {data: referralCode ,  isLoading :referralCodeLoading   }  = useGetReferralCodeQuery()
     const [ redeemCoins , {data: redeemCoinsData ,  isLoading :redeemCoinsLoading   }  ]   = useRedeemRewardIntoCoinsMutation()
@@ -23,12 +39,20 @@ export default function HistoryList({ data ,top }) {
     let referral_link = `${process.env.NEXT_PUBLIC_WEB_LOCAL_URL}/students?referralCode=${referralCode?.result?.data?.REFERREL_CODE}`  
 
 
+    useEffect(()=>{
+    
+        if(referralCode?.result.data?.COINS)
+         dispatch(setTotalCoins(referralCode?.result.data?.COINS || 0))
+    } , [referralCode?.result])
+
+
+
     return (<>
         <div className="w-full px-4 py-4" >
 
             <div className="w-full px-2 py-1">
                 <div className="flex justify-between">
-                    <span className="ant-typography css-fypblu font-semibold">Terms</span>
+                    <span className="ant-typography css-fypblu font-semibold">Play quiz , earn rewards and redeem that reward into cash 🪙</span>
                     <span className="ant-typography font-semibold css-fypblu">
                         Rewards
                     </span>
@@ -40,7 +64,7 @@ export default function HistoryList({ data ,top }) {
                     <div className="mb-6">
                         <div className="flex flex-wrap">
                             <div className="px-2 w-[50%]">
-                                <h4 className="text-lg font-semibold mb-4">TERMS TO REFER</h4>
+                                <h4 className="text-lg font-semibold mb-4">REFER AND EARN </h4>
                                 <div className="flex flex-col gap-4">
                                     <div className="flex items-start gap-4">
                                         <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-green-500 text-white">
@@ -159,50 +183,88 @@ export default function HistoryList({ data ,top }) {
             </div>
 
           
-            <div className="w-full px-2">
-                <section className="leaderboard-section border rounded-md p-4">
-                    <div className={cn("md:grid md:grid-cols-2")}>
-                        {/* Left Section */}
-                        <div className="py-2">
-                            <h2 className="text-2xl font-bold md:text-left">
-                                LEADER <span className="text-blue-500">BOARD</span>
-                            </h2>
-                            <Image
+          
+                    <div className="flex flex-col lg:flex-row gap-6 items-stretch p-6 bg-gray-100">
+  {/* Left Section */}
+  <div className="flex-1 p-6 bg-gradient-to-r from-blue-50 to-indigo-100 rounded-lg shadow-lg">
+    <h1 className="text-3xl font-bold text-center text-indigo-700 mb-6">
+      Coin to Rupee Conversion
+    </h1>
+    <div className="space-y-4">
+      {config.map((item, index) => (
+        <div
+          key={index}
+          className="flex items-center justify-between bg-white p-4 rounded-lg shadow-md"
+        >
+          <div className="flex items-center">
+            <span className="text-lg">🪙</span>
+            <div>
+              <p className="text-lg font-semibold text-gray-800 ml-2">
+                {item.coins} Coins
+              </p>
+            </div>
+          </div>
+          <div>
+            <p className="text-xl font-bold text-indigo-600">{item.rupees} ₹</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {/* Right Section */}
+  <div className="flex-1 p-6 bg-gradient-to-r from-blue-50 to-indigo-100 rounded-lg shadow-lg">
+    <h1 className="text-xl font-bold text-center text-indigo-700 mb-6 border-b pb-2">
+      TOP FIVE REWARDS WINNER OF THE MONTH
+    </h1>
+    {top && top.length > 0 ? (
+      <div className="space-y-4">
+        {top.map((item, index) => (
+          <div
+            key={item._id}
+            className="bg-white shadow-md p-4 rounded-md flex justify-between items-center"
+          >
+            {/* Rank */}
+            <span className="font-bold text-lg text-indigo-600">
+              {index + 1}
+            </span>
+
+            {/* Name */}
+            <span className="text-gray-700 text-base font-medium">
+              {item.USER_INFO.username}
+            </span>
+
+            {/* Avatar and Coins */}
+            <div className="flex items-center gap-2">
+              <span className="text-lg">🪙</span>
+              <span className="text-gray-800 font-medium">{item.COINS || 0}</span>
+            </div>
+
+            {/* Reward */}
+            <span className="text-green-600 font-semibold text-lg">
+              ₹ {calculateRs(item.COINS)}
+              
+            </span>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <p className="text-center text-gray-500 font-medium">
+        No top winners yet!
+      </p>
+    )}
+  </div>
+</div>
+
+
+                   <TopWinnersSlider top={top} />
+                <Image
                                 width='100%'
                                 src={CardImg}
                                 className="mt-4"
-                                style={{ color: "transparent", height: "476px" }}
+                                style={{ color: "transparent", height: "700px" }}
                             />
-                        </div>
-                        {/* Right Section */}
-                        <div >
-                        <span className="ant-typography css-fypblu font-semibold border-b-1 border-gray">TOP FIVE REWARDS WINNER OF THE MONTH</span>
-                            {top && top.length > 0 ? (
-                                top.map((item, index) => (
-                                    <div key={item._id} className="bg-white shadow-md p-4 rounded-md flex justify-between items-center">
-                                        {/* Rank */}
-                                        <span className="font-bold text-xs">{index + 1}</span>
-                                        {/* Name */}
-                                        <span className="text-xs">{item.USER_INFO.username}</span>
-                                        {/* Avatar and Coins */}
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-xs"><Coins /></span>
-                                            <span className="font-medium">{item.COINS || 0}</span>
-                                        </div>
-                                        {/* Reward */}
-                                        <span className="text-green-600 font-semibold">
-                                            {/* <Button variant={getRandomVariant()} size='sm' onClick={() => handleRedeem(item.sectionId)}>₹ REDEEM</Button> */}
-                                            ₹ 200
-                                        </span>
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="text-center text-gray-500">No data available</div>
-                            )}
-                        </div>
-                    </div>
-                </section>
-            </div>
+            
         </div>
     </>)
 }

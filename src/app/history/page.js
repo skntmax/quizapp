@@ -8,6 +8,8 @@ import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
 import HistoryList from "@/modules/HistoryList/HistoryList.jsx";
 import DnaLoder from "@/modules/loders/DnaLoder";
+import { useDispatch } from "react-redux";
+import { setLastSentReward, setTotalCoins } from "@/redux/counterSlice";
 
 const customHeader = {
     headers: {
@@ -20,9 +22,25 @@ export default function Page() {
     const [top, setTop] = useState(undefined)
     const [loader, setLoader] = useState(false)
 
+    let dispatch = useDispatch()
+
+
     useEffect(() => {
         fetchHistory();
     }, []);
+
+
+    
+    // user quiz history 
+    useEffect(()=>{
+          
+        if(data) {
+            let totalReward  = data.reduce((acc,ele)=>acc+ele.REWARD, 0 )
+            console.log(totalReward , data)
+            dispatch(setLastSentReward(totalReward || 0))
+        }
+ 
+     } , [data])
 
     const fetchHistory = async () => {
         setLoader(true)
@@ -46,6 +64,11 @@ export default function Page() {
         setLoader(false)
     };
 
+
+    
+
+
+     
     return <>
         {
             data !== undefined && data.length > 0 ? <>
