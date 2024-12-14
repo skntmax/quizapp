@@ -123,7 +123,7 @@ export default function HistoryList({ data ,top }) {
                                 <div className="flex justify-between">
                                     <span className="ant-typography css-fypblu font-semibold ">YOUR QUIZ HISTORIES</span>
                                 </div>
-                                <div className="" style={{ maxHeight: "300px", maxHeight: "300px", overflow: 'hidden scroll' }}>
+                                <div className="" style={{ maxHeight: "300px", maxHeight: "300px", overflow: 'auto' }}>
                                     {data && data.length > 0 ? (
                                         data.map((item, index) => (
                                             <div key={item._id} className="bg-white shadow-md p-4 rounded-md flex justify-between items-center">
