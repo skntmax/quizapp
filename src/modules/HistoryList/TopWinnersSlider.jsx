@@ -46,7 +46,7 @@ const TopWinnersSlider = ({ top }) => {
                 {/* Profile Image */}
                 <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-indigo-600 shadow-md">
                   <img
-                   src={profileImages[index] || "https://via.placeholder.com/96"}
+                   src={item?.USER_INFO?.profilePic || "https://via.placeholder.com/96"}
                     alt={`${item.USER_INFO.username}'s Profile`}
                     className="w-full h-full object-cover"
                   />
