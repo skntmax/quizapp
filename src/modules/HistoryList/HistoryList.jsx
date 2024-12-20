@@ -6,6 +6,7 @@ import { Coins, IndianRupee, Trophy, User } from "lucide-react";
 import CardImg from "@/images/5165532.jpg";
 import Image from "next/image";
 import NoData from '@/images/nodata.png'
+import { ColorRing } from "react-loader-spinner";
 import { postRequest } from "@/crud_operations/RequestHandler";
 import {
   useGetQuizHistoryQuery,
@@ -214,6 +215,8 @@ export default function HistoryList({  top }) {
                       overflow:quizHistory?.result?.data &&  quizHistory?.result?.data.length > 0 ?"auto":'hidden',
                     }}
                   >
+               
+
                     {quizHistory?.result?.data && quizHistory?.result?.data.length > 0 ? (
                       quizHistory?.result?.data.map((item, index) => (
                         <div
@@ -237,7 +240,17 @@ export default function HistoryList({  top }) {
                           </div>
                           {/* Reward */}
                           <span className="text-green-600 font-semibold">
-                            <Button
+                            
+                            {redeemCoinsLoading?
+               <ColorRing
+  visible={true}
+  height="20"
+  width="20"
+  wrapperClass="color-ring-wrapper"
+  colors={['#e15b64']}
+  />
+  : 
+  <Button
                               variant="pink"
                               size="sm"
                               onClick={() =>
@@ -246,6 +259,10 @@ export default function HistoryList({  top }) {
                             >
                               ₹ REDEEM
                             </Button>
+
+   } 
+                             
+                         
                           </span>
                         </div>
                       ))
