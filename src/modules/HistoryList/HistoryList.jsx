@@ -215,6 +215,8 @@ export default function HistoryList({  top }) {
                       YOUR QUIZ HISTORIES
                     </span>
                   </div>
+
+                  
                   <div
                     className=""
                     style={{
@@ -224,7 +226,23 @@ export default function HistoryList({  top }) {
                   >
                
 
-                    {quizHistory?.result?.data && quizHistory?.result?.data.length > 0 ? (
+            
+
+
+
+
+                {quizHistoryLoading && 
+                  <div className="flex items-center justify-center align-items-center ">
+                  <ColorRing
+                    visible={true}
+                    height="80"
+                    width="80"
+                    wrapperClass="color-ring-wrapper"
+                    colors={['#e15b64']}
+                  />
+                </div>}
+
+                    { quizHistory?.result?.data && quizHistory?.result?.data.length > 0 ? (
                       quizHistory?.result?.data.map((item, index) => (
                         <div
                           key={item._id}
@@ -281,6 +299,11 @@ export default function HistoryList({  top }) {
                       style={{ color: "transparent", height: "390px", }}
                   />
                     )}
+
+
+
+
+
                   </div>
                 </div>
               </div>
