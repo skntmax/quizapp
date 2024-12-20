@@ -5,7 +5,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 // import { Coins, Trophy, User } from "lucide-react";
 import { bytecodeUrls, cookies, quizUrls } from "@/constant";
 import getSingleCookiesCSR, { deleteSingleCookie } from "@/utils/cookies";
-import { Power, PowerOff, Trophy, User } from "lucide-react";
+import { Coins, Power, PowerOff, Trophy, User } from "lucide-react";
 import Timer from "./Timer";
 import { useSelector } from "react-redux";
 import { useState, useCallback } from "react";

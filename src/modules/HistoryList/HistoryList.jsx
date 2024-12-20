@@ -20,7 +20,6 @@ import TopWinnersSlider from "./TopWinnersSlider";
 import { useRouter } from "next/navigation";
 import { quizUrls } from "@/constant";
 export default function HistoryList({ data, top }) {
-  const router = useRouter();
   const config = [
     { coins: 10, rupees: 1 },
     { coins: 500, rupees: 50 },
@@ -33,6 +32,7 @@ export default function HistoryList({ data, top }) {
   };
 
   let dispatch = useDispatch();
+  const router = useRouter();
   // api section
   const { data: referralCode, isLoading: referralCodeLoading } =
     useGetReferralCodeQuery();
@@ -133,11 +133,25 @@ export default function HistoryList({ data, top }) {
                       </Button>
                     </div>
                   </div>
-                  <div className="py-4">
+                  
+                  <h4 className="text-lg font-semibold mb-4"> REFERRAL LINK</h4>
+            <div className="flex justify-between items-center">
+              <a
+                href={referral_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 font-bold underline break-all"
+              >
+                {referral_link}
+              </a>
+
+              <SharableContent shareUrl={referral_link} title={"Invite"} />
+            </div>
+            <div className="py-4">
                     <h4 className="text-lg font-semibold">START THE QUIZ</h4>
                     <div className="flex mt-4">
                       <Button
-                        className={cn("mr-4 w-full md:w-[33%] mr-0")}
+                        className={cn("mr-4 w-full mr-0")}
                         variant={getRandomVariant()}
                         onClick={() => handleRestart()}
                         size="lg"
@@ -146,7 +160,7 @@ export default function HistoryList({ data, top }) {
                       </Button>
                     </div>
                   </div>
-                  F
+                  
                 </div>
 
                 <div className="px-2  w-[50%]">
@@ -158,8 +172,7 @@ export default function HistoryList({ data, top }) {
                   <div
                     className=""
                     style={{
-                      maxHeight: "300px",
-                      maxHeight: "300px",
+                      maxHeight: "400px",
                       overflow: "auto",
                     }}
                   >
@@ -208,19 +221,7 @@ export default function HistoryList({ data, top }) {
               </div>
             </div>
 
-            <h4 className="text-lg font-semibold mb-4"> REFERRAL LINK</h4>
-            <div className="flex justify-between items-center">
-              <a
-                href={referral_link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 font-bold underline break-all"
-              >
-                {referral_link}
-              </a>
-
-              <SharableContent shareUrl={referral_link} title={"Invite"} />
-            </div>
+            
           </div>
         </div>
 
@@ -294,7 +295,7 @@ export default function HistoryList({ data, top }) {
             ) : (
               <Image
                                 width='100%'
-                                src={Nodata}
+                                src={NoData}
                                 className="mt-4"
                                 style={{ color: "transparent", height: "320px", }}
                             />
