@@ -1,8 +1,11 @@
 'use client';
 import { ThemeToggle } from "@/components/theme-toggle";
+// import { cookies } from "@/constant";
+// import getSingleCookiesCSR from "@/utils/cookies";
+// import { Coins, Trophy, User } from "lucide-react";
 import { bytecodeUrls, cookies, quizUrls } from "@/constant";
 import getSingleCookiesCSR, { deleteSingleCookie } from "@/utils/cookies";
-import { Power, PowerOff, Trophy, User } from "lucide-react";
+import { Coins, Power, PowerOff, Trophy, User } from "lucide-react";
 import Timer from "./Timer";
 import { useSelector } from "react-redux";
 import { useState, useCallback } from "react";
@@ -15,7 +18,8 @@ export default function CommonHeader() {
     const quizDetails = useSelector((ele) => ele?.quiz?.quizSessionDetails);
     const lastSentReward = useSelector((state) => state.quiz.lastSentReward);
     const dialog = useSelector((state) => state.quiz.dialog);
-
+   const totalCoins = useSelector((state) => state.quiz.totalCoins);
+    
     const TimerCmp = useCallback(() => {
         return <Timer timerSession={quizDetails} />;
     }, [quizDetails?.QUIZ_TIMESPAN, quizDetails?.CREATED_ON]);
@@ -103,6 +107,12 @@ export default function CommonHeader() {
                                             <Trophy className="ml-2" />
                                         </span>
                                         <span>{lastSentReward}</span>
+
+                                        <span>
+                                            <Coins className="ml-2" />
+                                        </span>
+                                        <span>{totalCoins}</span>
+
                                     </div>
                                 </li>
                                 <li>

@@ -34,7 +34,8 @@ let initialState = {
     CREATED_ON: undefined,
     QUIZ_TIMESPAN: undefined,
   },
-  userResponse: []
+  userResponse: [],
+  totalCoins:0
 }
 
 export const quizSlice = createSlice({
@@ -102,6 +103,10 @@ export const quizSlice = createSlice({
     },
     setUserResumeResponseData: (state, action) => {
       state.userResponse = action.payload
+    },
+
+    setTotalCoins: (state, action) => {
+      state.totalCoins = action.payload
     }
   },
 });
@@ -128,7 +133,8 @@ export const {
   setCorrect,
   setIncorrect,
   setUserResumeResponseData,
-  setLastSentReward
+  setLastSentReward,
+  setTotalCoins
 } = quizSlice.actions;
 
 export default quizSlice.reducer;
