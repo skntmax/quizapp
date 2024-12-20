@@ -1,13 +1,15 @@
 'use client';
 import { ThemeToggle } from "@/components/theme-toggle";
-import { cookies } from "@/constant";
-import getSingleCookiesCSR from "@/utils/cookies";
-import { Trophy, User } from "lucide-react";
+import { bytecodeUrls, cookies, quizUrls } from "@/constant";
+import getSingleCookiesCSR, { deleteSingleCookie } from "@/utils/cookies";
+import { Power, PowerOff, Trophy, User } from "lucide-react";
 import Timer from "./Timer";
 import { useSelector } from "react-redux";
 import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 
 export default function CommonHeader() {
+    const router = useRouter();
     const [menuOpen, setMenuOpen] = useState(false);
     const cdDetails = getSingleCookiesCSR(cookies.btcode_live_cd);
     const quizDetails = useSelector((ele) => ele?.quiz?.quizSessionDetails);
@@ -20,6 +22,12 @@ export default function CommonHeader() {
 
     const toggleMenu = () => {
         setMenuOpen((prev) => !prev);
+    };
+
+    const handleLogout = () => {
+        deleteSingleCookie(cookies.btcode_live_cd);
+        deleteSingleCookie(cookies.btcode_live_cd_key);
+        router.push(bytecodeUrls.home);
     };
 
     return (
@@ -105,6 +113,13 @@ export default function CommonHeader() {
                                         <span>
                                             {cdDetails ? cdDetails.USERNAME : null}
                                         </span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="block py-2 pr-4 pl-3 hover:bg-accent hover:text-accent-foreground rounded p-4 lg:border-0 lg:hover:text-primary-700 lg:p-1 lg:dark:hover:bg-transparent"
+                                    onClick={handleLogout}
+                                    >
+                                        <Power />
                                     </div>
                                 </li>
                                 <li>

@@ -4,12 +4,20 @@ import { cn } from "@/lib/utils";
 import { getRandomVariant } from "@/utils/logix";
 import { Coins, IndianRupee, Trophy, User } from "lucide-react";
 import CardImg from '@/images/5165532.jpg'
+import EmptyData from '@/images/DataNotFound.png'
+import NoData from '@/images/nodata.png'
+import Nodata from '@/images/nodata.jpg'
 import Image from "next/image";
 import { postRequest } from "@/crud_operations/RequestHandler";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { resetQuiz } from "@/redux/counterSlice";
+import { quizUrls } from "@/constant";
 export default function HistoryList({ data ,top }) {
+    const dispatch = useDispatch();
+    const router = useRouter();
     const handleRedeem =  async(sectionId) => {
         try{
-            debugger
             const response = await postRequest("quiz/redeem-rewards-into-coins",
                 { quizHistoryId:sectionId },
                 customHeader,
@@ -20,6 +28,10 @@ export default function HistoryList({ data ,top }) {
         }catch(error){
 
         }
+    }
+    const handleRestart = async () => {
+        dispatch(resetQuiz())
+        router.push(quizUrls.home)
     }
     return (<>
         <div className="w-full px-4 py-4" >
@@ -37,7 +49,7 @@ export default function HistoryList({ data ,top }) {
                 <div className="border rounded-lg p-6">
                     <div className="mb-6">
                         <div className="flex flex-wrap">
-                            <div className="px-2 w-[50%]">
+                            <div className="px-2 md:w-[50%]">
                                 <h4 className="text-lg font-semibold mb-4">TERMS TO REFER</h4>
                                 <div className="flex flex-col gap-4">
                                     <div className="flex items-start gap-4">
@@ -96,12 +108,24 @@ export default function HistoryList({ data ,top }) {
                                         </Button>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="px-2  w-[50%]">
-                                <div className="flex justify-between">
-                                    <span className="ant-typography css-fypblu font-semibold ">YOUR QUIZ HISTORIES</span>
+                                <div className="py-4">
+                                    <h4 className="text-lg font-semibold">START THE QUIZ</h4>
+                                    <div className="flex mt-4">
+                                        <Button className={cn("mr-4 w-full md:w-[33%] mr-0")}
+                                            variant={getRandomVariant()}
+                                            onClick={()=>handleRestart()}
+                                            size='lg'
+                                        >
+                                            START NOW
+                                        </Button>
+                                    </div>
                                 </div>
-                                <div className="" style={{ maxHeight: "300px", maxHeight: "300px", overflow: 'hidden scroll' }}>
+                            </div>
+                            <div className="px-2  md:w-[50%]">
+                                <div className="flex justify-between">
+                                    <span className="ant-typography css-fypblu text-lg font-semibold">YOUR QUIZ HISTORIES</span>
+                                </div>
+                                <div className="" style={{ maxHeight: "300px", maxHeight: "336px", overflow: 'hidden scroll' }}>
                                     {data && data.length > 0 ? (
                                         data.map((item, index) => (
                                             <div key={item._id} className="bg-white shadow-md p-4 rounded-md flex justify-between items-center">
@@ -121,7 +145,12 @@ export default function HistoryList({ data ,top }) {
                                             </div>
                                         ))
                                     ) : (
-                                        <div className="text-center text-gray-500">No data available</div>
+                                        <Image
+                                width='100%'
+                                src={Nodata}
+                                className="mt-4"
+                                style={{ color: "transparent", height: "320px", }}
+                            />
                                     )}
                                 </div>
                             </div>
@@ -147,10 +176,10 @@ export default function HistoryList({ data ,top }) {
                         </div>
                         {/* Right Section */}
                         <div >
-                        <span className="ant-typography css-fypblu font-semibold border-b-1 border-gray">TOP FIVE REWARDS WINNER OF THE MONTH</span>
+                        <span className="ant-typography css-fypblu text-lg font-semibold border-b-1 border-gray">TOP FIVE REWARDS WINNER OF THE MONTH</span>
                             {top && top.length > 0 ? (
                                 top.map((item, index) => (
-                                    <div key={item._id} className="bg-white shadow-md p-4 rounded-md flex justify-between items-center">
+                                    <div key={item._id} className="bg-white shadow-md p-4 mb-4 rounded-md flex justify-between items-center">
                                         {/* Rank */}
                                         <span className="font-bold text-xs">{index + 1}</span>
                                         {/* Name */}
@@ -168,7 +197,12 @@ export default function HistoryList({ data ,top }) {
                                     </div>
                                 ))
                             ) : (
-                                <div className="text-center text-gray-500">No data available</div>
+                                <Image
+                                width='100%'
+                                src={NoData}
+                                className="mt-4"
+                                style={{ color: "transparent", height: "476px" }}
+                            />
                             )}
                         </div>
                     </div>
