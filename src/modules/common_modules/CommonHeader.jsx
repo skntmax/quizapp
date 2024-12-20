@@ -1,8 +1,8 @@
 'use client';
 import { ThemeToggle } from "@/components/theme-toggle";
-import { cookies } from "@/constant";
+// import { cookies } from "@/constant";
 // import getSingleCookiesCSR from "@/utils/cookies";
-import { Coins, Trophy, User } from "lucide-react";
+// import { Coins, Trophy, User } from "lucide-react";
 import { bytecodeUrls, cookies, quizUrls } from "@/constant";
 import getSingleCookiesCSR, { deleteSingleCookie } from "@/utils/cookies";
 import { Power, PowerOff, Trophy, User } from "lucide-react";

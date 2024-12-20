@@ -16,7 +16,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setLastSentReward, setTotalCoins } from "@/redux/counterSlice";
 import TopWinnersSlider from "./TopWinnersSlider";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { quizUrls } from "@/constant";
 export default function HistoryList({ data, top }) {
