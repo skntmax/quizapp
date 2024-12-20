@@ -19,6 +19,7 @@ import TopWinnersSlider from "./TopWinnersSlider";
 // import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { quizUrls } from "@/constant";
+import Demo from "../Particles";
 export default function HistoryList({ data, top }) {
   const config = [
     { coins: 10, rupees: 1 },
@@ -62,6 +63,7 @@ export default function HistoryList({ data, top }) {
 
   return (
     <>
+    <Demo/>
       <div className="w-full px-4 py-4">
         <div className="w-full px-2 py-1">
           <div className="flex justify-between">
