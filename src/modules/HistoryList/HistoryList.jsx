@@ -14,16 +14,16 @@ import {
   useRedeemRewardIntoCoinsMutation,
 } from "@/app/AsyncApi/referral";
 import SharableContent from "@/components/SharableContent";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setLastSentReward, setTotalCoins } from "@/redux/counterSlice";
 import TopWinnersSlider from "./TopWinnersSlider";
 // import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { quizUrls } from "@/constant";
+import TsParticles from "../Particles";
+
 export default function HistoryList({  top }) {
-
-
   const config = [
     { coins: 10, rupees: 1 },
     { coins: 500, rupees: 50 },
@@ -73,8 +73,6 @@ export default function HistoryList({  top }) {
       }, [redeemCoinsData?.result]);
 
 
-
-
       useEffect(()=>{
         
         if(quizHistory?.result?.data && quizHistory?.result?.data.length>0 ) {
@@ -92,9 +90,18 @@ export default function HistoryList({  top }) {
     router.push(quizUrls.home);
   };
 
+
+
+
+   const MyParticle =  useCallback(()=>(redeemCoinsData?.result.data?.COINS && <TsParticles />) , [redeemCoinsData?.result])
+
   return (
     <>
-      <div className="w-full px-4 py-4">
+    
+     
+         {MyParticle()}  
+          
+          <div className="w-full px-4 py-4">
         <div className="w-full px-2 py-1">
           <div className="flex justify-between">
             <span className="ant-typography css-fypblu font-semibold">
