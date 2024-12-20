@@ -30,7 +30,7 @@ const TopWinnersSlider = ({ top }) => {
   
    
     return (
-    <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-100 rounded-lg shadow-lg">
+    <div className="p-6 dark:bg-pink border rounded-lg p-6 my-4 from-blue-50 to-indigo-100 rounded-lg shadow-lg">
    
       {top && top.length > 0 ? (
         <Swiper
@@ -42,7 +42,7 @@ const TopWinnersSlider = ({ top }) => {
         >
           {top.map((item, index) => (
             <SwiperSlide key={item._id}>
-              <div className="bg-white shadow-md p-6 rounded-lg flex flex-col items-center text-center">
+              <div className="bg-white dark:bg-black shadow-md p-6 rounded-lg flex flex-col items-center text-center">
                 {/* Profile Image */}
                 <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-indigo-600 shadow-md">
                   <img
@@ -53,25 +53,25 @@ const TopWinnersSlider = ({ top }) => {
                 </div>
 
                 {/* Rank */}
-                <span className="text-indigo-600 font-bold text-lg mt-4">
+                <span className="text-indigo-600 dark:text-white font-bold text-lg mt-4">
                   #{index + 1}
                 </span>
 
                 {/* Name */}
-                <p className="text-gray-700 font-medium text-xl mt-2">
+                <p className="text-gray-700 dark:text-white font-medium text-xl mt-2">
                   {item.USER_INFO.username}
                 </p>
 
                 {/* Avatar and Coins */}
                 <div className="flex items-center gap-2 mt-4">
                   <span className="text-3xl">🪙</span>
-                  <span className="text-gray-800 font-semibold text-xl">
+                  <span className="text-gray-800 dark:text-white font-semibold text-xl">
                     {item.COINS || 0}
                   </span>
                 </div>
 
                 {/* Reward */}
-                <span className="text-green-600 font-bold text-2xl mt-4">
+                <span className="text-green-600  font-bold text-2xl mt-4">
                   ₹ {calculateRs(item.COINS)}
                 </span>
               </div>
@@ -79,7 +79,7 @@ const TopWinnersSlider = ({ top }) => {
           ))}
         </Swiper>
       ) : (
-        <p className="text-center text-gray-500 font-medium">
+        <p className="text-center text-gray-500 dark:text-white font-medium">
           No top winners yet!
         </p>
       )}

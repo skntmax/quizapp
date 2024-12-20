@@ -44,9 +44,16 @@ export default function HistoryList({ data, top }) {
   let referral_link = `${process.env.NEXT_PUBLIC_WEB_LOCAL_URL}/students?referralCode=${referralCode?.result?.data?.REFERREL_CODE}`;
 
   useEffect(() => {
+    debugger
     if (referralCode?.result.data?.COINS)
       dispatch(setTotalCoins(referralCode?.result.data?.COINS || 0));
   }, [referralCode?.result]);
+
+  useEffect(() => {
+    debugger
+    if (redeemCoinsData?.result.data?.COINS)
+      dispatch(setTotalCoins(redeemCoinsData?.result.data?.COINS || 0));
+  }, [redeemCoinsData?.result]);
 
   const handleRestart = async () => {
     dispatch(resetQuiz());
@@ -172,15 +179,15 @@ export default function HistoryList({ data, top }) {
                   <div
                     className=""
                     style={{
-                      maxHeight: "400px",
-                      overflow: "auto",
+                      maxHeight: data &&  data.length > 0 ?"400px":"600px",
+                      overflow:data &&  data.length > 0 ?"auto":'hidden',
                     }}
                   >
                     {data && data.length > 0 ? (
                       data.map((item, index) => (
                         <div
                           key={item._id}
-                          className="bg-white shadow-md p-4 rounded-md flex justify-between items-center"
+                          className="bg-white dark:bg-black shadow-md p-4 rounded-md flex justify-between items-center"
                         >
                           {/* Rank */}
                           <span className="font-bold text-xs">{index + 1}</span>
@@ -200,7 +207,7 @@ export default function HistoryList({ data, top }) {
                           {/* Reward */}
                           <span className="text-green-600 font-semibold">
                             <Button
-                              variant={getRandomVariant()}
+                              variant="pink"
                               size="sm"
                               onClick={() =>
                                 redeemCoins({ quizHistoryId: item._id })
@@ -228,28 +235,28 @@ export default function HistoryList({ data, top }) {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6 items-stretch p-6 bg-gray-100">
+        <div className="flex flex-col lg:flex-row gap-6 items-stretch p-6 bg-gray-100 dark:bg-black dark:bg-black border rounded-lg p-6">
           {/* Left Section */}
-          <div className="flex-1 p-6 bg-gradient-to-r from-blue-50 to-indigo-100 rounded-lg shadow-lg">
-            <h1 className="text-3xl font-bold text-center text-indigo-700 mb-6">
+          <div className="flex-1 p-6  from-blue-50 to-indigo-100 rounded-lg shadow-lg dark:bg-black">
+            <h1 className="text-3xl font-bold text-center text-indigo-700 dark:text-white mb-6 ">
               Coin to Rupee Conversion
             </h1>
             <div className="space-y-4">
               {config.map((item, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between bg-white p-4 rounded-lg shadow-md"
+                  className="flex items-center justify-between bg-white dark:bg-black p-4 rounded-lg shadow-md"
                 >
                   <div className="flex items-center">
                     <span className="text-lg">🪙</span>
                     <div>
-                      <p className="text-lg font-semibold text-gray-800 ml-2">
+                      <p className="text-lg font-semibold text-gray-800 dark:text-white ml-2">
                         {item.coins} Coins
                       </p>
                     </div>
                   </div>
                   <div>
-                    <p className="text-xl font-bold text-indigo-600">
+                    <p className="text-xl font-bold text-indigo-600 dark:text-white">
                       {item.rupees} ₹
                     </p>
                   </div>
@@ -259,8 +266,8 @@ export default function HistoryList({ data, top }) {
           </div>
 
           {/* Right Section */}
-          <div className="flex-1 p-6 bg-gradient-to-r from-blue-50 to-indigo-100 rounded-lg shadow-lg">
-            <h1 className="text-xl font-bold text-center text-indigo-700 mb-6 border-b pb-2">
+          <div className="flex-1 p-6  dark:bg-black from-blue-50  to-indigo-100 rounded-lg shadow-lg">
+            <h1 className="text-xl font-bold text-center text-indigo-700 dark:text-white mb-6 border-b pb-2">
               TOP FIVE REWARDS WINNER OF THE MONTH
             </h1>
             {top && top.length > 0 ? (
@@ -268,22 +275,22 @@ export default function HistoryList({ data, top }) {
                 {top.map((item, index) => (
                   <div
                     key={item._id}
-                    className="bg-white shadow-md p-4 rounded-md flex justify-between items-center"
+                    className="bg-white dark:bg-black shadow-md p-4 rounded-md flex justify-between items-center"
                   >
                     {/* Rank */}
-                    <span className="font-bold text-lg text-indigo-600">
+                    <span className="font-bold text-lg text-indigo-600 dark:text-white">
                       {index + 1}
                     </span>
 
                     {/* Name */}
-                    <span className="text-gray-700 text-base font-medium">
+                    <span className="text-gray-700 dark:text-white text-base font-medium">
                       {item.USER_INFO.username}
                     </span>
 
                     {/* Avatar and Coins */}
                     <div className="flex items-center gap-2">
                       <span className="text-lg">🪙</span>
-                      <span className="text-gray-800 font-medium">
+                      <span className="text-gray-800 dark:text-white font-medium">
                         {item.COINS || 0}
                       </span>
                     </div>
