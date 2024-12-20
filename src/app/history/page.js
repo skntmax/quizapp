@@ -71,7 +71,7 @@ export default function Page() {
      
     return <>
         {
-            data !== undefined && data.length > 0 ? <>
+            data !== undefined  ? <>
                 <CommonHeader />
                 <HistoryList data={data} top={top} />
                 <Footer />
