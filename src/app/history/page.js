@@ -18,39 +18,20 @@ const customHeader = {
 }
 
 export default function Page() {
-    const [data, setData] = useState(undefined)
     const [top, setTop] = useState(undefined)
     const [loader, setLoader] = useState(false)
 
-    let dispatch = useDispatch()
-
+   
 
     useEffect(() => {
         fetchHistory();
     }, []);
 
 
-    
-    // user quiz history 
-    useEffect(()=>{
-          
-        if(data) {
-            let totalReward  = data.reduce((acc,ele)=>acc+ele.REWARD, 0 )
-            console.log(totalReward , data)
-            dispatch(setLastSentReward(totalReward || 0))
-        }
- 
-     } , [data])
-
     const fetchHistory = async () => {
         setLoader(true)
         try {
-            const response = await getRequest("quiz/get-users-quiz-history",
-                customHeader
-            );
-            if (response.status) {
-                setData(response.result.data)
-            }
+         
             const response2 = await getRequest("quiz/top-five-reward-winners",
                 customHeader
             );
@@ -71,9 +52,9 @@ export default function Page() {
      
     return <>
         {
-            data !== undefined  ? <>
+            top !== undefined  ? <>
                 <CommonHeader />
-                <HistoryList data={data} top={top} />
+                <HistoryList  top={top} />
                 <Footer />
             </> :
                 <>

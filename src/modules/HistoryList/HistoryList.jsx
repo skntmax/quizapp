@@ -8,6 +8,7 @@ import Image from "next/image";
 import NoData from '@/images/nodata.png'
 import { postRequest } from "@/crud_operations/RequestHandler";
 import {
+  useGetQuizHistoryQuery,
   useGetReferralCodeQuery,
   useRedeemRewardIntoCoinsMutation,
 } from "@/app/AsyncApi/referral";
@@ -19,7 +20,9 @@ import TopWinnersSlider from "./TopWinnersSlider";
 // import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { quizUrls } from "@/constant";
-export default function HistoryList({ data, top }) {
+export default function HistoryList({  top }) {
+
+
   const config = [
     { coins: 10, rupees: 1 },
     { coins: 500, rupees: 50 },
@@ -33,28 +36,56 @@ export default function HistoryList({ data, top }) {
 
   let dispatch = useDispatch();
   const router = useRouter();
+  
+  
   // api section
-  const { data: referralCode, isLoading: referralCodeLoading } =
+
+  const {data:quizHistory , isLoading:quizHistoryLoading ,  refetch: refetchQuizHistory } = useGetQuizHistoryQuery()
+
+  const { data: referralCode, isLoading: referralCodeLoading , refetch: refetchReferral } =
     useGetReferralCodeQuery();
-  const [
+  
+  
+    const [
     redeemCoins,
     { data: redeemCoinsData, isLoading: redeemCoinsLoading },
   ] = useRedeemRewardIntoCoinsMutation();
 
+ 
+
   let referral_link = `${process.env.NEXT_PUBLIC_WEB_LOCAL_URL}/students?referralCode=${referralCode?.result?.data?.REFERREL_CODE}`;
 
   useEffect(() => {
-    debugger
+   
     if (referralCode?.result.data?.COINS)
       dispatch(setTotalCoins(referralCode?.result.data?.COINS || 0));
   }, [referralCode?.result]);
 
   useEffect(() => {
-    debugger
+    
     if (redeemCoinsData?.result.data?.COINS)
-      dispatch(setTotalCoins(redeemCoinsData?.result.data?.COINS || 0));
-  }, [redeemCoinsData?.result]);
+       // updating coing as well 
+       dispatch(setTotalCoins(redeemCoinsData?.result.data?.COINS || 0));
+       dispatch(setLastSentReward(redeemCoinsData?.result.data?.TOTAL_REWARD || 0))
+       refetchQuizHistory()
+  
+      }, [redeemCoinsData?.result]);
 
+
+
+
+      useEffect(()=>{
+        
+        if(quizHistory?.result?.data && quizHistory?.result?.data.length>0 ) {
+            let arr = quizHistory?.result?.data
+              let totalReward  = arr.reduce((acc,ele)=>acc+ele.REWARD, 0 )
+              dispatch(setLastSentReward(totalReward || 0))
+        }
+
+        
+      }, [quizHistory?.result])
+
+       
   const handleRestart = async () => {
     dispatch(resetQuiz());
     router.push(quizUrls.home);
@@ -179,12 +210,12 @@ export default function HistoryList({ data, top }) {
                   <div
                     className=""
                     style={{
-                      maxHeight: data &&  data.length > 0 ?"400px":"600px",
-                      overflow:data &&  data.length > 0 ?"auto":'hidden',
+                      maxHeight: quizHistory?.result?.data &&  quizHistory?.result?.data.length > 0 ?"400px":"600px",
+                      overflow:quizHistory?.result?.data &&  quizHistory?.result?.data.length > 0 ?"auto":'hidden',
                     }}
                   >
-                    {data && data.length > 0 ? (
-                      data.map((item, index) => (
+                    {quizHistory?.result?.data && quizHistory?.result?.data.length > 0 ? (
+                      quizHistory?.result?.data.map((item, index) => (
                         <div
                           key={item._id}
                           className="bg-white dark:bg-black shadow-md p-4 rounded-md flex justify-between items-center"

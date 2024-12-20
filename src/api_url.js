@@ -43,6 +43,8 @@ export const api_urls  = {
       ['get-referral-code']:'referral/get-referral-code',
       ['check-valid-referral-code']:'referral/check-valid-referral-code/:referralCode',
       ['redeem-rewards-into-coins']:'quiz/redeem-rewards-into-coins'
-    }
+    },
+
+    'get-users-quiz-history':'quiz/get-users-quiz-history'
      
 }

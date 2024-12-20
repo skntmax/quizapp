@@ -8,7 +8,7 @@ import { cookies } from '@/constant'
  
 const referralApi = createApi({
   reducerPath: 'referalApi',
-  tagTypes: ['referralCode',"checkReferralCode"],
+  tagTypes: ['referralCode', "redeemIntoCoins" , ],
   baseQuery: fetchBaseQuery({ baseUrl:process.env.NEXT_PUBLIC_API_BASE_URL  }),
   endpoints: (builder) => ({
 
@@ -52,18 +52,31 @@ const referralApi = createApi({
     providesTags:['checkValidReferralCode']
   },  
  ),
+
+
+ getQuizHistory: builder.query({
+    query: (referralCode) => (  {
+       url: api_urls['get-users-quiz-history'],
+       method: 'GET',
+     headers:{
+       "authorization": `Bearer ${getCookie(cookies.btcode_live_cd_key)}`, 
+       },
+    }),
+    providesTags:['quizHistory']
+  },  
+ ),
+
  
  redeemRewardIntoCoins: builder.mutation({
   query: (body) => (  {
      url: api_urls.referrals['redeem-rewards-into-coins'],
      method: 'POST',
      headers:{
-       "authorization": `Bearer ${getCookie(cookies.btcode_live_cd_key)}`,
-       "Content-Type": "appliation/json"  
+       "authorization": `Bearer ${getCookie(cookies.btcode_live_cd_key)}`, 
        },
-       body:body
+      body:body
   }),
-  providesTags:['checkValidReferralCode']
+  providesTags:['redeemIntoCoins']
 },  
 )    
 
@@ -78,6 +91,6 @@ const referralApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetReferralCodeQuery , useCheckValidReferralCodeQuery , useCheckReferralCodeMutation ,useRedeemRewardIntoCoinsMutation  } = referralApi    
+export const { useGetReferralCodeQuery , useCheckValidReferralCodeQuery , useCheckReferralCodeMutation ,useRedeemRewardIntoCoinsMutation , useGetQuizHistoryQuery  } = referralApi    
 
 export default referralApi
