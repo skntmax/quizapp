@@ -212,9 +212,12 @@ export default function HistoryList({ data, top }) {
                         </div>
                       ))
                     ) : (
-                      <div className="text-center text-gray-500">
-                        No data available
-                      </div>
+                      <Image
+                      width='100%'
+                      src={NoData}
+                      className="mt-4"
+                      style={{ color: "transparent", height: "390px", }}
+                  />
                     )}
                   </div>
                 </div>
