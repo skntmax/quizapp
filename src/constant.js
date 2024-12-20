@@ -4,9 +4,11 @@ const cookies = {
 }
 
 const bytecodeUrls = {
-    authenticatedFalse:'https://bytecode.live?authenticated=false'
+    authenticatedFalse:'https://bytecode.live?authenticated=false',
+    home:'https://bytecode.live',
 }
 const quizUrls = {
+    home:'/',
     start:'/start',
     history:'/history'
 }
