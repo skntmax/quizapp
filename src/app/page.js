@@ -3,9 +3,7 @@ import { cookies, quizUrls } from "@/constant";
 import { getRequest } from "@/crud_operations/RequestHandler";
 import { cn } from "@/lib/utils";
 import { AlertDialogDemo } from "@/modules/common_modules/AlertDialogDemo";
-import CommonHeader from "@/modules/common_modules/CommonHeader";
-import Footer from "@/modules/common_modules/Footer"; // Ensure this is correct
-import Demo from "@/modules/Particles";
+
 import DnaLoder from "@/modules/loders/DnaLoder";
 import QuizPage from "@/modules/ui_modules/QuizPage";
 import { resetQuiz, setQuizSessionDetails, setSessionId } from "@/redux/counterSlice";
@@ -66,13 +64,13 @@ export default function Home() {
 
   return (
     <>
-      {/* {
+      {
         data.loader ?
           <DnaLoder />
           :
           <AlertDialogDemo />
-      } */}
-      <Demo />
+      }
+     
     </>
   );
 }
