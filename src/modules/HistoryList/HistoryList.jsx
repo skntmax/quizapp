@@ -226,18 +226,17 @@ export default function HistoryList({  top }) {
                   >
                
 
-            
+                   
+         
 
 
-
-
-                {quizHistoryLoading && 
+                { quizHistoryLoading && 
                   <div className="flex items-center justify-center align-items-center ">
                   <ColorRing
-                    visible={true}
-                    height="80"
-                    width="80"
-                    wrapperClass="color-ring-wrapper"
+                   visible={true}
+                    height="20"
+                    width="20"
+                    wrapperClass=""
                     colors={['#e15b64']}
                   />
                 </div>}
@@ -260,29 +259,47 @@ export default function HistoryList({  top }) {
                               <Trophy />
                             </span>
                             <span className="font-medium">
-                              {item.REWARD || 0}
+                              
+                              
+                              {
+                                redeemCoinsLoading?
+                            <ColorRing
+                            visible={true}
+                            height="20"
+                            width="20"
+                            wrapperClass="color-ring-wrapper"
+                            colors={['#e15b64']}
+                            /> : item.REWARD || 0}
+
+
                             </span>
                           </div>
                           {/* Reward */}
                           <span className="text-green-600 font-semibold">
                             
                             {redeemCoinsLoading?
-               <ColorRing
-  visible={true}
-  height="20"
-  width="20"
-  wrapperClass="color-ring-wrapper"
-  colors={['#e15b64']}
-  />
-  : 
-  <Button
+                              
+                              <Button
+                              variant="pink"
+                              size="sm"
+                            >
+                            <ColorRing
+                            visible={true}
+                            height="20"
+                            width="20"
+                            wrapperClass="color-ring-wrapper"
+                            colors={['#e15b64']}
+                            /> processing                             
+                            </Button>
+                        : 
+                        <Button
                               variant="pink"
                               size="sm"
                               onClick={() =>
                                 redeemCoins({ quizHistoryId: item._id })
                               }
                             >
-                              ₹ REDEEM
+                              🪙 REDEEM
                             </Button>
 
    } 
@@ -291,14 +308,19 @@ export default function HistoryList({  top }) {
                           </span>
                         </div>
                       ))
-                    ) : (
+                    ) :
+
+                    (!quizHistoryLoading &&  quizHistory?.result?.data.length==0) ?  
+                     (
                       <Image
                       width='100%'
                       src={NoData}
                       className="mt-4"
                       style={{ color: "transparent", height: "390px", }}
                   />
-                    )}
+                    ) :""
+                    
+                    }
 
 
 
