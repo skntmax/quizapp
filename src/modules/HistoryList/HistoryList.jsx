@@ -79,8 +79,8 @@ export default function HistoryList({ data, top }) {
         <div className="w-full px-2 py-4">
           <div className="border rounded-lg p-6">
             <div className="mb-6">
-              <div className="flex flex-wrap">
-                <div className="px-2 w-[50%]">
+              <div className="md:flex md:flex-wrap">
+                <div className="px-2 sm:w-[100%] md:w-[50%]">
                   <h4 className="text-lg font-semibold mb-4">
                     REFER AND EARN{" "}
                   </h4>
@@ -144,7 +144,7 @@ export default function HistoryList({ data, top }) {
                   </div>
                   
                   <h4 className="text-lg font-semibold mb-4"> REFERRAL LINK</h4>
-            <div className="flex justify-between items-center">
+            <div className="sm:flex md:block justify-between items-center">
               <a
                 href={referral_link}
                 target="_blank"
@@ -169,10 +169,9 @@ export default function HistoryList({ data, top }) {
                       </Button>
                     </div>
                   </div>
-                  
                 </div>
 
-                <div className="px-2  w-[50%]">
+                <div className="px-2 sm:w-[100%]  md:w-[50%]">
                   <div className="flex justify-between">
                     <span className="ant-typography css-fypblu font-semibold ">
                       YOUR QUIZ HISTORIES

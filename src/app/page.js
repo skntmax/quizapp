@@ -66,13 +66,13 @@ export default function Home() {
 
   return (
     <>
-      {/* {
+      {
         data.loader ?
           <DnaLoder />
           :
           <AlertDialogDemo />
-      } */}
-      <Demo />
+      }
+      {/* <Demo /> */}
     </>
   );
 }
