@@ -24,6 +24,7 @@ import { quizUrls } from "@/constant";
 import TsParticles from "../Particles";
 
 export default function HistoryList({  top }) {
+  
   const config = [
     { coins: 10, rupees: 1 },
     { coins: 500, rupees: 50 },

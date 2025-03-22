@@ -39,11 +39,11 @@ export default function CommonHeader() {
             <header className="z-40 w-full px-1 md:px-4 bg-background">
                 <nav className="border-gray-200 px-1 md:px-4 lg:px-6 py-2.5">
                     <div className="flex flex-wrap justify-between items-center mx-auto w-full">
-                        <a href="https://bytecode.live/" className="flex items-center">
+                        <a href="https://codexcave.com/" className="flex items-center">
                             <img
                                 width="150"
                                 height="25"
-                                src="https://bytecode.live/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flightlogo.178ba7a4.png&w=256&q=75"
+                                src="https://codexcave.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flightlogo.178ba7a4.png&w=256&q=75"
                                 className="h-6 sm:h-9"
                                 alt="Flowbite Logo"
                             />

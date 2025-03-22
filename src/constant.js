@@ -4,8 +4,8 @@ const cookies = {
 }
 
 const bytecodeUrls = {
-    authenticatedFalse:'https://bytecode.live?authenticated=false',
-    home:'https://bytecode.live',
+    authenticatedFalse:'https://codexcave.com?authenticated=false',
+    home:'https://codexcave.com',
 }
 const quizUrls = {
     home:'/',
